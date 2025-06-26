@@ -1,0 +1,3241 @@
+@prefix : <http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/> .
+
+<http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf> rdf:type owl:Ontology .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled
+<http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/AgentID
+:AgentID rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ColumnName
+:ColumnName rdf:type owl:AnnotationProperty ;
+            rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/DatabaseName
+:DatabaseName rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/TableName
+:TableName rdf:type owl:AnnotationProperty ;
+           rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/columnOfTable
+:columnOfTable rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/allowedGrantLevel
+:allowedGrantLevel rdf:type owl:ObjectProperty ;
+                   rdfs:domain :GrantType ;
+                   rdfs:range :GrantLevel .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/allowsClause
+:allowsClause rdf:type owl:ObjectProperty ;
+              rdfs:domain :SQLNode ,
+                          :Statement ;
+              rdfs:range :Clause ,
+                         :SQLNode .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/appliesToScope
+:appliesToScope rdf:type owl:ObjectProperty ;
+                rdfs:domain :Policy ;
+                rdfs:range :ActionScope .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/belongsToStatement
+:belongsToStatement rdf:type owl:ObjectProperty ;
+                    rdfs:domain :SQLNode ;
+                    rdfs:range :SQLNode ,
+                               :Statement .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/columnOfTable
+:columnOfTable rdf:type owl:ObjectProperty ;
+               owl:inverseOf :hasColumn .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/controlAccessTo
+:controlAccessTo rdf:type owl:ObjectProperty ;
+                 rdfs:domain :Policy ;
+                 rdfs:range :Object .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/executedBy
+:executedBy rdf:type owl:ObjectProperty ;
+            rdfs:domain :SQLNode ,
+                        :Statement ;
+            rdfs:range :Agent .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasAction
+:hasAction rdf:type owl:ObjectProperty ;
+           rdfs:domain :Policy ;
+           rdfs:range :Action .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasAgent
+:hasAgent rdf:type owl:ObjectProperty ;
+          rdfs:domain :Policy ;
+          rdfs:range :Agent .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasAlignmentState
+:hasAlignmentState rdf:type owl:ObjectProperty ;
+                   rdfs:domain :Expression ,
+                               :ReferenceNode ,
+                               :SQLNode ,
+                               :Statement ;
+                   rdfs:range :AccessAlignmentState .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasChildNode
+:hasChildNode rdf:type owl:ObjectProperty ;
+              owl:inverseOf :hasParentNode ;
+              rdf:type owl:TransitiveProperty ;
+              rdfs:domain :SQLNode ;
+              rdfs:range :SQLNode .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasClause
+:hasClause rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf :hasChildNode ;
+           rdfs:domain :SQLNode ,
+                       :Statement ;
+           rdfs:range :Clause ,
+                      :SQLNode .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasColumn
+:hasColumn rdf:type owl:ObjectProperty ;
+           rdfs:domain :Object ,
+                       :Table ;
+           rdfs:range :Column ,
+                      :Object .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasEffectiveScope
+:hasEffectiveScope rdf:type owl:ObjectProperty ;
+                   rdfs:domain :Clause ,
+                               :SQLNode ;
+                   rdfs:range :ActionScope .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasExpression
+:hasExpression rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf :hasChildNode ;
+               rdfs:domain :Clause ,
+                           :SQLNode ;
+               rdfs:range :Expression ,
+                          :SQLNode .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasGrantLevel
+:hasGrantLevel rdf:type owl:ObjectProperty ;
+               rdfs:domain :Policy ;
+               rdfs:range :GrantLevel .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasGrantType
+:hasGrantType rdf:type owl:ObjectProperty ;
+              rdfs:domain :Policy ;
+              rdfs:range :GrantType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasNodeType
+:hasNodeType rdf:type owl:ObjectProperty ;
+             rdfs:domain :SQLNode ;
+             rdfs:range :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasParentNode
+:hasParentNode rdf:type owl:ObjectProperty .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasRow
+:hasRow rdf:type owl:ObjectProperty ;
+        rdfs:domain :Object ,
+                    :Table ;
+        rdfs:range :Object ,
+                   :Row .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasScope
+:hasScope rdf:type owl:ObjectProperty ;
+          rdfs:domain :Action ;
+          rdfs:range :ActionScope .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasTable
+:hasTable rdf:type owl:ObjectProperty ;
+          rdfs:domain :Database ,
+                      :Object ;
+          rdfs:range :Object ,
+                     :Table .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/immediateChildNode
+:immediateChildNode rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :hasChildNode ;
+                    owl:inverseOf :immediateParentNode ;
+                    rdfs:domain :SQLNode ;
+                    rdfs:range :SQLNode .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/immediateParentNode
+:immediateParentNode rdf:type owl:ObjectProperty ;
+                     rdfs:subPropertyOf :hasParentNode ;
+                     rdfs:domain :SQLNode ;
+                     rdfs:range :SQLNode .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/oppositeOf
+:oppositeOf rdf:type owl:ObjectProperty ,
+                     owl:SymmetricProperty .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/referencesToColumn
+:referencesToColumn rdf:type owl:ObjectProperty ;
+                    rdfs:domain :ColumnRef ,
+                                :Expression ,
+                                :NonFunctional ,
+                                :ReferenceNode ,
+                                :SQLNode ,
+                                :SQLNodeType ,
+                                :Wildcard ;
+                    rdfs:range :Column ,
+                               :Object .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/referencesToTable
+:referencesToTable rdf:type owl:ObjectProperty ;
+                   rdfs:domain :Expression ,
+                               :NonFunctional ,
+                               :ReferenceNode ,
+                               :SQLNode ,
+                               :SQLNodeType ,
+                               :TableRef ;
+                   rdfs:range :Object ,
+                              :Table .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/representsAction
+:representsAction rdf:type owl:ObjectProperty ;
+                  rdfs:domain :SQLNode ,
+                              :Statement ;
+                  rdfs:range :Action .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ColumnName
+:ColumnName rdf:type owl:DatatypeProperty ;
+            rdfs:domain :Column ,
+                        :Object .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/FunctionName
+:FunctionName rdf:type owl:DatatypeProperty ;
+              rdfs:domain :Expression ,
+                          :Function ,
+                          :Functional ,
+                          :SQLNode ,
+                          :SQLNodeType ;
+              rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/OperationName
+:OperationName rdf:type owl:DatatypeProperty ;
+               rdfs:domain :Expression ,
+                           :NonFunctional ,
+                           :Operator ,
+                           :SQLNode ,
+                           :SQLNodeType ;
+               rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/TableName
+:TableName rdf:type owl:DatatypeProperty ;
+           rdfs:domain :Object ,
+                       :Table .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Value
+:Value rdf:type owl:DatatypeProperty ;
+       rdfs:domain :Expression ,
+                   :Literal ,
+                   :NonFunctional ,
+                   :SQLNode ,
+                   :SQLNodeType .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/AccessAlignmentState
+:AccessAlignmentState rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Action
+:Action rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ActionScope
+:ActionScope rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Agent
+:Agent rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Alias
+:Alias rdf:type owl:Class ;
+       rdfs:subClassOf :Expression ,
+                       :NonFunctional ,
+                       :SQLNode ,
+                       :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause
+:Clause rdf:type owl:Class ;
+        rdfs:subClassOf :SQLNode .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Column
+:Column rdf:type owl:Class ;
+        rdfs:subClassOf :Object .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ColumnRef
+:ColumnRef rdf:type owl:Class ;
+           rdfs:subClassOf :Expression ,
+                           :NonFunctional ,
+                           :ReferenceNode ,
+                           :SQLNode ,
+                           :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Database
+:Database rdf:type owl:Class ;
+          rdfs:subClassOf :Object .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/DeleteStatement
+:DeleteStatement rdf:type owl:Class ;
+                 rdfs:subClassOf :NonFunctional ,
+                                 :SQLNode ,
+                                 :SQLNodeType ,
+                                 :Statement ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :allowsClause ;
+                                   owl:someValuesFrom :FromClause
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :allowsClause ;
+                                   owl:someValuesFrom :WhereClause
+                                 ] .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression
+:Expression rdf:type owl:Class ;
+            rdfs:subClassOf :SQLNode .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/FromClause
+:FromClause rdf:type owl:Class ;
+            rdfs:subClassOf :Clause ,
+                            :NonFunctional ,
+                            :SQLNode ,
+                            :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Function
+:Function rdf:type owl:Class ;
+          rdfs:subClassOf :Expression ,
+                          :Functional ,
+                          :SQLNode ,
+                          :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Functional
+:Functional rdf:type owl:Class ;
+            rdfs:subClassOf :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/GrantLevel
+:GrantLevel rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/GrantType
+:GrantType rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/GroupByClause
+:GroupByClause rdf:type owl:Class ;
+               rdfs:subClassOf :Clause ,
+                               :NonFunctional ,
+                               :SQLNode ,
+                               :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/InsertStatement
+:InsertStatement rdf:type owl:Class ;
+                 rdfs:subClassOf :NonFunctional ,
+                                 :SQLNode ,
+                                 :SQLNodeType ,
+                                 :Statement ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :allowsClause ;
+                                   owl:someValuesFrom :IntoClause
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :allowsClause ;
+                                   owl:someValuesFrom :ValuesClause
+                                 ] .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/IntoClause
+:IntoClause rdf:type owl:Class ;
+            rdfs:subClassOf :Clause ,
+                            :NonFunctional ,
+                            :SQLNode ,
+                            :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/LimitClause
+:LimitClause rdf:type owl:Class ;
+             rdfs:subClassOf :Clause ,
+                             :NonFunctional ,
+                             :SQLNode ,
+                             :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Literal
+:Literal rdf:type owl:Class ;
+         rdfs:subClassOf :Expression ,
+                         :NonFunctional ,
+                         :SQLNode ,
+                         :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/NonFunctional
+:NonFunctional rdf:type owl:Class ;
+               rdfs:subClassOf :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Object
+:Object rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Operator
+:Operator rdf:type owl:Class ;
+          rdfs:subClassOf :Expression ,
+                          :NonFunctional ,
+                          :SQLNode ,
+                          :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Policy
+:Policy rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/PolicyCorrectnessStatus
+:PolicyCorrectnessStatus rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ReferenceNode
+:ReferenceNode rdf:type owl:Class ;
+               rdfs:subClassOf :Expression ,
+                               :SQLNode .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Row
+:Row rdf:type owl:Class ;
+     rdfs:subClassOf :Object .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode
+:SQLNode rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNodeType
+:SQLNodeType rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SelectClause
+:SelectClause rdf:type owl:Class ;
+              rdfs:subClassOf :Clause ,
+                              :NonFunctional ,
+                              :SQLNode ,
+                              :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SelectStatement
+:SelectStatement rdf:type owl:Class ;
+                 rdfs:subClassOf :NonFunctional ,
+                                 :SQLNode ,
+                                 :SQLNodeType ,
+                                 :Statement ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :allowsClause ;
+                                   owl:someValuesFrom :FromClause
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :allowsClause ;
+                                   owl:someValuesFrom :GroupByClause
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :allowsClause ;
+                                   owl:someValuesFrom :LimitClause
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :allowsClause ;
+                                   owl:someValuesFrom :SelectClause
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :allowsClause ;
+                                   owl:someValuesFrom :WhereClause
+                                 ] .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SetClause
+:SetClause rdf:type owl:Class ;
+           rdfs:subClassOf :Clause ,
+                           :NonFunctional ,
+                           :SQLNode ,
+                           :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Statement
+:Statement rdf:type owl:Class ;
+           rdfs:subClassOf :SQLNode .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Table
+:Table rdf:type owl:Class ;
+       rdfs:subClassOf :Object .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/TableRef
+:TableRef rdf:type owl:Class ;
+          rdfs:subClassOf :Expression ,
+                          :NonFunctional ,
+                          :ReferenceNode ,
+                          :SQLNode ,
+                          :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/UpdateClause
+:UpdateClause rdf:type owl:Class ;
+              rdfs:subClassOf :Clause ,
+                              :NonFunctional ,
+                              :SQLNode ,
+                              :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/UpdateStatement
+:UpdateStatement rdf:type owl:Class ;
+                 rdfs:subClassOf :NonFunctional ,
+                                 :SQLNode ,
+                                 :SQLNodeType ,
+                                 :Statement ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :allowsClause ;
+                                   owl:someValuesFrom :SetClause
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :allowsClause ;
+                                   owl:someValuesFrom :UpdateClause
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :allowsClause ;
+                                   owl:someValuesFrom :WhereClause
+                                 ] .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ValuesClause
+:ValuesClause rdf:type owl:Class ;
+              rdfs:subClassOf :Clause ,
+                              :NonFunctional ,
+                              :SQLNode ,
+                              :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/WhereClause
+:WhereClause rdf:type owl:Class ;
+             rdfs:subClassOf :Clause ,
+                             :NonFunctional ,
+                             :SQLNode ,
+                             :SQLNodeType .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Wildcard
+:Wildcard rdf:type owl:Class ;
+          rdfs:subClassOf :Expression ,
+                          :ReferenceNode ,
+                          :SQLNode .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#DeleteActionScope
+:DeleteActionScope rdf:type owl:NamedIndividual ,
+                            :ActionScope .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#InsertActionScope
+:InsertActionScope rdf:type owl:NamedIndividual ,
+                            :ActionScope .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#ModifyAction
+:ModifyAction rdf:type owl:NamedIndividual ,
+                       :Action .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#RowTag
+:RowTag rdf:type owl:NamedIndividual ,
+                 :AccessAlignmentState .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#UpdateActionScope
+:UpdateActionScope rdf:type owl:NamedIndividual ,
+                            :ActionScope .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#p0006
+:p0006 rdf:type owl:NamedIndividual ,
+                :Policy ;
+       :appliesToScope :ProcessActionScope ;
+       :controlAccessTo :t003 ;
+       :hasAction :ReadAction ;
+       :hasAgent :a0012 ;
+       :hasGrantLevel :RowLevel ;
+       :hasGrantType :PermissionGrant .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#p0007
+:p0007 rdf:type owl:NamedIndividual ,
+                :Policy ;
+       :appliesToScope :InsertActionScope ;
+       :controlAccessTo :t008 ;
+       :hasAction :ModifyAction ;
+       :hasAgent :a0012 ;
+       :hasGrantLevel :TableLevel ;
+       :hasGrantType :PermissionGrant .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#p0008
+:p0008 rdf:type owl:NamedIndividual ,
+                :Policy ;
+       :appliesToScope :UpdateActionScope ;
+       :controlAccessTo :t007 ;
+       :hasAction :ModifyAction ;
+       :hasAgent :a0012 ;
+       :hasGrantLevel :TableLevel ;
+       :hasGrantType :PermissionGrant .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#p0009
+:p0009 rdf:type owl:NamedIndividual ,
+                :Policy ;
+       :appliesToScope :DeleteActionScope ;
+       :controlAccessTo :t006 ;
+       :hasAction :ModifyAction ;
+       :hasAgent :a0012 ;
+       :hasGrantLevel :TableLevel ;
+       :hasGrantType :PermissionGrant .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Aligned
+:Aligned rdf:type owl:NamedIndividual ,
+                  :AccessAlignmentState ;
+         :oppositeOf :Violated .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ColumnLevel
+:ColumnLevel rdf:type owl:NamedIndividual ,
+                      :GrantLevel .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ConditionalGrant
+:ConditionalGrant rdf:type owl:NamedIndividual ,
+                           :GrantType ;
+                  :allowedGrantLevel :RowLevel .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/DeleteAction
+:DeleteAction rdf:type owl:NamedIndividual ,
+                       :Action ;
+              :hasScope :ModifyActionScope .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/InsertAction
+:InsertAction rdf:type owl:NamedIndividual ,
+                       :Action ;
+              :hasScope :ModifyActionScope .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/MissConfiguredPolicy
+:MissConfiguredPolicy rdf:type owl:NamedIndividual ,
+                               :PolicyCorrectnessStatus .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ModifyActionScope
+:ModifyActionScope rdf:type owl:NamedIndividual ,
+                            :ActionScope .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/PermissionGrant
+:PermissionGrant rdf:type owl:NamedIndividual ,
+                          :GrantType ;
+                 :allowedGrantLevel :ColumnLevel ,
+                                    :TableLevel ;
+                 :oppositeOf :ProhibitionGrant .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ProcessActionScope
+:ProcessActionScope rdf:type owl:NamedIndividual ,
+                             :ActionScope .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ProhibitionGrant
+:ProhibitionGrant rdf:type owl:NamedIndividual ,
+                           :GrantType ;
+                  :allowedGrantLevel :ColumnLevel ,
+                                     :TableLevel ;
+                  :oppositeOf :PermissionGrant .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ReadAction
+:ReadAction rdf:type owl:NamedIndividual ,
+                     :Action .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/RowLevel
+:RowLevel rdf:type owl:NamedIndividual ,
+                   :GrantLevel .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/TableLevel
+:TableLevel rdf:type owl:NamedIndividual ,
+                     :GrantLevel .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/UpdateAction
+:UpdateAction rdf:type owl:NamedIndividual ,
+                       :Action ;
+              :hasScope :ModifyActionScope .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ViewActionScope
+:ViewActionScope rdf:type owl:NamedIndividual ,
+                          :ActionScope ,
+                          :SQLNode ,
+                          :Statement .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Violated
+:Violated rdf:type owl:NamedIndividual ,
+                   :AccessAlignmentState ;
+          :oppositeOf :Aligned .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/WellConfiguredPolicy
+:WellConfiguredPolicy rdf:type owl:NamedIndividual ,
+                               :PolicyCorrectnessStatus .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/a0012
+:a0012 rdf:type owl:NamedIndividual ,
+                :Agent ;
+       :AgentID "ManagerAgent" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/alias1
+:alias1 rdf:type owl:NamedIndividual ,
+                 :Alias ,
+                 :Expression ,
+                 :NonFunctional ,
+                 :SQLNode ,
+                 :SQLNodeType ;
+        :hasChildNode :colref012 ,
+                      :func1 ,
+                      :lit1 ;
+        :hasParentNode :q003 ,
+                       :sel003 ;
+        :immediateChildNode :func1 ,
+                            :lit1 ;
+        :immediateParentNode :sel003 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/alias2
+:alias2 rdf:type owl:NamedIndividual ,
+                 :Alias ,
+                 :Expression ,
+                 :NonFunctional ,
+                 :SQLNode ,
+                 :SQLNodeType ;
+        :hasChildNode :colref020 ,
+                      :func2 ;
+        :hasParentNode :q006 ,
+                       :sel006 ;
+        :immediateChildNode :func2 ;
+        :immediateParentNode :sel006 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c001
+:c001 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t001 ;
+      :ColumnName "order_id" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c002
+:c002 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ,
+               :Table ;
+      :columnOfTable :t001 ,
+                     :t002 ,
+                     :t003 ,
+                     :t004 ,
+                     :t005 ;
+      :ColumnName "account_id" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c003
+:c003 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t001 ;
+      :ColumnName "bank_to" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c004
+:c004 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t001 ;
+      :ColumnName "account_to" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c005
+:c005 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t001 ;
+      :ColumnName "amount" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c006
+:c006 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t001 ;
+      :ColumnName "k_symbol" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c007
+:c007 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t002 ;
+      :ColumnName "trans_id" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c008
+:c008 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t002 ;
+      :ColumnName "date" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c009
+:c009 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t002 ;
+      :ColumnName "type" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c010
+:c010 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t002 ;
+      :ColumnName "operation" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c011
+:c011 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t002 ;
+      :ColumnName "balance" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c012
+:c012 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t002 ;
+      :ColumnName "bank" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c013
+:c013 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t002 ;
+      :ColumnName "account" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c014
+:c014 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t003 ,
+                     :t006 ,
+                     :t008 ;
+      :ColumnName "district_id" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c015
+:c015 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t003 ;
+      :ColumnName "frequency" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c016
+:c016 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t004 ;
+      :ColumnName "loan_id" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c017
+:c017 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t004 ;
+      :ColumnName "duration" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c018
+:c018 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t004 ;
+      :ColumnName "payments" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c019
+:c019 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t004 ;
+      :ColumnName "status" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c020
+:c020 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t005 ,
+                     :t007 ;
+      :ColumnName "disp_id" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c021
+:c021 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t005 ,
+                     :t006 ;
+      :ColumnName "client_id" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c022
+:c022 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t005 ;
+      :ColumnName "type" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c023
+:c023 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t006 ;
+      :ColumnName "gender" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c024
+:c024 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t006 ;
+      :ColumnName "birth_date" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c025
+:c025 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t007 ;
+      :ColumnName "card_id" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c026
+:c026 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t007 ;
+      :ColumnName "disp_id" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c027
+:c027 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t007 ;
+      :ColumnName "issued" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c028
+:c028 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t008 ;
+      :ColumnName "name" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c031
+:c031 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t002 ;
+      :ColumnName "amount" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c032
+:c032 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t002 ;
+      :ColumnName "k_symbol" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c033
+:c033 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t003 ;
+      :ColumnName "date" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c034
+:c034 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t004 ;
+      :ColumnName "date" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c035
+:c035 rdf:type owl:NamedIndividual ,
+               :Column ,
+               :Object ;
+      :columnOfTable :t004 ;
+      :ColumnName "amount" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref002
+:colref002 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :Wildcard ;
+           :hasAlignmentState :Violated ;
+           :hasParentNode :q002 ,
+                          :sel002 ;
+           :immediateParentNode :sel002 ;
+           :referencesToColumn :c002 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref003
+:colref003 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Wildcard ;
+           :hasParentNode :q002 ,
+                          :sel002 ;
+           :immediateParentNode :sel002 ;
+           :referencesToColumn :c003 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref004
+:colref004 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :Wildcard ;
+           :hasAlignmentState :Violated ;
+           :hasParentNode :q002 ,
+                          :sel002 ;
+           :immediateParentNode :sel002 ;
+           :referencesToColumn :c004 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref005
+:colref005 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :Wildcard ;
+           :hasAlignmentState :Violated ;
+           :hasParentNode :q002 ,
+                          :sel002 ;
+           :immediateParentNode :sel002 ;
+           :referencesToColumn :c005 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref011
+:colref011 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Wildcard ;
+           :hasParentNode :q001 ,
+                          :sel001 ;
+           :immediateParentNode :sel001 ;
+           :referencesToColumn :c011 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref012
+:colref012 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Wildcard ;
+           :hasParentNode :alias1 ,
+                          :func1 ,
+                          :q003 ,
+                          :sel003 ;
+           :immediateParentNode :func1 ;
+           :referencesToColumn :c005 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref013
+:colref013 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :Wildcard ;
+           :hasAlignmentState :Violated ;
+           :hasParentNode :opr1 ,
+                          :q004 ,
+                          :sel004 ;
+           :immediateParentNode :opr1 ;
+           :referencesToColumn :c008 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref014
+:colref014 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :Wildcard ;
+           :hasAlignmentState :Violated ;
+           :hasParentNode :q005 ,
+                          :sel005 ;
+           :immediateParentNode :sel005 ;
+           :referencesToColumn :c016 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref015
+:colref015 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Wildcard ;
+           :hasParentNode :q005 ,
+                          :sel005 ;
+           :immediateParentNode :sel005 ;
+           :referencesToColumn :c018 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref016
+:colref016 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Wildcard ;
+           :hasParentNode :q005 ,
+                          :sel005 ;
+           :immediateParentNode :sel005 ;
+           :referencesToColumn :c019 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref017
+:colref017 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Wildcard ;
+           :hasParentNode :opr2 ,
+                          :opr4 ,
+                          :q005 ,
+                          :where001 ;
+           :immediateParentNode :opr2 ;
+           :referencesToColumn :c035 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref018
+:colref018 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Wildcard ;
+           :hasParentNode :opr3 ,
+                          :opr4 ,
+                          :q005 ,
+                          :where001 ;
+           :immediateParentNode :opr3 ;
+           :referencesToColumn :c019 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref019
+:colref019 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :Wildcard ;
+           :hasAlignmentState :Violated ;
+           :hasParentNode :q006 ,
+                          :sel006 ;
+           :immediateParentNode :sel006 ;
+           :referencesToColumn :c002 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref020
+:colref020 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :Wildcard ;
+           :hasAlignmentState :Violated ;
+           :hasParentNode :alias2 ,
+                          :func2 ,
+                          :q006 ,
+                          :sel006 ;
+           :immediateParentNode :func2 ;
+           :referencesToColumn :c005 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref021
+:colref021 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :TableRef ;
+           :hasParentNode :group001 ,
+                          :q006 ;
+           :immediateParentNode :group001 ;
+           :referencesToTable :c002 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref022
+:colref022 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :Wildcard ;
+           :hasAlignmentState :Violated ;
+           :hasParentNode :q007 ,
+                          :sel007 ;
+           :immediateParentNode :sel007 ;
+           :referencesToColumn :c021 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/colref023
+:colref023 rdf:type owl:NamedIndividual ,
+                    :ColumnRef ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :Wildcard ;
+           :hasAlignmentState :Violated ;
+           :hasParentNode :q007 ,
+                          :sel007 ;
+           :immediateParentNode :sel007 ;
+           :referencesToColumn :c023 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/db01
+:db01 rdf:type owl:NamedIndividual ,
+               :Database ,
+               :Object ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :hasTable ;
+                 owl:someValuesFrom :Table
+               ] ;
+      :hasTable :t001 ,
+                :t002 ,
+                :t003 ,
+                :t004 ,
+                :t005 ,
+                :t006 ,
+                :t007 ,
+                :t008 ;
+      :DatabaseName "Financial" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/from001
+:from001 rdf:type owl:NamedIndividual ,
+                  :Clause ,
+                  :FromClause ,
+                  :NonFunctional ,
+                  :SQLNode ,
+                  :SQLNodeType ;
+         :hasChildNode :tblref002 ;
+         :hasEffectiveScope :ProcessActionScope ,
+                            :ViewActionScope ;
+         :hasParentNode :q001 ;
+         :immediateChildNode :tblref002 ;
+         :immediateParentNode :q001 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/from002
+:from002 rdf:type owl:NamedIndividual ,
+                  :Clause ,
+                  :FromClause ,
+                  :NonFunctional ,
+                  :SQLNode ,
+                  :SQLNodeType ;
+         :hasChildNode :tblref001 ;
+         :hasEffectiveScope :ProcessActionScope ,
+                            :ViewActionScope ;
+         :hasParentNode :q002 ;
+         :immediateChildNode :tblref001 ;
+         :immediateParentNode :q002 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/from003
+:from003 rdf:type owl:NamedIndividual ,
+                  :Clause ,
+                  :FromClause ,
+                  :NonFunctional ,
+                  :SQLNode ,
+                  :SQLNodeType ;
+         :hasChildNode :tblref003 ;
+         :hasEffectiveScope :ProcessActionScope ,
+                            :ViewActionScope ;
+         :hasParentNode :q003 ;
+         :immediateChildNode :tblref003 ;
+         :immediateParentNode :q003 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/from004
+:from004 rdf:type owl:NamedIndividual ,
+                  :Clause ,
+                  :FromClause ,
+                  :NonFunctional ,
+                  :SQLNode ,
+                  :SQLNodeType ;
+         :hasChildNode :tblref004 ;
+         :hasEffectiveScope :ProcessActionScope ,
+                            :ViewActionScope ;
+         :hasParentNode :q004 ;
+         :immediateChildNode :tblref004 ;
+         :immediateParentNode :q004 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/from005
+:from005 rdf:type owl:NamedIndividual ,
+                  :Clause ,
+                  :FromClause ,
+                  :NonFunctional ,
+                  :SQLNode ,
+                  :SQLNodeType ;
+         :hasChildNode :tblref005 ;
+         :hasEffectiveScope :ProcessActionScope ,
+                            :ViewActionScope ;
+         :hasParentNode :q005 ;
+         :immediateChildNode :tblref005 ;
+         :immediateParentNode :q005 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/from006
+:from006 rdf:type owl:NamedIndividual ,
+                  :Clause ,
+                  :FromClause ,
+                  :NonFunctional ,
+                  :SQLNode ,
+                  :SQLNodeType ;
+         :hasChildNode :tblref006 ;
+         :hasEffectiveScope :ProcessActionScope ,
+                            :ViewActionScope ;
+         :hasParentNode :q006 ;
+         :immediateChildNode :tblref006 ;
+         :immediateParentNode :q006 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/from007
+:from007 rdf:type owl:NamedIndividual ,
+                  :Clause ,
+                  :FromClause ,
+                  :NonFunctional ,
+                  :SQLNode ,
+                  :SQLNodeType ;
+         :hasChildNode :tblref007 ;
+         :hasEffectiveScope :ProcessActionScope ,
+                            :ViewActionScope ;
+         :hasParentNode :q007 ;
+         :immediateChildNode :tblref007 ;
+         :immediateParentNode :q007 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/func1
+:func1 rdf:type owl:NamedIndividual ,
+                :Expression ,
+                :Function ,
+                :Functional ,
+                :SQLNode ,
+                :SQLNodeType ;
+       :hasChildNode :colref012 ;
+       :hasParentNode :alias1 ,
+                      :q003 ,
+                      :sel003 ;
+       :immediateChildNode :colref012 ;
+       :immediateParentNode :alias1 ;
+       :FunctionName "SUM" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/func2
+:func2 rdf:type owl:NamedIndividual ,
+                :Expression ,
+                :Function ,
+                :Functional ,
+                :Literal ,
+                :NonFunctional ,
+                :SQLNode ,
+                :SQLNodeType ;
+       :hasChildNode :colref020 ;
+       :hasParentNode :alias2 ,
+                      :q006 ,
+                      :sel006 ;
+       :immediateChildNode :colref020 ;
+       :immediateParentNode :alias2 ;
+       :Value "SUM" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/group001
+:group001 rdf:type owl:NamedIndividual ,
+                   :Clause ,
+                   :GroupByClause ,
+                   :NonFunctional ,
+                   :SQLNode ,
+                   :SQLNodeType ;
+          :hasChildNode :colref021 ;
+          :hasParentNode :q006 ;
+          :immediateChildNode :colref021 ;
+          :immediateParentNode :q006 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/lit1
+:lit1 rdf:type owl:NamedIndividual ,
+               :Expression ,
+               :Literal ,
+               :NonFunctional ,
+               :SQLNode ,
+               :SQLNodeType ;
+      :hasParentNode :alias1 ,
+                     :q003 ,
+                     :sel003 ;
+      :immediateParentNode :alias1 ;
+      :Value "total_order_amount" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/lit2
+:lit2 rdf:type owl:NamedIndividual ,
+               :Expression ,
+               :Literal ,
+               :NonFunctional ,
+               :SQLNode ,
+               :SQLNodeType ;
+      :hasParentNode :opr2 ,
+                     :opr4 ,
+                     :q005 ,
+                     :where001 ;
+      :immediateParentNode :opr2 ;
+      :Value 1000 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/lit3
+:lit3 rdf:type owl:NamedIndividual ,
+               :Expression ,
+               :Literal ,
+               :NonFunctional ,
+               :SQLNode ,
+               :SQLNodeType ;
+      :hasParentNode :opr3 ,
+                     :opr4 ,
+                     :q005 ,
+                     :where001 ;
+      :immediateParentNode :opr3 ;
+      :Value "active" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/opr1
+:opr1 rdf:type owl:NamedIndividual ,
+               :Expression ,
+               :NonFunctional ,
+               :Operator ,
+               :SQLNode ,
+               :SQLNodeType ;
+      :hasChildNode :colref013 ;
+      :hasParentNode :q004 ,
+                     :sel004 ;
+      :immediateChildNode :colref013 ;
+      :immediateParentNode :sel004 ;
+      :OperationName "DISTINCT" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/opr2
+:opr2 rdf:type owl:NamedIndividual ,
+               :Expression ,
+               :NonFunctional ,
+               :Operator ,
+               :SQLNode ,
+               :SQLNodeType ;
+      :hasChildNode :colref017 ,
+                    :lit2 ;
+      :hasParentNode :opr4 ,
+                     :q005 ,
+                     :where001 ;
+      :immediateChildNode :colref017 ,
+                          :lit2 ;
+      :immediateParentNode :opr4 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/opr3
+:opr3 rdf:type owl:NamedIndividual ,
+               :Expression ,
+               :NonFunctional ,
+               :Operator ,
+               :SQLNode ,
+               :SQLNodeType ;
+      :hasChildNode :colref018 ,
+                    :lit3 ;
+      :hasParentNode :opr4 ,
+                     :q005 ,
+                     :where001 ;
+      :immediateChildNode :colref018 ,
+                          :lit3 ;
+      :immediateParentNode :opr4 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/opr4
+:opr4 rdf:type owl:NamedIndividual ,
+               :Expression ,
+               :Literal ,
+               :NonFunctional ,
+               :Operator ,
+               :SQLNode ,
+               :SQLNodeType ;
+      :hasChildNode :colref017 ,
+                    :colref018 ,
+                    :lit2 ,
+                    :lit3 ,
+                    :opr2 ,
+                    :opr3 ;
+      :hasParentNode :q005 ,
+                     :where001 ;
+      :immediateChildNode :opr2 ,
+                          :opr3 ;
+      :immediateParentNode :where001 ;
+      :Value "AND" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/p0001
+:p0001 rdf:type owl:NamedIndividual ,
+                :Policy ;
+       :appliesToScope :ViewActionScope ;
+       :controlAccessTo :t001 ,
+                        :t002 ,
+                        :t003 ,
+                        :t004 ;
+       :hasAction :ReadAction ;
+       :hasAgent :a0012 ;
+       :hasGrantLevel :TableLevel ;
+       :hasGrantType :PermissionGrant .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/p0002
+:p0002 rdf:type owl:NamedIndividual ,
+                :Policy ;
+       :appliesToScope :ProcessActionScope ;
+       :controlAccessTo :c002 ,
+                        :c004 ,
+                        :c006 ,
+                        :c007 ,
+                        :c014 ,
+                        :c016 ,
+                        :c032 ;
+       :hasAction :ReadAction ;
+       :hasAgent :a0012 ;
+       :hasGrantLevel :ColumnLevel ;
+       :hasGrantType :ProhibitionGrant .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/p0003
+:p0003 rdf:type owl:NamedIndividual ,
+                :Policy ;
+       :appliesToScope :ProcessActionScope ;
+       :controlAccessTo :c005 ,
+                        :c008 ,
+                        :c009 ,
+                        :c015 ,
+                        :c031 ,
+                        :c033 ,
+                        :c034 ,
+                        :c035 ;
+       :hasAction :ReadAction ;
+       :hasAgent :a0012 ;
+       :hasGrantLevel :ColumnLevel ;
+       :hasGrantType :PermissionGrant .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/p0004
+:p0004 rdf:type owl:NamedIndividual ,
+                :Policy ;
+       :appliesToScope :ViewActionScope ;
+       :controlAccessTo :c003 ,
+                        :c010 ,
+                        :c011 ,
+                        :c012 ,
+                        :c013 ,
+                        :c017 ,
+                        :c018 ,
+                        :c019 ;
+       :hasAction :ReadAction ;
+       :hasAgent :a0012 ;
+       :hasGrantLevel :ColumnLevel ;
+       :hasGrantType :PermissionGrant .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/p0005
+:p0005 rdf:type owl:NamedIndividual ,
+                :Policy ;
+       :appliesToScope :ProcessActionScope ;
+       :controlAccessTo :c002 ,
+                        :c014 ,
+                        :c020 ,
+                        :c021 ,
+                        :c022 ,
+                        :c023 ,
+                        :c024 ,
+                        :c025 ,
+                        :c026 ,
+                        :c027 ,
+                        :t005 ,
+                        :t006 ,
+                        :t007 ;
+       :hasAction :ReadAction ;
+       :hasAgent :a0012 ;
+       :hasGrantLevel :ColumnLevel ,
+                      :TableLevel ;
+       :hasGrantType :ProhibitionGrant .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/q001
+:q001 rdf:type owl:NamedIndividual ,
+               :NonFunctional ,
+               :SQLNode ,
+               :SQLNodeType ,
+               :SelectStatement ,
+               :Statement ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :FromClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :GroupByClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :LimitClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :SelectClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :WhereClause
+               ] ;
+      :executedBy :a0012 ;
+      :hasChildNode :colref011 ,
+                    :from001 ,
+                    :sel001 ,
+                    :tblref002 ;
+      :hasClause :from001 ,
+                 :sel001 ;
+      :immediateChildNode :from001 ,
+                          :sel001 ;
+      :representsAction :ReadAction .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/q002
+:q002 rdf:type owl:NamedIndividual ,
+               :NonFunctional ,
+               :SQLNode ,
+               :SQLNodeType ,
+               :SelectStatement ,
+               :Statement ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :FromClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :GroupByClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :LimitClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :SelectClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :WhereClause
+               ] ;
+      :executedBy :a0012 ;
+      :hasChildNode :colref002 ,
+                    :colref003 ,
+                    :colref004 ,
+                    :colref005 ,
+                    :from002 ,
+                    :sel002 ,
+                    :tblref001 ;
+      :hasClause :from002 ,
+                 :sel002 ;
+      :immediateChildNode :from002 ,
+                          :sel002 ;
+      :representsAction :ReadAction .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/q003
+:q003 rdf:type owl:NamedIndividual ,
+               :NonFunctional ,
+               :SQLNode ,
+               :SQLNodeType ,
+               :SelectStatement ,
+               :Statement ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :FromClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :GroupByClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :LimitClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :SelectClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :WhereClause
+               ] ;
+      :executedBy :a0012 ;
+      :hasChildNode :alias1 ,
+                    :colref012 ,
+                    :from003 ,
+                    :func1 ,
+                    :lit1 ,
+                    :sel003 ,
+                    :tblref003 ;
+      :hasClause :from003 ,
+                 :sel003 ;
+      :immediateChildNode :from003 ,
+                          :sel003 ;
+      :representsAction :ReadAction .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/q004
+:q004 rdf:type owl:NamedIndividual ,
+               :NonFunctional ,
+               :SQLNode ,
+               :SQLNodeType ,
+               :SelectStatement ,
+               :Statement ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :FromClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :GroupByClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :LimitClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :SelectClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :WhereClause
+               ] ;
+      :executedBy :a0012 ;
+      :hasChildNode :colref013 ,
+                    :from004 ,
+                    :opr1 ,
+                    :sel004 ,
+                    :tblref004 ;
+      :hasClause :from004 ,
+                 :sel004 ;
+      :immediateChildNode :from004 ,
+                          :sel004 ;
+      :representsAction :ReadAction .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/q005
+:q005 rdf:type owl:NamedIndividual ,
+               :NonFunctional ,
+               :SQLNode ,
+               :SQLNodeType ,
+               :SelectStatement ,
+               :Statement ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :FromClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :GroupByClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :LimitClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :SelectClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :WhereClause
+               ] ;
+      :executedBy :a0012 ;
+      :hasChildNode :colref014 ,
+                    :colref015 ,
+                    :colref016 ,
+                    :colref017 ,
+                    :colref018 ,
+                    :from005 ,
+                    :lit2 ,
+                    :lit3 ,
+                    :opr2 ,
+                    :opr3 ,
+                    :opr4 ,
+                    :sel005 ,
+                    :tblref005 ,
+                    :where001 ;
+      :immediateChildNode :from005 ,
+                          :sel005 ,
+                          :where001 ;
+      :representsAction :ReadAction .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/q006
+:q006 rdf:type owl:NamedIndividual ,
+               :NonFunctional ,
+               :SQLNode ,
+               :SQLNodeType ,
+               :SelectStatement ,
+               :Statement ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :FromClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :GroupByClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :LimitClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :SelectClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :WhereClause
+               ] ;
+      :executedBy :a0012 ;
+      :hasChildNode :alias2 ,
+                    :colref019 ,
+                    :colref020 ,
+                    :colref021 ,
+                    :from006 ,
+                    :func2 ,
+                    :group001 ,
+                    :sel006 ,
+                    :tblref006 ;
+      :immediateChildNode :from006 ,
+                          :group001 ,
+                          :sel006 ;
+      :representsAction :ReadAction .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/q007
+:q007 rdf:type owl:NamedIndividual ,
+               :NonFunctional ,
+               :SQLNode ,
+               :SQLNodeType ,
+               :SelectStatement ,
+               :Statement ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :FromClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :GroupByClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :LimitClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :SelectClause
+               ] ,
+               [ rdf:type owl:Restriction ;
+                 owl:onProperty :allowsClause ;
+                 owl:someValuesFrom :WhereClause
+               ] ;
+      :executedBy :a0012 ;
+      :hasChildNode :colref022 ,
+                    :colref023 ,
+                    :from007 ,
+                    :sel007 ,
+                    :tblref007 ;
+      :immediateChildNode :from007 ,
+                          :sel007 ;
+      :representsAction :ReadAction .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/sel001
+:sel001 rdf:type owl:NamedIndividual ,
+                 :Clause ,
+                 :NonFunctional ,
+                 :SQLNode ,
+                 :SQLNodeType ,
+                 :SelectClause ;
+        :hasChildNode :colref011 ;
+        :hasEffectiveScope :ViewActionScope ;
+        :hasParentNode :q001 ;
+        :immediateChildNode :colref011 ;
+        :immediateParentNode :q001 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/sel002
+:sel002 rdf:type owl:NamedIndividual ,
+                 :Clause ,
+                 :NonFunctional ,
+                 :SQLNode ,
+                 :SQLNodeType ,
+                 :SelectClause ;
+        :hasChildNode :colref002 ,
+                      :colref003 ,
+                      :colref004 ,
+                      :colref005 ;
+        :hasEffectiveScope :ViewActionScope ;
+        :hasParentNode :q002 ;
+        :immediateChildNode :colref002 ,
+                            :colref003 ,
+                            :colref004 ,
+                            :colref005 ;
+        :immediateParentNode :q002 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/sel003
+:sel003 rdf:type owl:NamedIndividual ,
+                 :Clause ,
+                 :NonFunctional ,
+                 :SQLNode ,
+                 :SQLNodeType ,
+                 :SelectClause ;
+        :hasChildNode :alias1 ,
+                      :colref012 ,
+                      :func1 ,
+                      :lit1 ;
+        :hasEffectiveScope :ViewActionScope ;
+        :hasParentNode :q003 ;
+        :immediateChildNode :alias1 ;
+        :immediateParentNode :q003 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/sel004
+:sel004 rdf:type owl:NamedIndividual ,
+                 :Clause ,
+                 :NonFunctional ,
+                 :SQLNode ,
+                 :SQLNodeType ,
+                 :SelectClause ;
+        :hasChildNode :colref013 ,
+                      :opr1 ;
+        :hasEffectiveScope :ViewActionScope ;
+        :hasParentNode :q004 ;
+        :immediateChildNode :opr1 ;
+        :immediateParentNode :q004 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/sel005
+:sel005 rdf:type owl:NamedIndividual ,
+                 :Clause ,
+                 :NonFunctional ,
+                 :SQLNode ,
+                 :SQLNodeType ,
+                 :SelectClause ;
+        :hasChildNode :colref014 ,
+                      :colref015 ,
+                      :colref016 ;
+        :hasEffectiveScope :ViewActionScope ;
+        :hasParentNode :q005 ;
+        :immediateChildNode :colref014 ,
+                            :colref015 ,
+                            :colref016 ;
+        :immediateParentNode :q005 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/sel006
+:sel006 rdf:type owl:NamedIndividual ,
+                 :Clause ,
+                 :NonFunctional ,
+                 :SQLNode ,
+                 :SQLNodeType ,
+                 :SelectClause ;
+        :hasChildNode :alias2 ,
+                      :colref019 ,
+                      :colref020 ,
+                      :func2 ;
+        :hasEffectiveScope :ViewActionScope ;
+        :hasParentNode :q006 ;
+        :immediateChildNode :alias2 ,
+                            :colref019 ;
+        :immediateParentNode :q006 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/sel007
+:sel007 rdf:type owl:NamedIndividual ,
+                 :Clause ,
+                 :NonFunctional ,
+                 :SQLNode ,
+                 :SQLNodeType ,
+                 :SelectClause ;
+        :hasChildNode :colref022 ,
+                      :colref023 ;
+        :hasEffectiveScope :ViewActionScope ;
+        :hasParentNode :q007 ;
+        :immediateChildNode :colref022 ,
+                            :colref023 ;
+        :immediateParentNode :q007 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t001
+:t001 rdf:type owl:NamedIndividual ,
+               :Object ,
+               :Table ;
+      :hasColumn :c001 ,
+                 :c002 ,
+                 :c003 ,
+                 :c004 ,
+                 :c005 ,
+                 :c006 ;
+      :TableName "Order" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t002
+:t002 rdf:type owl:NamedIndividual ,
+               :Object ,
+               :Table ;
+      :hasColumn :c002 ,
+                 :c007 ,
+                 :c008 ,
+                 :c009 ,
+                 :c010 ,
+                 :c011 ,
+                 :c012 ,
+                 :c013 ,
+                 :c031 ,
+                 :c032 ;
+      :TableName "Transaction" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t003
+:t003 rdf:type owl:NamedIndividual ,
+               :Object ,
+               :Table ;
+      :hasColumn :c002 ,
+                 :c014 ,
+                 :c015 ,
+                 :c033 ;
+      :TableName "Account" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t004
+:t004 rdf:type owl:NamedIndividual ,
+               :Object ,
+               :Table ;
+      :hasColumn :c002 ,
+                 :c016 ,
+                 :c017 ,
+                 :c018 ,
+                 :c019 ,
+                 :c034 ,
+                 :c035 ;
+      :TableName "Loan" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t005
+:t005 rdf:type owl:NamedIndividual ,
+               :Object ,
+               :Table ;
+      :hasColumn :c002 ,
+                 :c020 ,
+                 :c021 ,
+                 :c022 ;
+      :TableName "Disposition" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t006
+:t006 rdf:type owl:NamedIndividual ,
+               :Object ,
+               :Table ;
+      :hasColumn :c014 ,
+                 :c021 ,
+                 :c023 ,
+                 :c024 ;
+      :TableName "Client" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t007
+:t007 rdf:type owl:NamedIndividual ,
+               :Object ,
+               :Table ;
+      :hasColumn :c020 ,
+                 :c025 ,
+                 :c026 ,
+                 :c027 ;
+      :TableName "Card" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t008
+:t008 rdf:type owl:NamedIndividual ,
+               :Object ,
+               :Table ;
+      :hasColumn :c014 ,
+                 :c028 ;
+      :TableName "District" .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/tblref001
+:tblref001 rdf:type owl:NamedIndividual ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :TableRef ;
+           :hasAlignmentState :Aligned ;
+           :hasParentNode :from002 ,
+                          :q002 ;
+           :immediateParentNode :from002 ;
+           :referencesToTable :t001 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/tblref002
+:tblref002 rdf:type owl:NamedIndividual ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :TableRef ;
+           :hasAlignmentState :Aligned ;
+           :hasParentNode :from001 ,
+                          :q001 ;
+           :immediateParentNode :from001 ;
+           :referencesToTable :t002 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/tblref003
+:tblref003 rdf:type owl:NamedIndividual ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :TableRef ;
+           :hasAlignmentState :Aligned ;
+           :hasParentNode :from003 ,
+                          :q003 ;
+           :immediateParentNode :from003 ;
+           :referencesToTable :t001 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/tblref004
+:tblref004 rdf:type owl:NamedIndividual ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :TableRef ;
+           :hasAlignmentState :Aligned ;
+           :hasParentNode :from004 ,
+                          :q004 ;
+           :immediateParentNode :from004 ;
+           :referencesToTable :t002 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/tblref005
+:tblref005 rdf:type owl:NamedIndividual ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :TableRef ;
+           :hasAlignmentState :Aligned ;
+           :hasParentNode :from005 ,
+                          :q005 ;
+           :immediateParentNode :from005 ;
+           :referencesToTable :t004 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/tblref006
+:tblref006 rdf:type owl:NamedIndividual ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :Statement ,
+                    :TableRef ;
+           :hasAlignmentState :Aligned ;
+           :hasParentNode :from006 ,
+                          :q006 ;
+           :immediateParentNode :from006 ;
+           :referencesToTable :t001 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/tblref007
+:tblref007 rdf:type owl:NamedIndividual ,
+                    :Expression ,
+                    :NonFunctional ,
+                    :ReferenceNode ,
+                    :SQLNode ,
+                    :SQLNodeType ,
+                    :TableRef ;
+           :hasParentNode :from007 ,
+                          :q007 ;
+           :immediateParentNode :from007 ;
+           :referencesToTable :t006 .
+
+
+###  http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/where001
+:where001 rdf:type owl:NamedIndividual ,
+                   :Clause ,
+                   :NonFunctional ,
+                   :SQLNode ,
+                   :SQLNodeType ,
+                   :WhereClause ;
+          :hasChildNode :colref017 ,
+                        :colref018 ,
+                        :lit2 ,
+                        :lit3 ,
+                        :opr2 ,
+                        :opr3 ,
+                        :opr4 ;
+          :hasEffectiveScope :ProcessActionScope ;
+          :hasParentNode :q005 ;
+          :immediateChildNode :opr4 ;
+          :immediateParentNode :q005 .
+
+
+#################################################################
+#    Rules
+#################################################################
+
+:p rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:agent rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:col rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:ref rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:stmt rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:clause rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:fnode rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:x rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:scope rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:t rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:tref rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:c rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:action rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:r rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "tag all insert statement as InsertAction" ;
+   rdfs:label "S8" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :InsertStatement ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :representsAction ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :InsertAction
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "if the column of table mapped with the referencenode is defined under a prohibitiongrant rule for readaction, then those nodes with mapp with the violated node" ;
+   rdfs:label "S5" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :Policy ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :p
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantType ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> :ProhibitionGrant
+                                                                ] ;
+                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                             <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantLevel ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument2> :ColumnLevel
+                                                                           ] ;
+                                                                 rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                            rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                        <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAction ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument2> :ReadAction
+                                                                                      ] ;
+                                                                            rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                       rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#propertyPredicate> :controlAccessTo ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument2> :col
+                                                                                                 ] ;
+                                                                                       rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                  rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAgent ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument2> :agent
+                                                                                                            ] ;
+                                                                                                  rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                             rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#classPredicate> :ReferenceNode ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#argument1> :ref
+                                                                                                                       ] ;
+                                                                                                             rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                        rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#propertyPredicate> :referencesToColumn ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#argument1> :ref ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#argument2> :col
+                                                                                                                                  ] ;
+                                                                                                                        rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                   rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#classPredicate> :Statement ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#argument1> :stmt
+                                                                                                                                             ] ;
+                                                                                                                                   rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                              rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#propertyPredicate> :representsAction ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#argument2> :ReadAction
+                                                                                                                                                        ] ;
+                                                                                                                                              rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                         rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasChildNode ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#argument2> :ref
+                                                                                                                                                                   ] ;
+                                                                                                                                                         rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                                    rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                                <http://www.w3.org/2003/11/swrl#propertyPredicate> :executedBy ;
+                                                                                                                                                                                <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                                                                <http://www.w3.org/2003/11/swrl#argument2> :agent
+                                                                                                                                                                              ] ;
+                                                                                                                                                                    rdf:rest rdf:nil
+                                                                                                                                                                  ]
+                                                                                                                                                       ]
+                                                                                                                                            ]
+                                                                                                                                 ]
+                                                                                                                      ]
+                                                                                                           ]
+                                                                                                ]
+                                                                                     ]
+                                                                          ]
+                                                               ]
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAlignmentState ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :ref ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :Violated
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Tag query node with permission alignment when they try to modify table with granted permission" ;
+   rdfs:label "S14" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :Policy ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :p
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantLevel ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> :TableLevel
+                                                                ] ;
+                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                             <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantType ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument2> :PermissionGrant
+                                                                           ] ;
+                                                                 rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                            rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                        <http://www.w3.org/2003/11/swrl#propertyPredicate> :appliesToScope ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument2> :scope
+                                                                                      ] ;
+                                                                            rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                       rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAction ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument2> :ModifyAction
+                                                                                                 ] ;
+                                                                                       rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                  rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#propertyPredicate> :controlAccessTo ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument2> :t
+                                                                                                            ] ;
+                                                                                                  rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                             rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#classPredicate> :Statement ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#argument1> :stmt
+                                                                                                                       ] ;
+                                                                                                             rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                        rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#propertyPredicate> :representsAction ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#argument2> :ModifyAction
+                                                                                                                                  ] ;
+                                                                                                                        rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                   rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasClause ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#argument2> :clause
+                                                                                                                                             ] ;
+                                                                                                                                   rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                              rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasEffectiveScope ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#argument1> :clause ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#argument2> :scope
+                                                                                                                                                        ] ;
+                                                                                                                                              rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                         rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasChildNode ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#argument2> :tref
+                                                                                                                                                                   ] ;
+                                                                                                                                                         rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                                    rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                                <http://www.w3.org/2003/11/swrl#propertyPredicate> :referencesToColumn ;
+                                                                                                                                                                                <http://www.w3.org/2003/11/swrl#argument1> :tref ;
+                                                                                                                                                                                <http://www.w3.org/2003/11/swrl#argument2> :t
+                                                                                                                                                                              ] ;
+                                                                                                                                                                    rdf:rest rdf:nil
+                                                                                                                                                                  ]
+                                                                                                                                                       ]
+                                                                                                                                            ]
+                                                                                                                                 ]
+                                                                                                                      ]
+                                                                                                           ]
+                                                                                                ]
+                                                                                     ]
+                                                                          ]
+                                                               ]
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAlignmentState ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :Aligned
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Tag query node with mission violation when the they try to modify table with prohibit the access" ;
+   rdfs:label "S13" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :Policy ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :p
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantLevel ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> :TableLevel
+                                                                ] ;
+                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                             <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantType ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument2> :ProhibitionGrant
+                                                                           ] ;
+                                                                 rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                            rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                        <http://www.w3.org/2003/11/swrl#propertyPredicate> :appliesToScope ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument2> :scope
+                                                                                      ] ;
+                                                                            rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                       rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAction ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument2> :ModifyAction
+                                                                                                 ] ;
+                                                                                       rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                  rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#propertyPredicate> :controlAccessTo ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument2> :t
+                                                                                                            ] ;
+                                                                                                  rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                             rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#classPredicate> :Statement ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#argument1> :stmt
+                                                                                                                       ] ;
+                                                                                                             rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                        rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#propertyPredicate> :representsAction ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#argument2> :ModifyAction
+                                                                                                                                  ] ;
+                                                                                                                        rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                   rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasClause ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#argument2> :clause
+                                                                                                                                             ] ;
+                                                                                                                                   rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                              rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasEffectiveScope ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#argument1> :clause ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#argument2> :scope
+                                                                                                                                                        ] ;
+                                                                                                                                              rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                         rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasChildNode ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#argument2> :tref
+                                                                                                                                                                   ] ;
+                                                                                                                                                         rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                                    rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                                <http://www.w3.org/2003/11/swrl#propertyPredicate> :referencesToColumn ;
+                                                                                                                                                                                <http://www.w3.org/2003/11/swrl#argument1> :tref ;
+                                                                                                                                                                                <http://www.w3.org/2003/11/swrl#argument2> :t
+                                                                                                                                                                              ] ;
+                                                                                                                                                                    rdf:rest rdf:nil
+                                                                                                                                                                  ]
+                                                                                                                                                       ]
+                                                                                                                                            ]
+                                                                                                                                 ]
+                                                                                                                      ]
+                                                                                                           ]
+                                                                                                ]
+                                                                                     ]
+                                                                          ]
+                                                               ]
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAlignmentState ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :Violated
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Tag statements when queries trying to read from the table that have defined the policies for." ;
+   rdfs:label "S15" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :Policy ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :p
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantLevel ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> :RowLevel
+                                                                ] ;
+                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                             <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantType ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument2> :ProhibitionGrant
+                                                                           ] ;
+                                                                 rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                            rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                        <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAction ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument2> :ReadAction
+                                                                                      ] ;
+                                                                            rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                       rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#propertyPredicate> :controlAccessTo ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument2> :t
+                                                                                                 ] ;
+                                                                                       rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                  rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#classPredicate> :Statement ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument1> :stmt
+                                                                                                            ] ;
+                                                                                                  rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                             rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#propertyPredicate> :representsAction ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#argument2> :ReadAction
+                                                                                                                       ] ;
+                                                                                                             rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                        rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasChildNode ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#argument2> :tref
+                                                                                                                                  ] ;
+                                                                                                                        rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                   rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#propertyPredicate> :referencesToColumn ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#argument1> :tref ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#argument2> :t
+                                                                                                                                             ] ;
+                                                                                                                                   rdf:rest rdf:nil
+                                                                                                                                 ]
+                                                                                                                      ]
+                                                                                                           ]
+                                                                                                ]
+                                                                                     ]
+                                                                          ]
+                                                               ]
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAlignmentState ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :RowTag
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "where there is a policy defined for table level prohibition grant for process scope, then add all the column under those tables as controlAccessTo property" ;
+   rdfs:label "S12" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :Policy ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :p
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantLevel ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> :TableLevel
+                                                                ] ;
+                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                             <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantType ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument2> :ProhibitionGrant
+                                                                           ] ;
+                                                                 rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                            rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                        <http://www.w3.org/2003/11/swrl#propertyPredicate> :appliesToScope ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument2> :ProcessActionScope
+                                                                                      ] ;
+                                                                            rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                       rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#propertyPredicate> :controlAccessTo ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument2> :t
+                                                                                                 ] ;
+                                                                                       rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                  rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#classPredicate> :Table ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument1> :t
+                                                                                                            ] ;
+                                                                                                  rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                             rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasColumn ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#argument1> :t ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#argument2> :c
+                                                                                                                       ] ;
+                                                                                                             rdf:rest rdf:nil
+                                                                                                           ]
+                                                                                                ]
+                                                                                     ]
+                                                                          ]
+                                                               ]
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :controlAccessTo ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :c
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantLevel ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> :ColumnLevel
+                                                                ] ;
+                                                      rdf:rest rdf:nil
+                                                    ]
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Tag table references are permitted when at least one or few policies." ;
+   rdfs:label "S10" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :Policy ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :p
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAgent ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> :agent
+                                                                ] ;
+                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                             <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantLevel ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument2> :TableLevel
+                                                                           ] ;
+                                                                 rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                            rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                        <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantType ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument2> :PermissionGrant
+                                                                                      ] ;
+                                                                            rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                       rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAction ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument2> :action
+                                                                                                 ] ;
+                                                                                       rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                  rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#propertyPredicate> :controlAccessTo ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument2> :t
+                                                                                                            ] ;
+                                                                                                  rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                             rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#classPredicate> :TableRef ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#argument1> :r
+                                                                                                                       ] ;
+                                                                                                             rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                        rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#propertyPredicate> :referencesToTable ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#argument1> :r ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#argument2> :t
+                                                                                                                                  ] ;
+                                                                                                                        rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                   rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#propertyPredicate> :representsAction ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#argument2> :action
+                                                                                                                                             ] ;
+                                                                                                                                   rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                              rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#propertyPredicate> :executedBy ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#argument2> :agent
+                                                                                                                                                        ] ;
+                                                                                                                                              rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                         rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasChildNode ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#argument2> :r
+                                                                                                                                                                   ] ;
+                                                                                                                                                         rdf:rest rdf:nil
+                                                                                                                                                       ]
+                                                                                                                                            ]
+                                                                                                                                 ]
+                                                                                                                      ]
+                                                                                                           ]
+                                                                                                ]
+                                                                                     ]
+                                                                          ]
+                                                               ]
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAlignmentState ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :r ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :Aligned
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Select Clause relatet to View Action Scope" ;
+   rdfs:label "S1" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :SelectClause ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasEffectiveScope ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :ViewActionScope
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "tag all select statements as ReadActions" ;
+   rdfs:label "S6" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :SelectStatement ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :representsAction ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :ReadAction
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "tag all Update Statements as UpdateAction" ;
+   rdfs:label "S7" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :UpdateStatement ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :representsAction ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :UpdateAction
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Where Clause related to Process Action Scope" ;
+   rdfs:label "S4" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :WhereClause ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasEffectiveScope ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :ProcessActionScope
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "if a column is defined under process level permission grant and it uses in viewscope clause without a parent of functional node in a readaction, then that column reference is map with violated node" ;
+   rdfs:label "S11" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :Policy ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :p
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantType ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> :PermissionGrant
+                                                                ] ;
+                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                             <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasGrantLevel ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument2> :ColumnLevel
+                                                                           ] ;
+                                                                 rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                            rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                        <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAgent ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                        <http://www.w3.org/2003/11/swrl#argument2> :agent
+                                                                                      ] ;
+                                                                            rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                       rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAction ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                   <http://www.w3.org/2003/11/swrl#argument2> :ReadAction
+                                                                                                 ] ;
+                                                                                       rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                  rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#propertyPredicate> :appliesToScope ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                              <http://www.w3.org/2003/11/swrl#argument2> :ProcessActionScope
+                                                                                                            ] ;
+                                                                                                  rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                             rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#propertyPredicate> :controlAccessTo ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#argument1> :p ;
+                                                                                                                         <http://www.w3.org/2003/11/swrl#argument2> :col
+                                                                                                                       ] ;
+                                                                                                             rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                        rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#classPredicate> :ColumnRef ;
+                                                                                                                                    <http://www.w3.org/2003/11/swrl#argument1> :ref
+                                                                                                                                  ] ;
+                                                                                                                        rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                   rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#propertyPredicate> :referencesToColumn ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#argument1> :ref ;
+                                                                                                                                               <http://www.w3.org/2003/11/swrl#argument2> :col
+                                                                                                                                             ] ;
+                                                                                                                                   rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                              rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#classPredicate> :Statement ;
+                                                                                                                                                          <http://www.w3.org/2003/11/swrl#argument1> :stmt
+                                                                                                                                                        ] ;
+                                                                                                                                              rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                         rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#propertyPredicate> :representsAction ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                                                     <http://www.w3.org/2003/11/swrl#argument2> :ReadAction
+                                                                                                                                                                   ] ;
+                                                                                                                                                         rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                                    rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                                <http://www.w3.org/2003/11/swrl#propertyPredicate> :executedBy ;
+                                                                                                                                                                                <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                                                                <http://www.w3.org/2003/11/swrl#argument2> :agent
+                                                                                                                                                                              ] ;
+                                                                                                                                                                    rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                                               rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                                           <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasChildNode ;
+                                                                                                                                                                                           <http://www.w3.org/2003/11/swrl#argument1> :stmt ;
+                                                                                                                                                                                           <http://www.w3.org/2003/11/swrl#argument2> :clause
+                                                                                                                                                                                         ] ;
+                                                                                                                                                                               rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                                                          rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                                                                                                                                                                      <http://www.w3.org/2003/11/swrl#classPredicate> :Clause ;
+                                                                                                                                                                                                      <http://www.w3.org/2003/11/swrl#argument1> :clause
+                                                                                                                                                                                                    ] ;
+                                                                                                                                                                                          rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                                                                     rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                                                                 <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasChildNode ;
+                                                                                                                                                                                                                 <http://www.w3.org/2003/11/swrl#argument1> :clause ;
+                                                                                                                                                                                                                 <http://www.w3.org/2003/11/swrl#argument2> :ref
+                                                                                                                                                                                                               ] ;
+                                                                                                                                                                                                     rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                                                                                rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                                                                            <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasEffectiveScope ;
+                                                                                                                                                                                                                            <http://www.w3.org/2003/11/swrl#argument1> :clause ;
+                                                                                                                                                                                                                            <http://www.w3.org/2003/11/swrl#argument2> :ViewActionScope
+                                                                                                                                                                                                                          ] ;
+                                                                                                                                                                                                                rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                                                                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                                                                                                                                                                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :NonFunctional ;
+                                                                                                                                                                                                                                       <http://www.w3.org/2003/11/swrl#argument1> :fnode
+                                                                                                                                                                                                                                     ] ;
+                                                                                                                                                                                                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                                                                                                                                                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                                                                                                                                                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :immediateParentNode ;
+                                                                                                                                                                                                                                                  <http://www.w3.org/2003/11/swrl#argument1> :ref ;
+                                                                                                                                                                                                                                                  <http://www.w3.org/2003/11/swrl#argument2> :fnode
+                                                                                                                                                                                                                                                ] ;
+                                                                                                                                                                                                                                      rdf:rest rdf:nil
+                                                                                                                                                                                                                                    ]
+                                                                                                                                                                                                                         ]
+                                                                                                                                                                                                              ]
+                                                                                                                                                                                                   ]
+                                                                                                                                                                                        ]
+                                                                                                                                                                             ]
+                                                                                                                                                                  ]
+                                                                                                                                                       ]
+                                                                                                                                            ]
+                                                                                                                                 ]
+                                                                                                                      ]
+                                                                                                           ]
+                                                                                                ]
+                                                                                     ]
+                                                                          ]
+                                                               ]
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasAlignmentState ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :ref ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :Violated
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "tag all delete statement as DeleteAction" ;
+   rdfs:label "S9" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :DeleteStatement ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :representsAction ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :DeleteAction
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "From Clause related to Process Action Scope" ;
+   rdfs:label "S2" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :FromClause ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasEffectiveScope ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :ProcessActionScope
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "From Clause related to View Action Scope" ;
+   rdfs:label "S3" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :FromClause ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasEffectiveScope ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :x ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :ViewActionScope
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
