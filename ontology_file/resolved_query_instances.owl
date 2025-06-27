@@ -1,0 +1,3560 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/"
+         xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+         xmlns:swrl2="http://swrl.stanford.edu/ontologies/3.3/swrla.owl#"
+         xmlns="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/">
+
+<owl:Ontology rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf"/>
+
+<owl:ObjectProperty rdf:about="allowedGrantLevel">
+  <rdfs:domain rdf:resource="GrantType"/>
+  <rdfs:range rdf:resource="GrantLevel"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="allowsClause">
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:domain rdf:resource="Statement"/>
+  <rdfs:range rdf:resource="Clause"/>
+  <rdfs:range rdf:resource="SQLNode"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="appliesToScope">
+  <rdfs:domain rdf:resource="Policy"/>
+  <rdfs:range rdf:resource="ActionScope"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="belongsToStatement">
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:range rdf:resource="SQLNode"/>
+  <rdfs:range rdf:resource="Statement"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="columnOfTable">
+  <owl:inverseOf rdf:resource="hasColumn"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasColumn">
+  <rdfs:domain rdf:resource="Object"/>
+  <rdfs:domain rdf:resource="Table"/>
+  <rdfs:range rdf:resource="Column"/>
+  <rdfs:range rdf:resource="Object"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="controlAccessTo">
+  <rdfs:domain rdf:resource="Policy"/>
+  <rdfs:range rdf:resource="Object"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="executedBy">
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:domain rdf:resource="Statement"/>
+  <rdfs:range rdf:resource="Agent"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasAction">
+  <rdfs:domain rdf:resource="Policy"/>
+  <rdfs:range rdf:resource="Action"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasAgent">
+  <rdfs:domain rdf:resource="Policy"/>
+  <rdfs:range rdf:resource="Agent"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasAlignmentState">
+  <rdfs:domain rdf:resource="Expression"/>
+  <rdfs:domain rdf:resource="ReferenceNode"/>
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:domain rdf:resource="Statement"/>
+  <rdfs:range rdf:resource="AccessAlignmentState"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasChildNode">
+  <owl:inverseOf rdf:resource="hasParentNode"/>
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:range rdf:resource="SQLNode"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasParentNode"/>
+
+<owl:ObjectProperty rdf:about="hasClause">
+  <rdfs:subPropertyOf rdf:resource="hasChildNode"/>
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:domain rdf:resource="Statement"/>
+  <rdfs:range rdf:resource="Clause"/>
+  <rdfs:range rdf:resource="SQLNode"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasEffectiveScope">
+  <rdfs:domain rdf:resource="Clause"/>
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:range rdf:resource="ActionScope"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasExpression">
+  <rdfs:subPropertyOf rdf:resource="hasChildNode"/>
+  <rdfs:domain rdf:resource="Clause"/>
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:range rdf:resource="Expression"/>
+  <rdfs:range rdf:resource="SQLNode"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasGrantLevel">
+  <rdfs:domain rdf:resource="Policy"/>
+  <rdfs:range rdf:resource="GrantLevel"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasGrantType">
+  <rdfs:domain rdf:resource="Policy"/>
+  <rdfs:range rdf:resource="GrantType"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasNodeType">
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:range rdf:resource="SQLNodeType"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasRow">
+  <rdfs:domain rdf:resource="Object"/>
+  <rdfs:domain rdf:resource="Table"/>
+  <rdfs:range rdf:resource="Object"/>
+  <rdfs:range rdf:resource="Row"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasScope">
+  <rdfs:domain rdf:resource="Action"/>
+  <rdfs:range rdf:resource="ActionScope"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasTable">
+  <rdfs:domain rdf:resource="Database"/>
+  <rdfs:domain rdf:resource="Object"/>
+  <rdfs:range rdf:resource="Object"/>
+  <rdfs:range rdf:resource="Table"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="immediateChildNode">
+  <rdfs:subPropertyOf rdf:resource="hasChildNode"/>
+  <owl:inverseOf rdf:resource="immediateParentNode"/>
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:range rdf:resource="SQLNode"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="immediateParentNode">
+  <rdfs:subPropertyOf rdf:resource="hasParentNode"/>
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:range rdf:resource="SQLNode"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="oppositeOf">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="referencesToColumn">
+  <rdfs:domain rdf:resource="ColumnRef"/>
+  <rdfs:domain rdf:resource="Expression"/>
+  <rdfs:domain rdf:resource="NonFunctional"/>
+  <rdfs:domain rdf:resource="ReferenceNode"/>
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:domain rdf:resource="SQLNodeType"/>
+  <rdfs:domain rdf:resource="Wildcard"/>
+  <rdfs:range rdf:resource="Column"/>
+  <rdfs:range rdf:resource="Object"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="referencesToTable">
+  <rdfs:domain rdf:resource="Expression"/>
+  <rdfs:domain rdf:resource="NonFunctional"/>
+  <rdfs:domain rdf:resource="ReferenceNode"/>
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:domain rdf:resource="SQLNodeType"/>
+  <rdfs:domain rdf:resource="TableRef"/>
+  <rdfs:range rdf:resource="Object"/>
+  <rdfs:range rdf:resource="Table"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="representsAction">
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:domain rdf:resource="Statement"/>
+  <rdfs:range rdf:resource="Action"/>
+</owl:ObjectProperty>
+
+<owl:DatatypeProperty rdf:about="AgentID">
+  <rdfs:domain rdf:resource="Agent"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="ColumnName">
+  <rdfs:domain rdf:resource="Column"/>
+  <rdfs:domain rdf:resource="Object"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="DatabaseName">
+  <rdfs:domain rdf:resource="Database"/>
+  <rdfs:domain rdf:resource="Object"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="FunctionName">
+  <rdfs:domain rdf:resource="Expression"/>
+  <rdfs:domain rdf:resource="Function"/>
+  <rdfs:domain rdf:resource="Functional"/>
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:domain rdf:resource="SQLNodeType"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="OperationName">
+  <rdfs:domain rdf:resource="Expression"/>
+  <rdfs:domain rdf:resource="NonFunctional"/>
+  <rdfs:domain rdf:resource="Operator"/>
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:domain rdf:resource="SQLNodeType"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="TableName">
+  <rdfs:domain rdf:resource="Object"/>
+  <rdfs:domain rdf:resource="Table"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="Value">
+  <rdfs:domain rdf:resource="Expression"/>
+  <rdfs:domain rdf:resource="Literal"/>
+  <rdfs:domain rdf:resource="NonFunctional"/>
+  <rdfs:domain rdf:resource="SQLNode"/>
+  <rdfs:domain rdf:resource="SQLNodeType"/>
+</owl:DatatypeProperty>
+
+<owl:AnnotationProperty rdf:about="http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled"/>
+
+<owl:Class rdf:about="GrantType"/>
+
+<owl:Class rdf:about="GrantLevel"/>
+
+<owl:Class rdf:about="SQLNode"/>
+
+<owl:Class rdf:about="Statement">
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+</owl:Class>
+
+<owl:Class rdf:about="Clause">
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+</owl:Class>
+
+<owl:Class rdf:about="Policy"/>
+
+<owl:Class rdf:about="ActionScope"/>
+
+<owl:Class rdf:about="Object"/>
+
+<owl:Class rdf:about="Agent"/>
+
+<owl:Class rdf:about="Action"/>
+
+<owl:Class rdf:about="Expression">
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+</owl:Class>
+
+<owl:Class rdf:about="ReferenceNode">
+  <rdfs:subClassOf rdf:resource="Expression"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+</owl:Class>
+
+<owl:Class rdf:about="AccessAlignmentState"/>
+
+<owl:Class rdf:about="Table">
+  <rdfs:subClassOf rdf:resource="Object"/>
+</owl:Class>
+
+<owl:Class rdf:about="Column">
+  <rdfs:subClassOf rdf:resource="Object"/>
+</owl:Class>
+
+<owl:Class rdf:about="SQLNodeType"/>
+
+<owl:Class rdf:about="Row">
+  <rdfs:subClassOf rdf:resource="Object"/>
+</owl:Class>
+
+<owl:Class rdf:about="Database">
+  <rdfs:subClassOf rdf:resource="Object"/>
+</owl:Class>
+
+<owl:Class rdf:about="ColumnRef">
+  <rdfs:subClassOf rdf:resource="Expression"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="ReferenceNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="NonFunctional">
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="Wildcard">
+  <rdfs:subClassOf rdf:resource="Expression"/>
+  <rdfs:subClassOf rdf:resource="ReferenceNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+</owl:Class>
+
+<owl:Class rdf:about="TableRef">
+  <rdfs:subClassOf rdf:resource="Expression"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="ReferenceNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="Function">
+  <rdfs:subClassOf rdf:resource="Expression"/>
+  <rdfs:subClassOf rdf:resource="Functional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="Functional">
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="Operator">
+  <rdfs:subClassOf rdf:resource="Expression"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="Literal">
+  <rdfs:subClassOf rdf:resource="Expression"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="Alias">
+  <rdfs:subClassOf rdf:resource="Expression"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="DeleteStatement">
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+  <rdfs:subClassOf rdf:resource="Statement"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="FromClause"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="WhereClause"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="FromClause">
+  <rdfs:subClassOf rdf:resource="Clause"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="WhereClause">
+  <rdfs:subClassOf rdf:resource="Clause"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="GroupByClause">
+  <rdfs:subClassOf rdf:resource="Clause"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="InsertStatement">
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+  <rdfs:subClassOf rdf:resource="Statement"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="IntoClause"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="ValuesClause"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="IntoClause">
+  <rdfs:subClassOf rdf:resource="Clause"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="ValuesClause">
+  <rdfs:subClassOf rdf:resource="Clause"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="LimitClause">
+  <rdfs:subClassOf rdf:resource="Clause"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="PolicyCorrectnessStatus"/>
+
+<owl:Class rdf:about="SelectClause">
+  <rdfs:subClassOf rdf:resource="Clause"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="SelectStatement">
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+  <rdfs:subClassOf rdf:resource="Statement"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="FromClause"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="GroupByClause"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="LimitClause"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="SelectClause"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="WhereClause"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="SetClause">
+  <rdfs:subClassOf rdf:resource="Clause"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="UpdateClause">
+  <rdfs:subClassOf rdf:resource="Clause"/>
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+</owl:Class>
+
+<owl:Class rdf:about="UpdateStatement">
+  <rdfs:subClassOf rdf:resource="NonFunctional"/>
+  <rdfs:subClassOf rdf:resource="SQLNode"/>
+  <rdfs:subClassOf rdf:resource="SQLNodeType"/>
+  <rdfs:subClassOf rdf:resource="Statement"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="SetClause"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="UpdateClause"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="WhereClause"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:NamedIndividual rdf:about="Aligned">
+  <rdf:type rdf:resource="AccessAlignmentState"/>
+  <oppositeOf rdf:resource="Violated"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="Violated">
+  <rdf:type rdf:resource="AccessAlignmentState"/>
+  <oppositeOf rdf:resource="Aligned"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="ColumnLevel">
+  <rdf:type rdf:resource="GrantLevel"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="ConditionalGrant">
+  <rdf:type rdf:resource="GrantType"/>
+  <allowedGrantLevel rdf:resource="RowLevel"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="RowLevel">
+  <rdf:type rdf:resource="GrantLevel"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="DeleteAction">
+  <rdf:type rdf:resource="Action"/>
+  <hasScope rdf:resource="ModifyActionScope"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="ModifyActionScope">
+  <rdf:type rdf:resource="ActionScope"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="DeleteActionScope">
+  <rdf:type rdf:resource="ActionScope"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="InsertAction">
+  <rdf:type rdf:resource="Action"/>
+  <hasScope rdf:resource="ModifyActionScope"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="InsertActionScope">
+  <rdf:type rdf:resource="ActionScope"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="MissConfiguredPolicy">
+  <rdf:type rdf:resource="PolicyCorrectnessStatus"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="ModifyAction">
+  <rdf:type rdf:resource="Action"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="PermissionGrant">
+  <rdf:type rdf:resource="GrantType"/>
+  <allowedGrantLevel rdf:resource="ColumnLevel"/>
+  <allowedGrantLevel rdf:resource="TableLevel"/>
+  <oppositeOf rdf:resource="ProhibitionGrant"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="TableLevel">
+  <rdf:type rdf:resource="GrantLevel"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="ProhibitionGrant">
+  <rdf:type rdf:resource="GrantType"/>
+  <allowedGrantLevel rdf:resource="ColumnLevel"/>
+  <allowedGrantLevel rdf:resource="TableLevel"/>
+  <oppositeOf rdf:resource="PermissionGrant"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="ProcessActionScope">
+  <rdf:type rdf:resource="ActionScope"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <hasParentNode rdf:resource="q005"/>
+  <hasParentNode rdf:resource="where001"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="q005">
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectStatement"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="FromClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="GroupByClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="LimitClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="SelectClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="WhereClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <executedBy rdf:resource="a0012"/>
+  <hasChildNode rdf:resource="ProcessActionScope"/>
+  <hasChildNode rdf:resource="colref014"/>
+  <hasChildNode rdf:resource="colref015"/>
+  <hasChildNode rdf:resource="colref016"/>
+  <hasChildNode rdf:resource="colref017"/>
+  <hasChildNode rdf:resource="colref018"/>
+  <hasChildNode rdf:resource="from005"/>
+  <hasChildNode rdf:resource="lit2"/>
+  <hasChildNode rdf:resource="lit3"/>
+  <hasChildNode rdf:resource="opr2"/>
+  <hasChildNode rdf:resource="opr3"/>
+  <hasChildNode rdf:resource="opr4"/>
+  <hasChildNode rdf:resource="sel005"/>
+  <hasChildNode rdf:resource="tblref005"/>
+  <hasChildNode rdf:resource="where001"/>
+  <immediateChildNode rdf:resource="from005"/>
+  <immediateChildNode rdf:resource="sel005"/>
+  <immediateChildNode rdf:resource="where001"/>
+  <representsAction rdf:resource="ReadAction"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="where001">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="WhereClause"/>
+  <hasChildNode rdf:resource="ProcessActionScope"/>
+  <hasChildNode rdf:resource="colref017"/>
+  <hasChildNode rdf:resource="colref018"/>
+  <hasChildNode rdf:resource="lit2"/>
+  <hasChildNode rdf:resource="lit3"/>
+  <hasChildNode rdf:resource="opr2"/>
+  <hasChildNode rdf:resource="opr3"/>
+  <hasChildNode rdf:resource="opr4"/>
+  <hasEffectiveScope rdf:resource="ProcessActionScope"/>
+  <hasParentNode rdf:resource="q005"/>
+  <immediateChildNode rdf:resource="opr4"/>
+  <immediateParentNode rdf:resource="q005"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="ReadAction">
+  <rdf:type rdf:resource="Action"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="RowTag">
+  <rdf:type rdf:resource="AccessAlignmentState"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="UpdateAction">
+  <rdf:type rdf:resource="Action"/>
+  <hasScope rdf:resource="ModifyActionScope"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="UpdateActionScope">
+  <rdf:type rdf:resource="ActionScope"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="ViewActionScope">
+  <rdf:type rdf:resource="ActionScope"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="Statement"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="WellConfiguredPolicy">
+  <rdf:type rdf:resource="PolicyCorrectnessStatus"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="a0012">
+  <rdf:type rdf:resource="Agent"/>
+  <AgentID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ManagerAgent</AgentID>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="alias1">
+  <rdf:type rdf:resource="Alias"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="colref012"/>
+  <hasChildNode rdf:resource="func1"/>
+  <hasChildNode rdf:resource="lit1"/>
+  <hasParentNode rdf:resource="q003"/>
+  <hasParentNode rdf:resource="sel003"/>
+  <immediateChildNode rdf:resource="func1"/>
+  <immediateChildNode rdf:resource="lit1"/>
+  <immediateParentNode rdf:resource="sel003"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref012">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="alias1"/>
+  <hasParentNode rdf:resource="func1"/>
+  <hasParentNode rdf:resource="q003"/>
+  <hasParentNode rdf:resource="sel003"/>
+  <immediateParentNode rdf:resource="func1"/>
+  <referencesToColumn rdf:resource="c005"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="func1">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="Function"/>
+  <rdf:type rdf:resource="Functional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="colref012"/>
+  <hasParentNode rdf:resource="alias1"/>
+  <hasParentNode rdf:resource="q003"/>
+  <hasParentNode rdf:resource="sel003"/>
+  <immediateChildNode rdf:resource="colref012"/>
+  <immediateParentNode rdf:resource="alias1"/>
+  <FunctionName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SUM</FunctionName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="lit1">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="Literal"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasParentNode rdf:resource="alias1"/>
+  <hasParentNode rdf:resource="q003"/>
+  <hasParentNode rdf:resource="sel003"/>
+  <immediateParentNode rdf:resource="alias1"/>
+  <Value rdf:datatype="http://www.w3.org/2001/XMLSchema#string">total_order_amount</Value>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="q003">
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectStatement"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="FromClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="GroupByClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="LimitClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="SelectClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="WhereClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <executedBy rdf:resource="a0012"/>
+  <hasChildNode rdf:resource="alias1"/>
+  <hasChildNode rdf:resource="colref012"/>
+  <hasChildNode rdf:resource="from003"/>
+  <hasChildNode rdf:resource="func1"/>
+  <hasChildNode rdf:resource="lit1"/>
+  <hasChildNode rdf:resource="sel003"/>
+  <hasChildNode rdf:resource="tblref003"/>
+  <hasClause rdf:resource="from003"/>
+  <hasClause rdf:resource="sel003"/>
+  <immediateChildNode rdf:resource="from003"/>
+  <immediateChildNode rdf:resource="sel003"/>
+  <representsAction rdf:resource="ReadAction"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="sel003">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectClause"/>
+  <hasChildNode rdf:resource="alias1"/>
+  <hasChildNode rdf:resource="colref012"/>
+  <hasChildNode rdf:resource="func1"/>
+  <hasChildNode rdf:resource="lit1"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q003"/>
+  <immediateChildNode rdf:resource="alias1"/>
+  <immediateParentNode rdf:resource="q003"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="alias2">
+  <rdf:type rdf:resource="Alias"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="colref020"/>
+  <hasChildNode rdf:resource="func2"/>
+  <hasParentNode rdf:resource="q006"/>
+  <hasParentNode rdf:resource="sel006"/>
+  <immediateChildNode rdf:resource="func2"/>
+  <immediateParentNode rdf:resource="sel006"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref020">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="alias2"/>
+  <hasParentNode rdf:resource="func2"/>
+  <hasParentNode rdf:resource="q006"/>
+  <hasParentNode rdf:resource="sel006"/>
+  <immediateParentNode rdf:resource="func2"/>
+  <referencesToColumn rdf:resource="c005"/>
+  <hasAlignmentState rdf:resource="Violated"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="func2">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="Function"/>
+  <rdf:type rdf:resource="Functional"/>
+  <rdf:type rdf:resource="Literal"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="colref020"/>
+  <hasParentNode rdf:resource="alias2"/>
+  <hasParentNode rdf:resource="q006"/>
+  <hasParentNode rdf:resource="sel006"/>
+  <immediateChildNode rdf:resource="colref020"/>
+  <immediateParentNode rdf:resource="alias2"/>
+  <Value rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SUM</Value>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="q006">
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectStatement"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="FromClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="GroupByClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="LimitClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="SelectClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="WhereClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <executedBy rdf:resource="a0012"/>
+  <hasChildNode rdf:resource="alias2"/>
+  <hasChildNode rdf:resource="colref019"/>
+  <hasChildNode rdf:resource="colref020"/>
+  <hasChildNode rdf:resource="colref021"/>
+  <hasChildNode rdf:resource="from006"/>
+  <hasChildNode rdf:resource="func2"/>
+  <hasChildNode rdf:resource="group001"/>
+  <hasChildNode rdf:resource="sel006"/>
+  <hasChildNode rdf:resource="tblref006"/>
+  <immediateChildNode rdf:resource="from006"/>
+  <immediateChildNode rdf:resource="group001"/>
+  <immediateChildNode rdf:resource="sel006"/>
+  <representsAction rdf:resource="ReadAction"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="sel006">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectClause"/>
+  <hasChildNode rdf:resource="alias2"/>
+  <hasChildNode rdf:resource="colref019"/>
+  <hasChildNode rdf:resource="colref020"/>
+  <hasChildNode rdf:resource="func2"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q006"/>
+  <immediateChildNode rdf:resource="alias2"/>
+  <immediateChildNode rdf:resource="colref019"/>
+  <immediateParentNode rdf:resource="q006"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c001">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t001"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">order_id</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="t001">
+  <rdf:type rdf:resource="Object"/>
+  <rdf:type rdf:resource="Table"/>
+  <hasColumn rdf:resource="c001"/>
+  <hasColumn rdf:resource="c002"/>
+  <hasColumn rdf:resource="c003"/>
+  <hasColumn rdf:resource="c004"/>
+  <hasColumn rdf:resource="c005"/>
+  <hasColumn rdf:resource="c006"/>
+  <TableName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Order</TableName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c002">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <rdf:type rdf:resource="Table"/>
+  <columnOfTable rdf:resource="t001"/>
+  <columnOfTable rdf:resource="t002"/>
+  <columnOfTable rdf:resource="t003"/>
+  <columnOfTable rdf:resource="t004"/>
+  <columnOfTable rdf:resource="t005"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">account_id</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="t002">
+  <rdf:type rdf:resource="Object"/>
+  <rdf:type rdf:resource="Table"/>
+  <hasColumn rdf:resource="c002"/>
+  <hasColumn rdf:resource="c007"/>
+  <hasColumn rdf:resource="c008"/>
+  <hasColumn rdf:resource="c009"/>
+  <hasColumn rdf:resource="c010"/>
+  <hasColumn rdf:resource="c011"/>
+  <hasColumn rdf:resource="c012"/>
+  <hasColumn rdf:resource="c013"/>
+  <hasColumn rdf:resource="c031"/>
+  <hasColumn rdf:resource="c032"/>
+  <TableName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transaction</TableName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="t003">
+  <rdf:type rdf:resource="Object"/>
+  <rdf:type rdf:resource="Table"/>
+  <hasColumn rdf:resource="c002"/>
+  <hasColumn rdf:resource="c014"/>
+  <hasColumn rdf:resource="c015"/>
+  <hasColumn rdf:resource="c033"/>
+  <TableName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Account</TableName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="t004">
+  <rdf:type rdf:resource="Object"/>
+  <rdf:type rdf:resource="Table"/>
+  <hasColumn rdf:resource="c002"/>
+  <hasColumn rdf:resource="c016"/>
+  <hasColumn rdf:resource="c017"/>
+  <hasColumn rdf:resource="c018"/>
+  <hasColumn rdf:resource="c019"/>
+  <hasColumn rdf:resource="c034"/>
+  <hasColumn rdf:resource="c035"/>
+  <TableName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Loan</TableName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="t005">
+  <rdf:type rdf:resource="Object"/>
+  <rdf:type rdf:resource="Table"/>
+  <hasColumn rdf:resource="c002"/>
+  <hasColumn rdf:resource="c020"/>
+  <hasColumn rdf:resource="c021"/>
+  <hasColumn rdf:resource="c022"/>
+  <TableName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Disposition</TableName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c003">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t001"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">bank_to</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c004">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t001"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">account_to</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c005">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t001"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">amount</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c006">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t001"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k_symbol</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c007">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t002"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">trans_id</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c008">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t002"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">date</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c009">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t002"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">type</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c010">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t002"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">operation</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c011">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t002"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">balance</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c012">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t002"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">bank</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c013">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t002"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">account</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c014">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t003"/>
+  <columnOfTable rdf:resource="t006"/>
+  <columnOfTable rdf:resource="t008"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">district_id</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="t006">
+  <rdf:type rdf:resource="Object"/>
+  <rdf:type rdf:resource="Table"/>
+  <hasColumn rdf:resource="c014"/>
+  <hasColumn rdf:resource="c021"/>
+  <hasColumn rdf:resource="c023"/>
+  <hasColumn rdf:resource="c024"/>
+  <TableName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Client</TableName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="t008">
+  <rdf:type rdf:resource="Object"/>
+  <rdf:type rdf:resource="Table"/>
+  <hasColumn rdf:resource="c014"/>
+  <hasColumn rdf:resource="c028"/>
+  <TableName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">District</TableName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c015">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t003"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">frequency</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c016">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t004"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">loan_id</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c017">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t004"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">duration</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c018">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t004"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">payments</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c019">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t004"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">status</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c020">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t005"/>
+  <columnOfTable rdf:resource="t007"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">disp_id</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="t007">
+  <rdf:type rdf:resource="Object"/>
+  <rdf:type rdf:resource="Table"/>
+  <hasColumn rdf:resource="c020"/>
+  <hasColumn rdf:resource="c025"/>
+  <hasColumn rdf:resource="c027"/>
+  <TableName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Card</TableName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c021">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t005"/>
+  <columnOfTable rdf:resource="t006"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">client_id</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c022">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t005"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">type</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c023">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t006"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">gender</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c024">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t006"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">birth_date</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c025">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t007"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">card_id</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c027">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t007"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">issued</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c028">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t008"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">name</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c031">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t002"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">amount</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c032">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t002"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k_symbol</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c033">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t003"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">date</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c034">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t004"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">date</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="c035">
+  <rdf:type rdf:resource="Column"/>
+  <rdf:type rdf:resource="Object"/>
+  <columnOfTable rdf:resource="t004"/>
+  <ColumnName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">amount</ColumnName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref002">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="q002"/>
+  <hasParentNode rdf:resource="sel002"/>
+  <immediateParentNode rdf:resource="sel002"/>
+  <referencesToColumn rdf:resource="c002"/>
+  <hasAlignmentState rdf:resource="Violated"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="q002">
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectStatement"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="FromClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="GroupByClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="LimitClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="SelectClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="WhereClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <executedBy rdf:resource="a0012"/>
+  <hasChildNode rdf:resource="colref002"/>
+  <hasChildNode rdf:resource="colref003"/>
+  <hasChildNode rdf:resource="colref004"/>
+  <hasChildNode rdf:resource="colref005"/>
+  <hasChildNode rdf:resource="from002"/>
+  <hasChildNode rdf:resource="sel002"/>
+  <hasChildNode rdf:resource="tblref001"/>
+  <hasClause rdf:resource="from002"/>
+  <hasClause rdf:resource="sel002"/>
+  <immediateChildNode rdf:resource="from002"/>
+  <immediateChildNode rdf:resource="sel002"/>
+  <representsAction rdf:resource="ReadAction"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="sel002">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectClause"/>
+  <hasChildNode rdf:resource="colref002"/>
+  <hasChildNode rdf:resource="colref003"/>
+  <hasChildNode rdf:resource="colref004"/>
+  <hasChildNode rdf:resource="colref005"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q002"/>
+  <immediateChildNode rdf:resource="colref002"/>
+  <immediateChildNode rdf:resource="colref003"/>
+  <immediateChildNode rdf:resource="colref004"/>
+  <immediateChildNode rdf:resource="colref005"/>
+  <immediateParentNode rdf:resource="q002"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref003">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="q002"/>
+  <hasParentNode rdf:resource="sel002"/>
+  <immediateParentNode rdf:resource="sel002"/>
+  <referencesToColumn rdf:resource="c003"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref004">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="q002"/>
+  <hasParentNode rdf:resource="sel002"/>
+  <immediateParentNode rdf:resource="sel002"/>
+  <referencesToColumn rdf:resource="c004"/>
+  <hasAlignmentState rdf:resource="Violated"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref005">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="q002"/>
+  <hasParentNode rdf:resource="sel002"/>
+  <immediateParentNode rdf:resource="sel002"/>
+  <referencesToColumn rdf:resource="c005"/>
+  <hasAlignmentState rdf:resource="Violated"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref011">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="q001"/>
+  <hasParentNode rdf:resource="sel001"/>
+  <immediateParentNode rdf:resource="sel001"/>
+  <referencesToColumn rdf:resource="c011"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="q001">
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectStatement"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="FromClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="GroupByClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="LimitClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="SelectClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="WhereClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <executedBy rdf:resource="a0012"/>
+  <hasChildNode rdf:resource="colref011"/>
+  <hasChildNode rdf:resource="from001"/>
+  <hasChildNode rdf:resource="sel001"/>
+  <hasChildNode rdf:resource="tblref002"/>
+  <hasClause rdf:resource="from001"/>
+  <hasClause rdf:resource="sel001"/>
+  <immediateChildNode rdf:resource="from001"/>
+  <immediateChildNode rdf:resource="sel001"/>
+  <representsAction rdf:resource="ReadAction"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="sel001">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectClause"/>
+  <hasChildNode rdf:resource="colref011"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q001"/>
+  <immediateChildNode rdf:resource="colref011"/>
+  <immediateParentNode rdf:resource="q001"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref013">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="opr1"/>
+  <hasParentNode rdf:resource="q004"/>
+  <hasParentNode rdf:resource="sel004"/>
+  <immediateParentNode rdf:resource="opr1"/>
+  <referencesToColumn rdf:resource="c008"/>
+  <hasAlignmentState rdf:resource="Violated"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="opr1">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="Operator"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="colref013"/>
+  <hasParentNode rdf:resource="q004"/>
+  <hasParentNode rdf:resource="sel004"/>
+  <immediateChildNode rdf:resource="colref013"/>
+  <immediateParentNode rdf:resource="sel004"/>
+  <OperationName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DISTINCT</OperationName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="q004">
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectStatement"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="FromClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="GroupByClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="LimitClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="SelectClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="WhereClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <executedBy rdf:resource="a0012"/>
+  <hasChildNode rdf:resource="colref013"/>
+  <hasChildNode rdf:resource="from004"/>
+  <hasChildNode rdf:resource="opr1"/>
+  <hasChildNode rdf:resource="sel004"/>
+  <hasChildNode rdf:resource="tblref004"/>
+  <hasClause rdf:resource="from004"/>
+  <hasClause rdf:resource="sel004"/>
+  <immediateChildNode rdf:resource="from004"/>
+  <immediateChildNode rdf:resource="sel004"/>
+  <representsAction rdf:resource="ReadAction"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="sel004">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectClause"/>
+  <hasChildNode rdf:resource="colref013"/>
+  <hasChildNode rdf:resource="opr1"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q004"/>
+  <immediateChildNode rdf:resource="opr1"/>
+  <immediateParentNode rdf:resource="q004"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref014">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="q005"/>
+  <hasParentNode rdf:resource="sel005"/>
+  <immediateParentNode rdf:resource="sel005"/>
+  <referencesToColumn rdf:resource="c016"/>
+  <hasAlignmentState rdf:resource="Violated"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="sel005">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectClause"/>
+  <hasChildNode rdf:resource="colref014"/>
+  <hasChildNode rdf:resource="colref015"/>
+  <hasChildNode rdf:resource="colref016"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q005"/>
+  <immediateChildNode rdf:resource="colref014"/>
+  <immediateChildNode rdf:resource="colref015"/>
+  <immediateChildNode rdf:resource="colref016"/>
+  <immediateParentNode rdf:resource="q005"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref015">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="q005"/>
+  <hasParentNode rdf:resource="sel005"/>
+  <immediateParentNode rdf:resource="sel005"/>
+  <referencesToColumn rdf:resource="c018"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref016">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="q005"/>
+  <hasParentNode rdf:resource="sel005"/>
+  <immediateParentNode rdf:resource="sel005"/>
+  <referencesToColumn rdf:resource="c019"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref017">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="opr2"/>
+  <hasParentNode rdf:resource="opr4"/>
+  <hasParentNode rdf:resource="q005"/>
+  <hasParentNode rdf:resource="where001"/>
+  <immediateParentNode rdf:resource="opr2"/>
+  <referencesToColumn rdf:resource="c035"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="opr2">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="Operator"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="colref017"/>
+  <hasChildNode rdf:resource="lit2"/>
+  <hasParentNode rdf:resource="opr4"/>
+  <hasParentNode rdf:resource="q005"/>
+  <hasParentNode rdf:resource="where001"/>
+  <immediateChildNode rdf:resource="colref017"/>
+  <immediateChildNode rdf:resource="lit2"/>
+  <immediateParentNode rdf:resource="opr4"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="opr4">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="Literal"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="Operator"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="colref017"/>
+  <hasChildNode rdf:resource="colref018"/>
+  <hasChildNode rdf:resource="lit2"/>
+  <hasChildNode rdf:resource="lit3"/>
+  <hasChildNode rdf:resource="opr2"/>
+  <hasChildNode rdf:resource="opr3"/>
+  <hasParentNode rdf:resource="q005"/>
+  <hasParentNode rdf:resource="where001"/>
+  <immediateChildNode rdf:resource="opr2"/>
+  <immediateChildNode rdf:resource="opr3"/>
+  <immediateParentNode rdf:resource="where001"/>
+  <Value rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AND</Value>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref018">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="opr3"/>
+  <hasParentNode rdf:resource="opr4"/>
+  <hasParentNode rdf:resource="q005"/>
+  <hasParentNode rdf:resource="where001"/>
+  <immediateParentNode rdf:resource="opr3"/>
+  <referencesToColumn rdf:resource="c019"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="opr3">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="Operator"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="colref018"/>
+  <hasChildNode rdf:resource="lit3"/>
+  <hasParentNode rdf:resource="opr4"/>
+  <hasParentNode rdf:resource="q005"/>
+  <hasParentNode rdf:resource="where001"/>
+  <immediateChildNode rdf:resource="colref018"/>
+  <immediateChildNode rdf:resource="lit3"/>
+  <immediateParentNode rdf:resource="opr4"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref019">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="q006"/>
+  <hasParentNode rdf:resource="sel006"/>
+  <immediateParentNode rdf:resource="sel006"/>
+  <referencesToColumn rdf:resource="c002"/>
+  <hasAlignmentState rdf:resource="Violated"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref021">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="TableRef"/>
+  <hasParentNode rdf:resource="group001"/>
+  <hasParentNode rdf:resource="q006"/>
+  <immediateParentNode rdf:resource="group001"/>
+  <referencesToTable rdf:resource="c002"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="group001">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="GroupByClause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="colref021"/>
+  <hasParentNode rdf:resource="q006"/>
+  <immediateChildNode rdf:resource="colref021"/>
+  <immediateParentNode rdf:resource="q006"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref022">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="q007"/>
+  <hasParentNode rdf:resource="sel007"/>
+  <immediateParentNode rdf:resource="sel007"/>
+  <referencesToColumn rdf:resource="c021"/>
+  <hasAlignmentState rdf:resource="Violated"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="q007">
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectStatement"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="FromClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="GroupByClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="LimitClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="SelectClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="allowsClause"/>
+      <owl:someValuesFrom rdf:resource="WhereClause"/>
+    </owl:Restriction>
+  </rdf:type>
+  <executedBy rdf:resource="a0012"/>
+  <hasChildNode rdf:resource="colref022"/>
+  <hasChildNode rdf:resource="colref023"/>
+  <hasChildNode rdf:resource="from007"/>
+  <hasChildNode rdf:resource="sel007"/>
+  <hasChildNode rdf:resource="tblref007"/>
+  <immediateChildNode rdf:resource="from007"/>
+  <immediateChildNode rdf:resource="sel007"/>
+  <representsAction rdf:resource="ReadAction"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="sel007">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="SelectClause"/>
+  <hasChildNode rdf:resource="colref022"/>
+  <hasChildNode rdf:resource="colref023"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q007"/>
+  <immediateChildNode rdf:resource="colref022"/>
+  <immediateChildNode rdf:resource="colref023"/>
+  <immediateParentNode rdf:resource="q007"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="colref023">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="q007"/>
+  <hasParentNode rdf:resource="sel007"/>
+  <immediateParentNode rdf:resource="sel007"/>
+  <referencesToColumn rdf:resource="c023"/>
+  <hasAlignmentState rdf:resource="Violated"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="db01">
+  <rdf:type rdf:resource="Database"/>
+  <rdf:type rdf:resource="Object"/>
+  <hasTable rdf:resource="t001"/>
+  <hasTable rdf:resource="t002"/>
+  <hasTable rdf:resource="t003"/>
+  <hasTable rdf:resource="t004"/>
+  <hasTable rdf:resource="t005"/>
+  <hasTable rdf:resource="t006"/>
+  <hasTable rdf:resource="t007"/>
+  <hasTable rdf:resource="t008"/>
+  <DatabaseName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Financial</DatabaseName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="from001">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="FromClause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="tblref002"/>
+  <hasEffectiveScope rdf:resource="ProcessActionScope"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q001"/>
+  <immediateChildNode rdf:resource="tblref002"/>
+  <immediateParentNode rdf:resource="q001"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="tblref002">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="TableRef"/>
+  <hasAlignmentState rdf:resource="Aligned"/>
+  <hasParentNode rdf:resource="from001"/>
+  <hasParentNode rdf:resource="q001"/>
+  <immediateParentNode rdf:resource="from001"/>
+  <referencesToTable rdf:resource="t002"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="from002">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="FromClause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="tblref001"/>
+  <hasEffectiveScope rdf:resource="ProcessActionScope"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q002"/>
+  <immediateChildNode rdf:resource="tblref001"/>
+  <immediateParentNode rdf:resource="q002"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="tblref001">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="TableRef"/>
+  <hasAlignmentState rdf:resource="Aligned"/>
+  <hasParentNode rdf:resource="from002"/>
+  <hasParentNode rdf:resource="q002"/>
+  <immediateParentNode rdf:resource="from002"/>
+  <referencesToTable rdf:resource="t001"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="from003">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="FromClause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="tblref003"/>
+  <hasEffectiveScope rdf:resource="ProcessActionScope"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q003"/>
+  <immediateChildNode rdf:resource="tblref003"/>
+  <immediateParentNode rdf:resource="q003"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="tblref003">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="TableRef"/>
+  <hasAlignmentState rdf:resource="Aligned"/>
+  <hasParentNode rdf:resource="from003"/>
+  <hasParentNode rdf:resource="q003"/>
+  <immediateParentNode rdf:resource="from003"/>
+  <referencesToTable rdf:resource="t001"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="from004">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="FromClause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="tblref004"/>
+  <hasEffectiveScope rdf:resource="ProcessActionScope"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q004"/>
+  <immediateChildNode rdf:resource="tblref004"/>
+  <immediateParentNode rdf:resource="q004"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="tblref004">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="TableRef"/>
+  <hasAlignmentState rdf:resource="Aligned"/>
+  <hasParentNode rdf:resource="from004"/>
+  <hasParentNode rdf:resource="q004"/>
+  <immediateParentNode rdf:resource="from004"/>
+  <referencesToTable rdf:resource="t002"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="from005">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="FromClause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="tblref005"/>
+  <hasEffectiveScope rdf:resource="ProcessActionScope"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q005"/>
+  <immediateChildNode rdf:resource="tblref005"/>
+  <immediateParentNode rdf:resource="q005"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="tblref005">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="TableRef"/>
+  <hasAlignmentState rdf:resource="Aligned"/>
+  <hasParentNode rdf:resource="from005"/>
+  <hasParentNode rdf:resource="q005"/>
+  <immediateParentNode rdf:resource="from005"/>
+  <referencesToTable rdf:resource="t004"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="from006">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="FromClause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="tblref006"/>
+  <hasEffectiveScope rdf:resource="ProcessActionScope"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q006"/>
+  <immediateChildNode rdf:resource="tblref006"/>
+  <immediateParentNode rdf:resource="q006"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="tblref006">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="TableRef"/>
+  <hasAlignmentState rdf:resource="Aligned"/>
+  <hasParentNode rdf:resource="from006"/>
+  <hasParentNode rdf:resource="q006"/>
+  <immediateParentNode rdf:resource="from006"/>
+  <referencesToTable rdf:resource="t001"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="from007">
+  <rdf:type rdf:resource="Clause"/>
+  <rdf:type rdf:resource="FromClause"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasChildNode rdf:resource="tblref007"/>
+  <hasEffectiveScope rdf:resource="ProcessActionScope"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasParentNode rdf:resource="q007"/>
+  <immediateChildNode rdf:resource="tblref007"/>
+  <immediateParentNode rdf:resource="q007"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="tblref007">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="ReferenceNode"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <rdf:type rdf:resource="TableRef"/>
+  <hasParentNode rdf:resource="from007"/>
+  <hasParentNode rdf:resource="q007"/>
+  <immediateParentNode rdf:resource="from007"/>
+  <referencesToTable rdf:resource="t006"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="lit2">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="Literal"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasParentNode rdf:resource="opr2"/>
+  <hasParentNode rdf:resource="opr4"/>
+  <hasParentNode rdf:resource="q005"/>
+  <hasParentNode rdf:resource="where001"/>
+  <immediateParentNode rdf:resource="opr2"/>
+  <Value rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1000</Value>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="lit3">
+  <rdf:type rdf:resource="Expression"/>
+  <rdf:type rdf:resource="Literal"/>
+  <rdf:type rdf:resource="NonFunctional"/>
+  <rdf:type rdf:resource="SQLNode"/>
+  <rdf:type rdf:resource="SQLNodeType"/>
+  <hasParentNode rdf:resource="opr3"/>
+  <hasParentNode rdf:resource="opr4"/>
+  <hasParentNode rdf:resource="q005"/>
+  <hasParentNode rdf:resource="where001"/>
+  <immediateParentNode rdf:resource="opr3"/>
+  <Value rdf:datatype="http://www.w3.org/2001/XMLSchema#string">active</Value>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="p0001">
+  <rdf:type rdf:resource="Policy"/>
+  <appliesToScope rdf:resource="ViewActionScope"/>
+  <controlAccessTo rdf:resource="t001"/>
+  <controlAccessTo rdf:resource="t002"/>
+  <controlAccessTo rdf:resource="t003"/>
+  <controlAccessTo rdf:resource="t004"/>
+  <hasAction rdf:resource="ReadAction"/>
+  <hasAgent rdf:resource="a0012"/>
+  <hasGrantLevel rdf:resource="TableLevel"/>
+  <hasGrantType rdf:resource="PermissionGrant"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="p0002">
+  <rdf:type rdf:resource="Policy"/>
+  <appliesToScope rdf:resource="ProcessActionScope"/>
+  <controlAccessTo rdf:resource="c002"/>
+  <controlAccessTo rdf:resource="c004"/>
+  <controlAccessTo rdf:resource="c006"/>
+  <controlAccessTo rdf:resource="c007"/>
+  <controlAccessTo rdf:resource="c014"/>
+  <controlAccessTo rdf:resource="c016"/>
+  <controlAccessTo rdf:resource="c032"/>
+  <hasAction rdf:resource="ReadAction"/>
+  <hasAgent rdf:resource="a0012"/>
+  <hasGrantLevel rdf:resource="ColumnLevel"/>
+  <hasGrantType rdf:resource="ProhibitionGrant"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="p0003">
+  <rdf:type rdf:resource="Policy"/>
+  <appliesToScope rdf:resource="ProcessActionScope"/>
+  <controlAccessTo rdf:resource="c005"/>
+  <controlAccessTo rdf:resource="c008"/>
+  <controlAccessTo rdf:resource="c009"/>
+  <controlAccessTo rdf:resource="c015"/>
+  <controlAccessTo rdf:resource="c031"/>
+  <controlAccessTo rdf:resource="c033"/>
+  <controlAccessTo rdf:resource="c034"/>
+  <controlAccessTo rdf:resource="c035"/>
+  <hasAction rdf:resource="ReadAction"/>
+  <hasAgent rdf:resource="a0012"/>
+  <hasGrantLevel rdf:resource="ColumnLevel"/>
+  <hasGrantType rdf:resource="PermissionGrant"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="p0004">
+  <rdf:type rdf:resource="Policy"/>
+  <appliesToScope rdf:resource="ViewActionScope"/>
+  <controlAccessTo rdf:resource="c003"/>
+  <controlAccessTo rdf:resource="c010"/>
+  <controlAccessTo rdf:resource="c011"/>
+  <controlAccessTo rdf:resource="c012"/>
+  <controlAccessTo rdf:resource="c013"/>
+  <controlAccessTo rdf:resource="c017"/>
+  <controlAccessTo rdf:resource="c018"/>
+  <controlAccessTo rdf:resource="c019"/>
+  <hasAction rdf:resource="ReadAction"/>
+  <hasAgent rdf:resource="a0012"/>
+  <hasGrantLevel rdf:resource="ColumnLevel"/>
+  <hasGrantType rdf:resource="PermissionGrant"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="p0005">
+  <rdf:type rdf:resource="Policy"/>
+  <appliesToScope rdf:resource="ProcessActionScope"/>
+  <controlAccessTo rdf:resource="c002"/>
+  <controlAccessTo rdf:resource="c014"/>
+  <controlAccessTo rdf:resource="c020"/>
+  <controlAccessTo rdf:resource="c021"/>
+  <controlAccessTo rdf:resource="c022"/>
+  <controlAccessTo rdf:resource="c023"/>
+  <controlAccessTo rdf:resource="c024"/>
+  <controlAccessTo rdf:resource="c025"/>
+  <controlAccessTo rdf:resource="c027"/>
+  <controlAccessTo rdf:resource="t005"/>
+  <controlAccessTo rdf:resource="t006"/>
+  <controlAccessTo rdf:resource="t007"/>
+  <hasAction rdf:resource="ReadAction"/>
+  <hasAgent rdf:resource="a0012"/>
+  <hasGrantLevel rdf:resource="ColumnLevel"/>
+  <hasGrantLevel rdf:resource="TableLevel"/>
+  <hasGrantType rdf:resource="ProhibitionGrant"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="p0006">
+  <rdf:type rdf:resource="Policy"/>
+  <appliesToScope rdf:resource="ProcessActionScope"/>
+  <controlAccessTo rdf:resource="t003"/>
+  <hasAction rdf:resource="ReadAction"/>
+  <hasAgent rdf:resource="a0012"/>
+  <hasGrantLevel rdf:resource="RowLevel"/>
+  <hasGrantType rdf:resource="PermissionGrant"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="p0007">
+  <rdf:type rdf:resource="Policy"/>
+  <appliesToScope rdf:resource="InsertActionScope"/>
+  <controlAccessTo rdf:resource="t008"/>
+  <hasAction rdf:resource="ModifyAction"/>
+  <hasAgent rdf:resource="a0012"/>
+  <hasGrantLevel rdf:resource="TableLevel"/>
+  <hasGrantType rdf:resource="PermissionGrant"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="p0008">
+  <rdf:type rdf:resource="Policy"/>
+  <appliesToScope rdf:resource="UpdateActionScope"/>
+  <controlAccessTo rdf:resource="t007"/>
+  <hasAction rdf:resource="ModifyAction"/>
+  <hasAgent rdf:resource="a0012"/>
+  <hasGrantLevel rdf:resource="TableLevel"/>
+  <hasGrantType rdf:resource="PermissionGrant"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="p0009">
+  <rdf:type rdf:resource="Policy"/>
+  <appliesToScope rdf:resource="DeleteActionScope"/>
+  <controlAccessTo rdf:resource="t006"/>
+  <hasAction rdf:resource="ModifyAction"/>
+  <hasAgent rdf:resource="a0012"/>
+  <hasGrantLevel rdf:resource="TableLevel"/>
+  <hasGrantType rdf:resource="PermissionGrant"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="n64266d">
+  <rdf:type rdf:resource="SelectStatement"/>
+  <executedBy rdf:resource="a0012"/>
+  <representsAction rdf:resource="ReadAction"/>
+  <hasChildNode rdf:resource="n9233bb"/>
+  <hasChildNode rdf:resource="n607b45"/>
+  <hasChildNode rdf:resource="ned6ebf"/>
+  <hasChildNode rdf:resource="n22eae4"/>
+  <hasChildNode rdf:resource="ne11b3f"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="nd44068">
+  <rdf:type rdf:resource="SelectClause"/>
+  <immediateParentNode rdf:resource="n64266d"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="ne11b3f">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <immediateParentNode rdf:resource="nd44068"/>
+  <referencesToColumn rdf:resource="c002"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="n64266d"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="n607b45">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <immediateParentNode rdf:resource="nd44068"/>
+  <referencesToColumn rdf:resource="c004"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="n64266d"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="ned6ebf">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <immediateParentNode rdf:resource="nd44068"/>
+  <referencesToColumn rdf:resource="c003"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="n64266d"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="n22eae4">
+  <rdf:type rdf:resource="ColumnRef"/>
+  <immediateParentNode rdf:resource="nd44068"/>
+  <referencesToColumn rdf:resource="c005"/>
+  <rdf:type rdf:resource="Statement"/>
+  <rdf:type rdf:resource="Wildcard"/>
+  <hasParentNode rdf:resource="n64266d"/>
+  <hasAlignmentState rdf:resource="Violated"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="nce6d40">
+  <rdf:type rdf:resource="FromClause"/>
+  <immediateParentNode rdf:resource="n64266d"/>
+  <hasEffectiveScope rdf:resource="ViewActionScope"/>
+  <hasEffectiveScope rdf:resource="ProcessActionScope"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="n9233bb">
+  <rdf:type rdf:resource="TableRef"/>
+  <immediateParentNode rdf:resource="nce6d40"/>
+  <referencesToTable rdf:resource="t001"/>
+  <hasParentNode rdf:resource="n64266d"/>
+</owl:NamedIndividual>
+
+<swrl:Variable rdf:about="p"/>
+
+<swrl:Variable rdf:about="agent"/>
+
+<swrl:Variable rdf:about="col"/>
+
+<swrl:Variable rdf:about="ref"/>
+
+<swrl:Variable rdf:about="stmt"/>
+
+<swrl:Variable rdf:about="clause"/>
+
+<swrl:Variable rdf:about="fnode"/>
+
+<swrl:Variable rdf:about="x"/>
+
+<swrl:Variable rdf:about="scope"/>
+
+<swrl:Variable rdf:about="t"/>
+
+<swrl:Variable rdf:about="tref"/>
+
+<swrl:Variable rdf:about="c"/>
+
+<swrl:Variable rdf:about="action"/>
+
+<swrl:Variable rdf:about="r"/>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="FromClause"/>
+          <swrl:argument1 rdf:resource="x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="hasEffectiveScope"/>
+          <swrl:argument1 rdf:resource="x"/>
+          <swrl:argument2 rdf:resource="ViewActionScope"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">from clause -&gt; view action</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S3</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="FromClause"/>
+          <swrl:argument1 rdf:resource="x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="hasEffectiveScope"/>
+          <swrl:argument1 rdf:resource="x"/>
+          <swrl:argument2 rdf:resource="ProcessActionScope"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">from clause to process action</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S2</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="DeleteStatement"/>
+          <swrl:argument1 rdf:resource="x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="representsAction"/>
+          <swrl:argument1 rdf:resource="x"/>
+          <swrl:argument2 rdf:resource="DeleteAction"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tag all delete statement as DeleteAction</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S8</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="Policy"/>
+          <swrl:argument1 rdf:resource="p"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <swrl:AtomList>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="hasGrantType"/>
+              <swrl:argument1 rdf:resource="p"/>
+              <swrl:argument2 rdf:resource="PermissionGrant"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <swrl:AtomList>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="hasGrantLevel"/>
+                  <swrl:argument1 rdf:resource="p"/>
+                  <swrl:argument2 rdf:resource="ColumnLevel"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <swrl:AtomList>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="hasAgent"/>
+                      <swrl:argument1 rdf:resource="p"/>
+                      <swrl:argument2 rdf:resource="agent"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest>
+                    <swrl:AtomList>
+                      <rdf:first>
+                        <swrl:IndividualPropertyAtom>
+                          <swrl:propertyPredicate rdf:resource="hasAction"/>
+                          <swrl:argument1 rdf:resource="p"/>
+                          <swrl:argument2 rdf:resource="ReadAction"/>
+                        </swrl:IndividualPropertyAtom>
+                      </rdf:first>
+                      <rdf:rest>
+                        <swrl:AtomList>
+                          <rdf:first>
+                            <swrl:IndividualPropertyAtom>
+                              <swrl:propertyPredicate rdf:resource="appliesToScope"/>
+                              <swrl:argument1 rdf:resource="p"/>
+                              <swrl:argument2 rdf:resource="ProcessActionScope"/>
+                            </swrl:IndividualPropertyAtom>
+                          </rdf:first>
+                          <rdf:rest>
+                            <swrl:AtomList>
+                              <rdf:first>
+                                <swrl:IndividualPropertyAtom>
+                                  <swrl:propertyPredicate rdf:resource="controlAccessTo"/>
+                                  <swrl:argument1 rdf:resource="p"/>
+                                  <swrl:argument2 rdf:resource="col"/>
+                                </swrl:IndividualPropertyAtom>
+                              </rdf:first>
+                              <rdf:rest>
+                                <swrl:AtomList>
+                                  <rdf:first>
+                                    <swrl:ClassAtom>
+                                      <swrl:classPredicate rdf:resource="ColumnRef"/>
+                                      <swrl:argument1 rdf:resource="ref"/>
+                                    </swrl:ClassAtom>
+                                  </rdf:first>
+                                  <rdf:rest>
+                                    <swrl:AtomList>
+                                      <rdf:first>
+                                        <swrl:IndividualPropertyAtom>
+                                          <swrl:propertyPredicate rdf:resource="referencesToColumn"/>
+                                          <swrl:argument1 rdf:resource="ref"/>
+                                          <swrl:argument2 rdf:resource="col"/>
+                                        </swrl:IndividualPropertyAtom>
+                                      </rdf:first>
+                                      <rdf:rest>
+                                        <swrl:AtomList>
+                                          <rdf:first>
+                                            <swrl:ClassAtom>
+                                              <swrl:classPredicate rdf:resource="Statement"/>
+                                              <swrl:argument1 rdf:resource="stmt"/>
+                                            </swrl:ClassAtom>
+                                          </rdf:first>
+                                          <rdf:rest>
+                                            <swrl:AtomList>
+                                              <rdf:first>
+                                                <swrl:IndividualPropertyAtom>
+                                                  <swrl:propertyPredicate rdf:resource="representsAction"/>
+                                                  <swrl:argument1 rdf:resource="stmt"/>
+                                                  <swrl:argument2 rdf:resource="ReadAction"/>
+                                                </swrl:IndividualPropertyAtom>
+                                              </rdf:first>
+                                              <rdf:rest>
+                                                <swrl:AtomList>
+                                                  <rdf:first>
+                                                    <swrl:IndividualPropertyAtom>
+                                                      <swrl:propertyPredicate rdf:resource="executedBy"/>
+                                                      <swrl:argument1 rdf:resource="stmt"/>
+                                                      <swrl:argument2 rdf:resource="agent"/>
+                                                    </swrl:IndividualPropertyAtom>
+                                                  </rdf:first>
+                                                  <rdf:rest>
+                                                    <swrl:AtomList>
+                                                      <rdf:first>
+                                                        <swrl:IndividualPropertyAtom>
+                                                          <swrl:propertyPredicate rdf:resource="hasChildNode"/>
+                                                          <swrl:argument1 rdf:resource="stmt"/>
+                                                          <swrl:argument2 rdf:resource="clause"/>
+                                                        </swrl:IndividualPropertyAtom>
+                                                      </rdf:first>
+                                                      <rdf:rest>
+                                                        <swrl:AtomList>
+                                                          <rdf:first>
+                                                            <swrl:ClassAtom>
+                                                              <swrl:classPredicate rdf:resource="Clause"/>
+                                                              <swrl:argument1 rdf:resource="clause"/>
+                                                            </swrl:ClassAtom>
+                                                          </rdf:first>
+                                                          <rdf:rest>
+                                                            <swrl:AtomList>
+                                                              <rdf:first>
+                                                                <swrl:IndividualPropertyAtom>
+                                                                  <swrl:propertyPredicate rdf:resource="hasChildNode"/>
+                                                                  <swrl:argument1 rdf:resource="clause"/>
+                                                                  <swrl:argument2 rdf:resource="ref"/>
+                                                                </swrl:IndividualPropertyAtom>
+                                                              </rdf:first>
+                                                              <rdf:rest>
+                                                                <swrl:AtomList>
+                                                                  <rdf:first>
+                                                                    <swrl:IndividualPropertyAtom>
+                                                                      <swrl:propertyPredicate rdf:resource="hasEffectiveScope"/>
+                                                                      <swrl:argument1 rdf:resource="clause"/>
+                                                                      <swrl:argument2 rdf:resource="ViewActionScope"/>
+                                                                    </swrl:IndividualPropertyAtom>
+                                                                  </rdf:first>
+                                                                  <rdf:rest>
+                                                                    <swrl:AtomList>
+                                                                      <rdf:first>
+                                                                        <swrl:ClassAtom>
+                                                                          <swrl:classPredicate rdf:resource="NonFunctional"/>
+                                                                          <swrl:argument1 rdf:resource="fnode"/>
+                                                                        </swrl:ClassAtom>
+                                                                      </rdf:first>
+                                                                      <rdf:rest>
+                                                                        <swrl:AtomList>
+                                                                          <rdf:first>
+                                                                            <swrl:IndividualPropertyAtom>
+                                                                              <swrl:propertyPredicate rdf:resource="immediateParentNode"/>
+                                                                              <swrl:argument1 rdf:resource="ref"/>
+                                                                              <swrl:argument2 rdf:resource="fnode"/>
+                                                                            </swrl:IndividualPropertyAtom>
+                                                                          </rdf:first>
+                                                                          <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                                        </swrl:AtomList>
+                                                                      </rdf:rest>
+                                                                    </swrl:AtomList>
+                                                                  </rdf:rest>
+                                                                </swrl:AtomList>
+                                                              </rdf:rest>
+                                                            </swrl:AtomList>
+                                                          </rdf:rest>
+                                                        </swrl:AtomList>
+                                                      </rdf:rest>
+                                                    </swrl:AtomList>
+                                                  </rdf:rest>
+                                                </swrl:AtomList>
+                                              </rdf:rest>
+                                            </swrl:AtomList>
+                                          </rdf:rest>
+                                        </swrl:AtomList>
+                                      </rdf:rest>
+                                    </swrl:AtomList>
+                                  </rdf:rest>
+                                </swrl:AtomList>
+                              </rdf:rest>
+                            </swrl:AtomList>
+                          </rdf:rest>
+                        </swrl:AtomList>
+                      </rdf:rest>
+                    </swrl:AtomList>
+                  </rdf:rest>
+                </swrl:AtomList>
+              </rdf:rest>
+            </swrl:AtomList>
+          </rdf:rest>
+        </swrl:AtomList>
+      </rdf:rest>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="hasAlignmentState"/>
+          <swrl:argument1 rdf:resource="ref"/>
+          <swrl:argument2 rdf:resource="Violated"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">if a column is defined under process level permission grant and it uses in viewscope clause without a parent of functional node in a readaction, then that column reference is map with violated node</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S11</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="WhereClause"/>
+          <swrl:argument1 rdf:resource="x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="hasEffectiveScope"/>
+          <swrl:argument1 rdf:resource="x"/>
+          <swrl:argument2 rdf:resource="ProcessActionScope"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">where clause -&gt; process action</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S4</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="UpdateStatement"/>
+          <swrl:argument1 rdf:resource="x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="representsAction"/>
+          <swrl:argument1 rdf:resource="x"/>
+          <swrl:argument2 rdf:resource="UpdateAction"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tag all Update Statements as UpdateAction</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S6</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="SelectStatement"/>
+          <swrl:argument1 rdf:resource="x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="representsAction"/>
+          <swrl:argument1 rdf:resource="x"/>
+          <swrl:argument2 rdf:resource="ReadAction"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tag all select statements as ReadActions  tag all select statements as ReadActions</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S5</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="SelectClause"/>
+          <swrl:argument1 rdf:resource="x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="hasEffectiveScope"/>
+          <swrl:argument1 rdf:resource="x"/>
+          <swrl:argument2 rdf:resource="ViewActionScope"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">select clause -&gt; to view action</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S1</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="Policy"/>
+          <swrl:argument1 rdf:resource="p"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <swrl:AtomList>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="hasAgent"/>
+              <swrl:argument1 rdf:resource="p"/>
+              <swrl:argument2 rdf:resource="agent"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <swrl:AtomList>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="hasGrantLevel"/>
+                  <swrl:argument1 rdf:resource="p"/>
+                  <swrl:argument2 rdf:resource="TableLevel"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <swrl:AtomList>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="hasGrantType"/>
+                      <swrl:argument1 rdf:resource="p"/>
+                      <swrl:argument2 rdf:resource="PermissionGrant"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest>
+                    <swrl:AtomList>
+                      <rdf:first>
+                        <swrl:IndividualPropertyAtom>
+                          <swrl:propertyPredicate rdf:resource="hasAction"/>
+                          <swrl:argument1 rdf:resource="p"/>
+                          <swrl:argument2 rdf:resource="action"/>
+                        </swrl:IndividualPropertyAtom>
+                      </rdf:first>
+                      <rdf:rest>
+                        <swrl:AtomList>
+                          <rdf:first>
+                            <swrl:IndividualPropertyAtom>
+                              <swrl:propertyPredicate rdf:resource="controlAccessTo"/>
+                              <swrl:argument1 rdf:resource="p"/>
+                              <swrl:argument2 rdf:resource="t"/>
+                            </swrl:IndividualPropertyAtom>
+                          </rdf:first>
+                          <rdf:rest>
+                            <swrl:AtomList>
+                              <rdf:first>
+                                <swrl:ClassAtom>
+                                  <swrl:classPredicate rdf:resource="TableRef"/>
+                                  <swrl:argument1 rdf:resource="r"/>
+                                </swrl:ClassAtom>
+                              </rdf:first>
+                              <rdf:rest>
+                                <swrl:AtomList>
+                                  <rdf:first>
+                                    <swrl:IndividualPropertyAtom>
+                                      <swrl:propertyPredicate rdf:resource="referencesToTable"/>
+                                      <swrl:argument1 rdf:resource="r"/>
+                                      <swrl:argument2 rdf:resource="t"/>
+                                    </swrl:IndividualPropertyAtom>
+                                  </rdf:first>
+                                  <rdf:rest>
+                                    <swrl:AtomList>
+                                      <rdf:first>
+                                        <swrl:IndividualPropertyAtom>
+                                          <swrl:propertyPredicate rdf:resource="representsAction"/>
+                                          <swrl:argument1 rdf:resource="stmt"/>
+                                          <swrl:argument2 rdf:resource="action"/>
+                                        </swrl:IndividualPropertyAtom>
+                                      </rdf:first>
+                                      <rdf:rest>
+                                        <swrl:AtomList>
+                                          <rdf:first>
+                                            <swrl:IndividualPropertyAtom>
+                                              <swrl:propertyPredicate rdf:resource="executedBy"/>
+                                              <swrl:argument1 rdf:resource="stmt"/>
+                                              <swrl:argument2 rdf:resource="agent"/>
+                                            </swrl:IndividualPropertyAtom>
+                                          </rdf:first>
+                                          <rdf:rest>
+                                            <swrl:AtomList>
+                                              <rdf:first>
+                                                <swrl:IndividualPropertyAtom>
+                                                  <swrl:propertyPredicate rdf:resource="hasChildNode"/>
+                                                  <swrl:argument1 rdf:resource="stmt"/>
+                                                  <swrl:argument2 rdf:resource="r"/>
+                                                </swrl:IndividualPropertyAtom>
+                                              </rdf:first>
+                                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                            </swrl:AtomList>
+                                          </rdf:rest>
+                                        </swrl:AtomList>
+                                      </rdf:rest>
+                                    </swrl:AtomList>
+                                  </rdf:rest>
+                                </swrl:AtomList>
+                              </rdf:rest>
+                            </swrl:AtomList>
+                          </rdf:rest>
+                        </swrl:AtomList>
+                      </rdf:rest>
+                    </swrl:AtomList>
+                  </rdf:rest>
+                </swrl:AtomList>
+              </rdf:rest>
+            </swrl:AtomList>
+          </rdf:rest>
+        </swrl:AtomList>
+      </rdf:rest>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="hasAlignmentState"/>
+          <swrl:argument1 rdf:resource="r"/>
+          <swrl:argument2 rdf:resource="Aligned"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tag table references are permitted when at least one or few policies.</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S10</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="Policy"/>
+          <swrl:argument1 rdf:resource="p"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <swrl:AtomList>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="hasGrantLevel"/>
+              <swrl:argument1 rdf:resource="p"/>
+              <swrl:argument2 rdf:resource="TableLevel"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <swrl:AtomList>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="hasGrantType"/>
+                  <swrl:argument1 rdf:resource="p"/>
+                  <swrl:argument2 rdf:resource="ProhibitionGrant"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <swrl:AtomList>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="appliesToScope"/>
+                      <swrl:argument1 rdf:resource="p"/>
+                      <swrl:argument2 rdf:resource="ProcessActionScope"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest>
+                    <swrl:AtomList>
+                      <rdf:first>
+                        <swrl:IndividualPropertyAtom>
+                          <swrl:propertyPredicate rdf:resource="controlAccessTo"/>
+                          <swrl:argument1 rdf:resource="p"/>
+                          <swrl:argument2 rdf:resource="t"/>
+                        </swrl:IndividualPropertyAtom>
+                      </rdf:first>
+                      <rdf:rest>
+                        <swrl:AtomList>
+                          <rdf:first>
+                            <swrl:ClassAtom>
+                              <swrl:classPredicate rdf:resource="Table"/>
+                              <swrl:argument1 rdf:resource="t"/>
+                            </swrl:ClassAtom>
+                          </rdf:first>
+                          <rdf:rest>
+                            <swrl:AtomList>
+                              <rdf:first>
+                                <swrl:IndividualPropertyAtom>
+                                  <swrl:propertyPredicate rdf:resource="hasColumn"/>
+                                  <swrl:argument1 rdf:resource="t"/>
+                                  <swrl:argument2 rdf:resource="c"/>
+                                </swrl:IndividualPropertyAtom>
+                              </rdf:first>
+                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                            </swrl:AtomList>
+                          </rdf:rest>
+                        </swrl:AtomList>
+                      </rdf:rest>
+                    </swrl:AtomList>
+                  </rdf:rest>
+                </swrl:AtomList>
+              </rdf:rest>
+            </swrl:AtomList>
+          </rdf:rest>
+        </swrl:AtomList>
+      </rdf:rest>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="controlAccessTo"/>
+          <swrl:argument1 rdf:resource="p"/>
+          <swrl:argument2 rdf:resource="c"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest>
+        <swrl:AtomList>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="hasGrantLevel"/>
+              <swrl:argument1 rdf:resource="p"/>
+              <swrl:argument2 rdf:resource="ColumnLevel"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+        </swrl:AtomList>
+      </rdf:rest>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">where there is a policy defined for table level prohibition grant for process scope, then add all the column under those tables as controlAccessTo property</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S12</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="Policy"/>
+          <swrl:argument1 rdf:resource="p"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <swrl:AtomList>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="hasGrantLevel"/>
+              <swrl:argument1 rdf:resource="p"/>
+              <swrl:argument2 rdf:resource="RowLevel"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <swrl:AtomList>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="hasGrantType"/>
+                  <swrl:argument1 rdf:resource="p"/>
+                  <swrl:argument2 rdf:resource="ProhibitionGrant"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <swrl:AtomList>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="hasAction"/>
+                      <swrl:argument1 rdf:resource="p"/>
+                      <swrl:argument2 rdf:resource="ReadAction"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest>
+                    <swrl:AtomList>
+                      <rdf:first>
+                        <swrl:IndividualPropertyAtom>
+                          <swrl:propertyPredicate rdf:resource="controlAccessTo"/>
+                          <swrl:argument1 rdf:resource="p"/>
+                          <swrl:argument2 rdf:resource="t"/>
+                        </swrl:IndividualPropertyAtom>
+                      </rdf:first>
+                      <rdf:rest>
+                        <swrl:AtomList>
+                          <rdf:first>
+                            <swrl:ClassAtom>
+                              <swrl:classPredicate rdf:resource="Statement"/>
+                              <swrl:argument1 rdf:resource="stmt"/>
+                            </swrl:ClassAtom>
+                          </rdf:first>
+                          <rdf:rest>
+                            <swrl:AtomList>
+                              <rdf:first>
+                                <swrl:IndividualPropertyAtom>
+                                  <swrl:propertyPredicate rdf:resource="representsAction"/>
+                                  <swrl:argument1 rdf:resource="stmt"/>
+                                  <swrl:argument2 rdf:resource="ReadAction"/>
+                                </swrl:IndividualPropertyAtom>
+                              </rdf:first>
+                              <rdf:rest>
+                                <swrl:AtomList>
+                                  <rdf:first>
+                                    <swrl:IndividualPropertyAtom>
+                                      <swrl:propertyPredicate rdf:resource="hasChildNode"/>
+                                      <swrl:argument1 rdf:resource="stmt"/>
+                                      <swrl:argument2 rdf:resource="tref"/>
+                                    </swrl:IndividualPropertyAtom>
+                                  </rdf:first>
+                                  <rdf:rest>
+                                    <swrl:AtomList>
+                                      <rdf:first>
+                                        <swrl:IndividualPropertyAtom>
+                                          <swrl:propertyPredicate rdf:resource="referencesToColumn"/>
+                                          <swrl:argument1 rdf:resource="tref"/>
+                                          <swrl:argument2 rdf:resource="t"/>
+                                        </swrl:IndividualPropertyAtom>
+                                      </rdf:first>
+                                      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                    </swrl:AtomList>
+                                  </rdf:rest>
+                                </swrl:AtomList>
+                              </rdf:rest>
+                            </swrl:AtomList>
+                          </rdf:rest>
+                        </swrl:AtomList>
+                      </rdf:rest>
+                    </swrl:AtomList>
+                  </rdf:rest>
+                </swrl:AtomList>
+              </rdf:rest>
+            </swrl:AtomList>
+          </rdf:rest>
+        </swrl:AtomList>
+      </rdf:rest>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="hasAlignmentState"/>
+          <swrl:argument1 rdf:resource="stmt"/>
+          <swrl:argument2 rdf:resource="RowTag"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tag statements when queries trying to read from the table that have defined the policies for.</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S15</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="Policy"/>
+          <swrl:argument1 rdf:resource="p"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <swrl:AtomList>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="hasGrantLevel"/>
+              <swrl:argument1 rdf:resource="p"/>
+              <swrl:argument2 rdf:resource="TableLevel"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <swrl:AtomList>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="hasGrantType"/>
+                  <swrl:argument1 rdf:resource="p"/>
+                  <swrl:argument2 rdf:resource="ProhibitionGrant"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <swrl:AtomList>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="appliesToScope"/>
+                      <swrl:argument1 rdf:resource="p"/>
+                      <swrl:argument2 rdf:resource="scope"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest>
+                    <swrl:AtomList>
+                      <rdf:first>
+                        <swrl:IndividualPropertyAtom>
+                          <swrl:propertyPredicate rdf:resource="hasAction"/>
+                          <swrl:argument1 rdf:resource="p"/>
+                          <swrl:argument2 rdf:resource="ModifyAction"/>
+                        </swrl:IndividualPropertyAtom>
+                      </rdf:first>
+                      <rdf:rest>
+                        <swrl:AtomList>
+                          <rdf:first>
+                            <swrl:IndividualPropertyAtom>
+                              <swrl:propertyPredicate rdf:resource="controlAccessTo"/>
+                              <swrl:argument1 rdf:resource="p"/>
+                              <swrl:argument2 rdf:resource="t"/>
+                            </swrl:IndividualPropertyAtom>
+                          </rdf:first>
+                          <rdf:rest>
+                            <swrl:AtomList>
+                              <rdf:first>
+                                <swrl:ClassAtom>
+                                  <swrl:classPredicate rdf:resource="Statement"/>
+                                  <swrl:argument1 rdf:resource="stmt"/>
+                                </swrl:ClassAtom>
+                              </rdf:first>
+                              <rdf:rest>
+                                <swrl:AtomList>
+                                  <rdf:first>
+                                    <swrl:IndividualPropertyAtom>
+                                      <swrl:propertyPredicate rdf:resource="representsAction"/>
+                                      <swrl:argument1 rdf:resource="stmt"/>
+                                      <swrl:argument2 rdf:resource="ModifyAction"/>
+                                    </swrl:IndividualPropertyAtom>
+                                  </rdf:first>
+                                  <rdf:rest>
+                                    <swrl:AtomList>
+                                      <rdf:first>
+                                        <swrl:IndividualPropertyAtom>
+                                          <swrl:propertyPredicate rdf:resource="hasClause"/>
+                                          <swrl:argument1 rdf:resource="stmt"/>
+                                          <swrl:argument2 rdf:resource="clause"/>
+                                        </swrl:IndividualPropertyAtom>
+                                      </rdf:first>
+                                      <rdf:rest>
+                                        <swrl:AtomList>
+                                          <rdf:first>
+                                            <swrl:IndividualPropertyAtom>
+                                              <swrl:propertyPredicate rdf:resource="hasEffectiveScope"/>
+                                              <swrl:argument1 rdf:resource="clause"/>
+                                              <swrl:argument2 rdf:resource="scope"/>
+                                            </swrl:IndividualPropertyAtom>
+                                          </rdf:first>
+                                          <rdf:rest>
+                                            <swrl:AtomList>
+                                              <rdf:first>
+                                                <swrl:IndividualPropertyAtom>
+                                                  <swrl:propertyPredicate rdf:resource="hasChildNode"/>
+                                                  <swrl:argument1 rdf:resource="stmt"/>
+                                                  <swrl:argument2 rdf:resource="tref"/>
+                                                </swrl:IndividualPropertyAtom>
+                                              </rdf:first>
+                                              <rdf:rest>
+                                                <swrl:AtomList>
+                                                  <rdf:first>
+                                                    <swrl:IndividualPropertyAtom>
+                                                      <swrl:propertyPredicate rdf:resource="referencesToColumn"/>
+                                                      <swrl:argument1 rdf:resource="tref"/>
+                                                      <swrl:argument2 rdf:resource="t"/>
+                                                    </swrl:IndividualPropertyAtom>
+                                                  </rdf:first>
+                                                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                </swrl:AtomList>
+                                              </rdf:rest>
+                                            </swrl:AtomList>
+                                          </rdf:rest>
+                                        </swrl:AtomList>
+                                      </rdf:rest>
+                                    </swrl:AtomList>
+                                  </rdf:rest>
+                                </swrl:AtomList>
+                              </rdf:rest>
+                            </swrl:AtomList>
+                          </rdf:rest>
+                        </swrl:AtomList>
+                      </rdf:rest>
+                    </swrl:AtomList>
+                  </rdf:rest>
+                </swrl:AtomList>
+              </rdf:rest>
+            </swrl:AtomList>
+          </rdf:rest>
+        </swrl:AtomList>
+      </rdf:rest>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="hasAlignmentState"/>
+          <swrl:argument1 rdf:resource="stmt"/>
+          <swrl:argument2 rdf:resource="Violated"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tag query node with mission violation when the they try to modify table with prohibit the access</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S13</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="Policy"/>
+          <swrl:argument1 rdf:resource="p"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <swrl:AtomList>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="hasGrantLevel"/>
+              <swrl:argument1 rdf:resource="p"/>
+              <swrl:argument2 rdf:resource="TableLevel"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <swrl:AtomList>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="hasGrantType"/>
+                  <swrl:argument1 rdf:resource="p"/>
+                  <swrl:argument2 rdf:resource="PermissionGrant"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <swrl:AtomList>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="appliesToScope"/>
+                      <swrl:argument1 rdf:resource="p"/>
+                      <swrl:argument2 rdf:resource="scope"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest>
+                    <swrl:AtomList>
+                      <rdf:first>
+                        <swrl:IndividualPropertyAtom>
+                          <swrl:propertyPredicate rdf:resource="hasAction"/>
+                          <swrl:argument1 rdf:resource="p"/>
+                          <swrl:argument2 rdf:resource="ModifyAction"/>
+                        </swrl:IndividualPropertyAtom>
+                      </rdf:first>
+                      <rdf:rest>
+                        <swrl:AtomList>
+                          <rdf:first>
+                            <swrl:IndividualPropertyAtom>
+                              <swrl:propertyPredicate rdf:resource="controlAccessTo"/>
+                              <swrl:argument1 rdf:resource="p"/>
+                              <swrl:argument2 rdf:resource="t"/>
+                            </swrl:IndividualPropertyAtom>
+                          </rdf:first>
+                          <rdf:rest>
+                            <swrl:AtomList>
+                              <rdf:first>
+                                <swrl:ClassAtom>
+                                  <swrl:classPredicate rdf:resource="Statement"/>
+                                  <swrl:argument1 rdf:resource="stmt"/>
+                                </swrl:ClassAtom>
+                              </rdf:first>
+                              <rdf:rest>
+                                <swrl:AtomList>
+                                  <rdf:first>
+                                    <swrl:IndividualPropertyAtom>
+                                      <swrl:propertyPredicate rdf:resource="representsAction"/>
+                                      <swrl:argument1 rdf:resource="stmt"/>
+                                      <swrl:argument2 rdf:resource="ModifyAction"/>
+                                    </swrl:IndividualPropertyAtom>
+                                  </rdf:first>
+                                  <rdf:rest>
+                                    <swrl:AtomList>
+                                      <rdf:first>
+                                        <swrl:IndividualPropertyAtom>
+                                          <swrl:propertyPredicate rdf:resource="hasClause"/>
+                                          <swrl:argument1 rdf:resource="stmt"/>
+                                          <swrl:argument2 rdf:resource="clause"/>
+                                        </swrl:IndividualPropertyAtom>
+                                      </rdf:first>
+                                      <rdf:rest>
+                                        <swrl:AtomList>
+                                          <rdf:first>
+                                            <swrl:IndividualPropertyAtom>
+                                              <swrl:propertyPredicate rdf:resource="hasEffectiveScope"/>
+                                              <swrl:argument1 rdf:resource="clause"/>
+                                              <swrl:argument2 rdf:resource="scope"/>
+                                            </swrl:IndividualPropertyAtom>
+                                          </rdf:first>
+                                          <rdf:rest>
+                                            <swrl:AtomList>
+                                              <rdf:first>
+                                                <swrl:IndividualPropertyAtom>
+                                                  <swrl:propertyPredicate rdf:resource="hasChildNode"/>
+                                                  <swrl:argument1 rdf:resource="stmt"/>
+                                                  <swrl:argument2 rdf:resource="tref"/>
+                                                </swrl:IndividualPropertyAtom>
+                                              </rdf:first>
+                                              <rdf:rest>
+                                                <swrl:AtomList>
+                                                  <rdf:first>
+                                                    <swrl:IndividualPropertyAtom>
+                                                      <swrl:propertyPredicate rdf:resource="referencesToColumn"/>
+                                                      <swrl:argument1 rdf:resource="tref"/>
+                                                      <swrl:argument2 rdf:resource="t"/>
+                                                    </swrl:IndividualPropertyAtom>
+                                                  </rdf:first>
+                                                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                </swrl:AtomList>
+                                              </rdf:rest>
+                                            </swrl:AtomList>
+                                          </rdf:rest>
+                                        </swrl:AtomList>
+                                      </rdf:rest>
+                                    </swrl:AtomList>
+                                  </rdf:rest>
+                                </swrl:AtomList>
+                              </rdf:rest>
+                            </swrl:AtomList>
+                          </rdf:rest>
+                        </swrl:AtomList>
+                      </rdf:rest>
+                    </swrl:AtomList>
+                  </rdf:rest>
+                </swrl:AtomList>
+              </rdf:rest>
+            </swrl:AtomList>
+          </rdf:rest>
+        </swrl:AtomList>
+      </rdf:rest>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="hasAlignmentState"/>
+          <swrl:argument1 rdf:resource="stmt"/>
+          <swrl:argument2 rdf:resource="Aligned"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tag query node with permission alignment when they try to modify table with granted permission</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S14</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="Policy"/>
+          <swrl:argument1 rdf:resource="p"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <swrl:AtomList>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="hasGrantType"/>
+              <swrl:argument1 rdf:resource="p"/>
+              <swrl:argument2 rdf:resource="ProhibitionGrant"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <swrl:AtomList>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="hasGrantLevel"/>
+                  <swrl:argument1 rdf:resource="p"/>
+                  <swrl:argument2 rdf:resource="ColumnLevel"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <swrl:AtomList>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="hasAction"/>
+                      <swrl:argument1 rdf:resource="p"/>
+                      <swrl:argument2 rdf:resource="ReadAction"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest>
+                    <swrl:AtomList>
+                      <rdf:first>
+                        <swrl:IndividualPropertyAtom>
+                          <swrl:propertyPredicate rdf:resource="controlAccessTo"/>
+                          <swrl:argument1 rdf:resource="p"/>
+                          <swrl:argument2 rdf:resource="col"/>
+                        </swrl:IndividualPropertyAtom>
+                      </rdf:first>
+                      <rdf:rest>
+                        <swrl:AtomList>
+                          <rdf:first>
+                            <swrl:IndividualPropertyAtom>
+                              <swrl:propertyPredicate rdf:resource="hasAgent"/>
+                              <swrl:argument1 rdf:resource="p"/>
+                              <swrl:argument2 rdf:resource="agent"/>
+                            </swrl:IndividualPropertyAtom>
+                          </rdf:first>
+                          <rdf:rest>
+                            <swrl:AtomList>
+                              <rdf:first>
+                                <swrl:ClassAtom>
+                                  <swrl:classPredicate rdf:resource="ReferenceNode"/>
+                                  <swrl:argument1 rdf:resource="ref"/>
+                                </swrl:ClassAtom>
+                              </rdf:first>
+                              <rdf:rest>
+                                <swrl:AtomList>
+                                  <rdf:first>
+                                    <swrl:IndividualPropertyAtom>
+                                      <swrl:propertyPredicate rdf:resource="referencesToColumn"/>
+                                      <swrl:argument1 rdf:resource="ref"/>
+                                      <swrl:argument2 rdf:resource="col"/>
+                                    </swrl:IndividualPropertyAtom>
+                                  </rdf:first>
+                                  <rdf:rest>
+                                    <swrl:AtomList>
+                                      <rdf:first>
+                                        <swrl:ClassAtom>
+                                          <swrl:classPredicate rdf:resource="Statement"/>
+                                          <swrl:argument1 rdf:resource="stmt"/>
+                                        </swrl:ClassAtom>
+                                      </rdf:first>
+                                      <rdf:rest>
+                                        <swrl:AtomList>
+                                          <rdf:first>
+                                            <swrl:IndividualPropertyAtom>
+                                              <swrl:propertyPredicate rdf:resource="representsAction"/>
+                                              <swrl:argument1 rdf:resource="stmt"/>
+                                              <swrl:argument2 rdf:resource="ReadAction"/>
+                                            </swrl:IndividualPropertyAtom>
+                                          </rdf:first>
+                                          <rdf:rest>
+                                            <swrl:AtomList>
+                                              <rdf:first>
+                                                <swrl:IndividualPropertyAtom>
+                                                  <swrl:propertyPredicate rdf:resource="hasChildNode"/>
+                                                  <swrl:argument1 rdf:resource="stmt"/>
+                                                  <swrl:argument2 rdf:resource="ref"/>
+                                                </swrl:IndividualPropertyAtom>
+                                              </rdf:first>
+                                              <rdf:rest>
+                                                <swrl:AtomList>
+                                                  <rdf:first>
+                                                    <swrl:IndividualPropertyAtom>
+                                                      <swrl:propertyPredicate rdf:resource="executedBy"/>
+                                                      <swrl:argument1 rdf:resource="stmt"/>
+                                                      <swrl:argument2 rdf:resource="agent"/>
+                                                    </swrl:IndividualPropertyAtom>
+                                                  </rdf:first>
+                                                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                </swrl:AtomList>
+                                              </rdf:rest>
+                                            </swrl:AtomList>
+                                          </rdf:rest>
+                                        </swrl:AtomList>
+                                      </rdf:rest>
+                                    </swrl:AtomList>
+                                  </rdf:rest>
+                                </swrl:AtomList>
+                              </rdf:rest>
+                            </swrl:AtomList>
+                          </rdf:rest>
+                        </swrl:AtomList>
+                      </rdf:rest>
+                    </swrl:AtomList>
+                  </rdf:rest>
+                </swrl:AtomList>
+              </rdf:rest>
+            </swrl:AtomList>
+          </rdf:rest>
+        </swrl:AtomList>
+      </rdf:rest>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="hasAlignmentState"/>
+          <swrl:argument1 rdf:resource="ref"/>
+          <swrl:argument2 rdf:resource="Violated"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">if the column of table mapped with the referencenode is defined under a prohibitiongrant rule for readaction, then those nodes with mapp with the violated node</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S9</rdfs:label>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="InsertStatement"/>
+          <swrl:argument1 rdf:resource="x"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:body>
+  <swrl:head>
+    <swrl:AtomList>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="representsAction"/>
+          <swrl:argument1 rdf:resource="x"/>
+          <swrl:argument2 rdf:resource="InsertAction"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </swrl:AtomList>
+  </swrl:head>
+  <swrl2:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl2:isRuleEnabled>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tag all insert statement as InsertAction</rdfs:comment>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S7</rdfs:label>
+</swrl:Imp>
+
+
+</rdf:RDF>
