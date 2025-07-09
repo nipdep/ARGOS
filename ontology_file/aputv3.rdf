@@ -55,6 +55,7 @@
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#relatedPolicy">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Policy"/>
     </owl:ObjectProperty>
     
@@ -72,8 +73,10 @@
     <!-- http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/allowsClause -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/allowsClause">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Statement"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:ObjectProperty>
     
 
@@ -82,6 +85,7 @@
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/belongsToStatement">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Statement"/>
     </owl:ObjectProperty>
     
@@ -107,6 +111,7 @@
     <!-- http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/executedBy -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/executedBy">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Statement"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Agent"/>
     </owl:ObjectProperty>
@@ -155,8 +160,11 @@
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasClause">
         <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasChildNode"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/immediateChildNode"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Statement"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:ObjectProperty>
     
 
@@ -164,8 +172,10 @@
     <!-- http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasColumn -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasColumn">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Object"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Table"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Column"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Object"/>
     </owl:ObjectProperty>
     
 
@@ -174,6 +184,7 @@
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasEffectiveScope">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ActionScope"/>
     </owl:ObjectProperty>
     
@@ -183,8 +194,11 @@
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasExpression">
         <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasChildNode"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/immediateChildNode"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:ObjectProperty>
     
 
@@ -218,7 +232,9 @@
     <!-- http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasRow -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasRow">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Object"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Table"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Object"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Row"/>
     </owl:ObjectProperty>
     
@@ -237,6 +253,7 @@
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasStatus">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNodeStatus"/>
     </owl:ObjectProperty>
     
@@ -246,6 +263,8 @@
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/hasTable">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Database"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Object"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Object"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Table"/>
     </owl:ObjectProperty>
     
@@ -284,7 +303,10 @@
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/referencesToColumn">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ColumnRef"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Column"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Object"/>
     </owl:ObjectProperty>
     
 
@@ -292,7 +314,10 @@
     <!-- http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/referencesToTable -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/referencesToTable">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/TableRef"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Object"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Table"/>
     </owl:ObjectProperty>
     
@@ -301,6 +326,7 @@
     <!-- http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/representsAction -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/representsAction">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Statement"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Action"/>
     </owl:ObjectProperty>
@@ -409,6 +435,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#DeleteClause">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -417,6 +444,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#InsertClause">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -449,6 +477,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Alias">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -473,6 +502,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ColumnRef">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -488,6 +518,7 @@
     <!-- http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/DeleteStatement -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/DeleteStatement">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Statement"/>
     </owl:Class>
     
@@ -505,6 +536,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/FromClause">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -513,6 +545,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Function">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -533,6 +566,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/GroupByClause">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -540,6 +574,7 @@
     <!-- http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/InsertStatement -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/InsertStatement">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Statement"/>
     </owl:Class>
     
@@ -549,6 +584,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/IntoClause">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -557,6 +593,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/LimitClause">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -565,6 +602,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Literal">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -579,6 +617,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Operator">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -619,6 +658,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SelectClause">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -626,6 +666,7 @@
     <!-- http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SelectStatement -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SelectStatement">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Statement"/>
     </owl:Class>
     
@@ -635,6 +676,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SetClause">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -659,6 +701,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/TableRef">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -667,6 +710,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/UpdateClause">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -674,6 +718,7 @@
     <!-- http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/UpdateStatement -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/UpdateStatement">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Statement"/>
     </owl:Class>
     
@@ -683,6 +728,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ValuesClause">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -691,6 +737,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/WhereClause">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Clause"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -699,6 +746,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Wildcard">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Expression"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
     </owl:Class>
     
 
@@ -952,6 +1000,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ProcessActionScope">
         <rdf:type rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ActionScope"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <hasParentNode rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/q005"/>
         <hasParentNode rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/where001"/>
     </owl:NamedIndividual>
@@ -1013,6 +1062,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ViewActionScope">
         <rdf:type rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ActionScope"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNode"/>
         <apuf:hasNodeType rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#NonFunctional"/>
     </owl:NamedIndividual>
     
@@ -1449,6 +1499,7 @@
         <apuf:relatedPolicy rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#p005"/>
         <hasParentNode rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/q002"/>
         <hasParentNode rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/sel002"/>
+        <hasStatus rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Violated"/>
         <immediateParentNode rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/sel002"/>
         <referencesToColumn rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c002"/>
     </owl:NamedIndividual>
