@@ -1,0 +1,6 @@
+# Ignore all files in the output directory
+output/
+
+# Ignore cache files
+cache/
+__pycache__/
