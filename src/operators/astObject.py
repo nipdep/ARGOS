@@ -55,7 +55,7 @@ class SqlglotOperator:
         Generates the SQL string from the current state of the AST.
         """
         if not self.ast:
-            return "-- Invalid AST"
+            return None
         return self.ast.sql(pretty=pretty)
 
     def get_node_by_id(self, node_id: str) -> Expression | None:
