@@ -41,6 +41,11 @@ class TreeNode:
             if isinstance(alias_expr, exp.Identifier):
                 self.alias = alias_expr.name
 
+        if self.name == "CTE":
+            alias_expr = sqlglot_node.args.get("alias")
+            if isinstance(alias_expr, exp.TableAlias):
+                self.alias = alias_expr.this.name
+
         if self.name == "Literal":
             self.value = sqlglot_node.this
         
@@ -74,11 +79,11 @@ class TreeNode:
             suffix += f" [reftable={self.reftable}, refcol={self.refcol}]"
         if self.name == "TableRef":
             suffix += f" [reftable={self.reftable}]"
-        if self.name == "Alias" and hasattr(self, "alias"):
-            suffix += f" [alias={self.alias}]"
         if self.name == "Literal" and hasattr(self, "value"):
             suffix += f" [value={self.value}]"
 
+        if hasattr(self, "alias"):
+            suffix += f" [alias={self.alias}]"
         if hasattr(self, "table_reference_id"):
             suffix += f" [table_reference_id={self.table_reference_id}]"
         if hasattr(self, "column_reference_id"):
