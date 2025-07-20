@@ -87,7 +87,8 @@ class ASTPruner:
                 # print(f"    - Found conditions: {condition_list}")
                 if not condition_list: continue
                 
-                condition_str = str(condition_list).strip("['']")
+                condition_str = str(condition_list).strip("['']").strip('"')
+                print(repr(condition_str))
                 parent_stmt = self.tree_op.get_parent_statement(inst)
                 # print(f"parent statement: {parent_stmt}")
                 if parent_stmt and parent_stmt.name == "SelectStatement":
@@ -127,17 +128,17 @@ class ASTPruner:
             
             # Apply the main pruning transformer
             # print(f"     - Iteration {i + 1}: Applying pruning transformer... {self.sql_op.ast}")
-            # try:
-            self.sql_op.ast = self.sql_op.ast.transform(self._pruning_transformer)
-            # except AssertionError as e:
-            #     self.sql_op.ast = None
-            #     return
+            try:
+                self.sql_op.ast = self.sql_op.ast.transform(self._pruning_transformer)
+            except AssertionError as e:
+                self.sql_op.ast = None
+                break
 
             current_sql = self.sql_op.ast.sql(pretty=True)
 
             # If the AST has not changed, the pruning is complete
-            if current_sql == previous_sql:
-                print(f"     - Pruning complete. AST stabilized after {i + 1} iteration(s).")
+            if not self.sql_op.ast or self.sql_op.ast.sql() == previous_sql:
+                print(f"    - Pruning complete. AST stabilized after {i + 1} iteration(s).")
                 break
             
             if i == max_iterations - 1:
@@ -214,6 +215,15 @@ class ASTPruner:
 
         # Rule 5: Other clean-up rules.
         if isinstance(node, exp.Join) and node.on is None:
+            return None
+
+        # Rule 6: cleanup empty Function node.
+        if isinstance(node, exp.Func) and node.this is None:
+            print(f"    - Cascading removal of Function '{node.sql()}' because its argument was removed.")
+            return None
+        
+        if isinstance(node, exp.Alias) and node.this is None:
+            print(f"    - Cascading removal of Alias '{node.sql()}' because its expression was removed.")
             return None
 
         return node
