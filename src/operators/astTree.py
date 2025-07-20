@@ -27,7 +27,8 @@ class ASTTreeOperator:
         "Having": "HavingClause",
         "Join": "JoinClause",
         "Insert": "InsertClause",
-        "Delete": "DeleteClause"
+        "Delete": "DeleteClause",
+        "With": "WithClause"
     }
 
     STATEMENT_TYPES = {
@@ -39,6 +40,7 @@ class ASTTreeOperator:
     
     EXPRESSION_CATEGORIES = {
         "Alias": "Alias", 
+        "CTE": "CTE",
         "Table": "TableRef", 
         "Column": "ColumnRef", 
         "Star": "Wildcard",
@@ -55,6 +57,8 @@ class ASTTreeOperator:
         "LT": "Operator", 
         "GTE": "Operator", 
         "LTE": "Operator", 
+        "Ordered": "Operator",
+        "In": "Operator",
         "Literal": "Literal"
     }
 
@@ -228,6 +232,9 @@ class ASTTreeOperator:
         
         if isinstance(sqlglot_node, exp.Identifier) and parent_node.name == "Alias":
             return None
+        
+        if isinstance(sqlglot_node, exp.TableAlias) and parent_node.name == "CTE":
+            return None
 
         if isinstance(sqlglot_node, exp.TableAlias) and parent_node.name == "TableRef":
             return None
@@ -292,7 +299,7 @@ class ASTTreeOperator:
         """Finds the first ancestor of a node that is a 'Statement'."""
         current_node = self.get_node_by_id(node_id)
         while current_node:
-            if current_node.kind == "Statement" or current_node.name == "Subquery":
+            if current_node.kind == "Statement" or current_node.name == "Subquery" or current_node.name == "CTE":
                 return current_node
             current_node = current_node.parent
         return None
@@ -327,6 +334,24 @@ class ASTTreeOperator:
 
         _walker(node)
         return subqueries
+    
+    # def find_immediate_with_clauses(self, node: 'TreeNode') -> list['TreeNode']:
+    #     """
+    #     Finds all WithClause nodes that are direct children of the given `node`
+    #     but not nested inside another WithClause within that same scope.
+    #     """
+    #     with_clauses = []
+        
+    #     def _walker(current_node, is_top_level=True):
+    #         if not is_top_level and current_node.name == 'WithClause':
+    #             with_clauses.append(current_node)
+    #             return
+            
+    #         for child in current_node.children:
+    #             _walker(child, is_top_level=False)
+
+    #     _walker(node)
+    #     return with_clauses
 
     def get_tables_in_from_clause(self, stmt_node: 'TreeNode') -> list['TreeNode']:
         """
@@ -349,6 +374,17 @@ class ASTTreeOperator:
                     table_refs.append(child)
         return table_refs
 
+    def get_with_clauses(self, stmt_node: 'TreeNode') -> list['TreeNode']:
+        """
+        Finds the WITH clause of a statement and returns a list of its CTEs (Common Table Expressions).
+        """
+        # Simplified example:
+        with_clauses = []
+        for child in stmt_node.children:
+            if child.name == 'WithClause':
+                # The children of the WithClause are the CTEs.
+                with_clauses.extend(child.children)
+        return with_clauses
 
     def get_select_list(self, stmt_node: 'TreeNode') -> list['TreeNode']:
         """
