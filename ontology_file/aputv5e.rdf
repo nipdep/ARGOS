@@ -1036,7 +1036,6 @@
         <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c004"/>
         <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c006"/>
         <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c007"/>
-        <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c014"/>
         <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c016"/>
         <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c020"/>
         <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c021"/>
@@ -1059,6 +1058,7 @@
         <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c005"/>
         <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c008"/>
         <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c009"/>
+        <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c014"/>
         <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c015"/>
         <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c031"/>
         <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/c033"/>
@@ -1084,6 +1084,34 @@
         <hasGrantLevel rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/RowLevel"/>
         <hasGrantType rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Conditional"/>
         <apuf:hasActionCondition>gender = &apos;male&apos;</apuf:hasActionCondition>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#p008 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#p008">
+        <rdf:type rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Policy"/>
+        <controlAccessTo rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t001"/>
+        <hasAction rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ReadAction"/>
+        <hasActionScope rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ViewActionScope"/>
+        <hasAgent rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/a0012"/>
+        <hasGrantLevel rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/TableLevel"/>
+        <hasGrantType rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Prohibited"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#p009 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#p009">
+        <rdf:type rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Policy"/>
+        <hasAction rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ReadAction"/>
+        <hasActionScope rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ProcessActionScope"/>
+        <hasAgent rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/a0012"/>
+        <hasGrantLevel rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/RowLevel"/>
+        <hasGrantType rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Prohibited"/>
+        <apuf:hasActionCondition>status = &apos;active&apos;</apuf:hasActionCondition>
     </owl:NamedIndividual>
     
 
@@ -3169,6 +3197,7 @@
         <apuf:hasNodeType rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#NonFunctional"/>
         <apuf:hasNodeType rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#Reference"/>
         <apuf:inferredRule rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#rrp"/>
+        <apuf:inferredRule rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#rrv"/>
         <apuf:relatedPolicy rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#p007"/>
         <hasParentNode rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/from007"/>
         <hasParentNode rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/q007"/>
@@ -4387,9 +4416,9 @@
                                                                                                                 <rdf:first>
                                                                                                                     <rdf:Description>
                                                                                                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                                                                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#ofClauseNode"/>
+                                                                                                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#hasEffectiveScope"/>
                                                                                                                         <swrl:argument1 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ref"/>
-                                                                                                                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/cls"/>
+                                                                                                                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ViewActionScope"/>
                                                                                                                     </rdf:Description>
                                                                                                                 </rdf:first>
                                                                                                                 <rdf:rest>
@@ -4398,38 +4427,12 @@
                                                                                                                         <rdf:first>
                                                                                                                             <rdf:Description>
                                                                                                                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                                                                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/representsScope"/>
-                                                                                                                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/cls"/>
-                                                                                                                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ViewActionScope"/>
+                                                                                                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/referencesToTable"/>
+                                                                                                                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ref"/>
+                                                                                                                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t"/>
                                                                                                                             </rdf:Description>
                                                                                                                         </rdf:first>
-                                                                                                                        <rdf:rest>
-                                                                                                                            <rdf:Description>
-                                                                                                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                                                                                                                <rdf:first>
-                                                                                                                                    <rdf:Description>
-                                                                                                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                                                                                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#hasEffectiveScope"/>
-                                                                                                                                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ref"/>
-                                                                                                                                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ViewActionScope"/>
-                                                                                                                                    </rdf:Description>
-                                                                                                                                </rdf:first>
-                                                                                                                                <rdf:rest>
-                                                                                                                                    <rdf:Description>
-                                                                                                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                                                                                                                        <rdf:first>
-                                                                                                                                            <rdf:Description>
-                                                                                                                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                                                                                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/referencesToTable"/>
-                                                                                                                                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ref"/>
-                                                                                                                                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t"/>
-                                                                                                                                            </rdf:Description>
-                                                                                                                                        </rdf:first>
-                                                                                                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                                                                                                                    </rdf:Description>
-                                                                                                                                </rdf:rest>
-                                                                                                                            </rdf:Description>
-                                                                                                                        </rdf:rest>
+                                                                                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
                                                                                                                     </rdf:Description>
                                                                                                                 </rdf:rest>
                                                                                                             </rdf:Description>
@@ -4639,9 +4642,9 @@
                                                                                                                 <rdf:first>
                                                                                                                     <rdf:Description>
                                                                                                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                                                                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#ofClauseNode"/>
+                                                                                                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#hasEffectiveScope"/>
                                                                                                                         <swrl:argument1 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ref"/>
-                                                                                                                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/cls"/>
+                                                                                                                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ViewActionScope"/>
                                                                                                                     </rdf:Description>
                                                                                                                 </rdf:first>
                                                                                                                 <rdf:rest>
@@ -4650,38 +4653,12 @@
                                                                                                                         <rdf:first>
                                                                                                                             <rdf:Description>
                                                                                                                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                                                                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/representsScope"/>
-                                                                                                                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/cls"/>
-                                                                                                                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ViewActionScope"/>
+                                                                                                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/referencesToTable"/>
+                                                                                                                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ref"/>
+                                                                                                                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t"/>
                                                                                                                             </rdf:Description>
                                                                                                                         </rdf:first>
-                                                                                                                        <rdf:rest>
-                                                                                                                            <rdf:Description>
-                                                                                                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                                                                                                                <rdf:first>
-                                                                                                                                    <rdf:Description>
-                                                                                                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                                                                                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#hasEffectiveScope"/>
-                                                                                                                                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ref"/>
-                                                                                                                                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ViewActionScope"/>
-                                                                                                                                    </rdf:Description>
-                                                                                                                                </rdf:first>
-                                                                                                                                <rdf:rest>
-                                                                                                                                    <rdf:Description>
-                                                                                                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                                                                                                                        <rdf:first>
-                                                                                                                                            <rdf:Description>
-                                                                                                                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                                                                                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/referencesToTable"/>
-                                                                                                                                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/ref"/>
-                                                                                                                                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/t"/>
-                                                                                                                                            </rdf:Description>
-                                                                                                                                        </rdf:first>
-                                                                                                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                                                                                                                    </rdf:Description>
-                                                                                                                                </rdf:rest>
-                                                                                                                            </rdf:Description>
-                                                                                                                        </rdf:rest>
+                                                                                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
                                                                                                                     </rdf:Description>
                                                                                                                 </rdf:rest>
                                                                                                             </rdf:Description>
