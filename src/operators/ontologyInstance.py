@@ -120,6 +120,12 @@ class OntologyOperator:
             return str(value) if value is not None else None
         except (KeyError, AttributeError):
             return None
+        
+    def close(self):
+        """
+        Closes the ontology connection and cleans up resources.
+        """
+        self.onto.destroy()
 
     def cleanup(self):
         """
@@ -533,6 +539,10 @@ class OntologyOperator:
             agent_ref = self.onto.search_one(iri=f"*{agent_id}")
             if agent_ref:
                 inst.executedBy.append(agent_ref)
+
+        if node.kind == "Operator":
+            pass
+            # inst.value = 
 
         if hasattr(node, "table_reference_id") and node.table_reference_id:
             table_obj = self.onto.search_one(iri=f"*{node.table_reference_id}")

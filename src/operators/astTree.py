@@ -57,6 +57,9 @@ class ASTTreeOperator:
         "LT": "Operator", 
         "GTE": "Operator", 
         "LTE": "Operator", 
+        "Like": "Operator",
+        "Exists": "Operator",
+        "Between": "Operator",
         "Ordered": "Operator",
         "In": "Operator",
         "Literal": "Literal"
@@ -385,6 +388,17 @@ class ASTTreeOperator:
                 # The children of the WithClause are the CTEs.
                 with_clauses.extend(child.children)
         return with_clauses
+
+    def get_where_clauses(self, stmt_node: 'TreeNode') -> list['TreeNode']:
+        """
+        Finds the WHERE clause of a statement and returns a list of its conditions.
+        """
+        where_clauses = []
+        for child in stmt_node.children:
+            if child.name == 'WhereClause':
+                where_clauses.append(child)
+        return where_clauses
+
 
     def get_select_list(self, stmt_node: 'TreeNode') -> list['TreeNode']:
         """

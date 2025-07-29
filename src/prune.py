@@ -1,4 +1,5 @@
 import uuid
+import re
 from sqlglot import parse_one, exp
 from sqlglot.expressions import Expression, Identifier, Column
 
@@ -49,6 +50,60 @@ class ASTPruner:
         # self.tree_op.build_tree()
         # print("--- Pruning Process Finished ---")
 
+    import re
+
+    def normalize_condition(self, condition: str) -> str:
+        """
+        Cleans up a single SQL condition string to make it comparable.
+        - Converts to lowercase
+        - Removes extra whitespace
+        - Removes whitespace around operators
+        """
+        # Convert to lowercase and strip leading/trailing whitespace
+        norm = condition.strip().lower()
+        # Replace multiple spaces with a single space
+        norm = re.sub(r'\s+', ' ', norm)
+        # Remove whitespace around operators like =, >, <, etc.
+        norm = re.sub(r'\s*([=<>!]+)\s*', r'\1', norm)
+        return norm
+
+    def sub_condition_exists_no_parser(self, full_condition: str, sub_condition: str) -> bool:
+        """
+        Checks if a sub-condition exists in a full condition without parsing SQL.
+
+        This version will strip table aliases (e.g., "t1.") from the full_condition
+        before comparison, allowing "col = 1" to match "t1.col = 1".
+
+        LIMITATIONS:
+        - Only works reliably for conditions joined by AND.
+        - Does not understand OR logic or complex nested parentheses.
+        - Does not understand SQL semantics (e.g., BETWEEN).
+        """
+        if not sub_condition:
+            return True
+        if not full_condition:
+            return False
+
+        try:
+            # Split the full condition, strip table aliases, and normalize each part.
+            full_parts = {
+                # This regex removes patterns like "alias." from the condition parts.
+                self.normalize_condition(re.sub(r'\b[a-zA-Z0-9_]+\.', '', part))
+                for part in re.split(r'\s+AND\s+', full_condition, flags=re.IGNORECASE)
+            }
+
+            # Split the sub-condition by 'AND' and normalize each part.
+            sub_parts = {
+                self.normalize_condition(part)
+                for part in re.split(r'\s+AND\s+', sub_condition, flags=re.IGNORECASE)
+            }
+
+            # Check if the set of sub-condition parts is a subset of the full condition parts.
+            return sub_parts.issubset(full_parts)
+        except Exception:
+            # If any regex or other error occurs, assume failure.
+            return False
+
     def _prune_from_table_status(self):
         """
         Stage 1: Handles removals and modifications based on TableRef statuses.
@@ -60,12 +115,15 @@ class ASTPruner:
             status = attr['Status']
             # Condition A.1: Violated Table -> Remove Statement
             if status == "Violated":
-                parent_stmt = self.tree_op.get_parent_statement(inst)
-                if parent_stmt:
-                    if parent_stmt.id == self.tree_op.root.id:
-                        self.sql_op.ast = None
-                        # print(f"    - Root statement '{parent_stmt.id[:8]}' is violated. Removing entire AST.")
-                        return  # No need to continue, the entire AST is removed.
+                parent_clause = self.tree_op.get_parent_clause(inst)
+                # print(f" Parent clause name: {parent_clause.name} and kind: {parent_clause.kind}")
+                if parent_clause.name != "JoinClause":
+                    parent_stmt = self.tree_op.get_parent_statement(inst)
+                    if parent_stmt:
+                        if parent_stmt.id == self.tree_op.root.id:
+                            self.sql_op.ast = None
+                            # print(f"    - Root statement '{parent_stmt.id[:8]}' is violated. Removing entire AST.")
+                            return  # No need to continue, the entire AST is removed.
                     # print(f"    - TableRef '{inst}' is Violated. Marking statement '{parent_stmt.id[:8]}' for removal.")
                     base_clause_type = ASTPruner.base_clause.get(parent_stmt.name, None)
                     clause_id = next((c.id for c in parent_stmt.children if c.name == base_clause_type), None)
@@ -88,19 +146,29 @@ class ASTPruner:
                 if not condition_list: continue
                 
                 condition_str = str(condition_list).strip("['']").strip('"')
-                print(repr(condition_str))
+                # print(repr(condition_str))
                 parent_stmt = self.tree_op.get_parent_statement(inst)
-                # print(f"parent statement: {parent_stmt}")
-                if parent_stmt and parent_stmt.name == "SelectStatement":
-                    # print(f"    - TableRef '{inst}' has RowTag. Adding condition to statement '{parent_stmt.id[:8]}': {condition_str}")
-                    parent_id = "n" + parent_stmt.id[1:]
-                    stmt_sqlglot_node = self.sql_op.get_node_by_id(parent_id)
-                    # print(f"    - SQLGlot node for statement: {stmt_sqlglot_node} | {parent_stmt.id}")
-                    if stmt_sqlglot_node:
-                        stmt_sqlglot_node.where(condition_str, copy=False)
-        # try:
+                where_cls = self.tree_op.get_where_clauses(parent_stmt)
+                # print(f" Where clause: {where_cls} | {len(where_cls)}")
+                if len(where_cls):
+                    where_cls = where_cls[0]  # Assuming we only care about the first WHERE clause
+                    where_cls_str = where_cls.get_value()
+                    # print(f"where clauses: {where_cls_str} | {condition_str} | {self.sub_condition_exists_no_parser(where_cls_str, condition_str)}")
+                    # print(f"parent statement: {parent_stmt}")
+                    if not(self.sub_condition_exists_no_parser(where_cls_str, condition_str)) and parent_stmt.name == "SelectStatement":
+                        # print(f"    - TableRef '{inst}' has RowTag. Adding condition to statement '{parent_stmt.id[:8]}': {condition_str}")
+                        parent_id = "n" + parent_stmt.id[1:]
+                        stmt_sqlglot_node = self.sql_op.get_node_by_id(parent_id)
+                        # print(f"    - SQLGlot node for statement: {stmt_sqlglot_node} | {parent_stmt.id}")
+                        if stmt_sqlglot_node:
+                            # print(f"stmt_sqlglot_node: {stmt_sqlglot_node} | {stmt_sqlglot_node.where}")
+                            stmt_sqlglot_node.where(condition_str, copy=False)
+        try:
             # Step 3: Apply the main pruning transformer with all collected IDs
-        self.sql_op.ast = self.sql_op.ast.transform(self._pruning_transformer)
+            self.sql_op.ast = self.sql_op.ast.transform(self._pruning_transformer)
+        except AssertionError as e:
+                self.sql_op.ast = None
+                return
         # except Exception as e:
         #     print(f"[Error] Failed to apply pruning transformer: {e}")
         #     return
@@ -114,6 +182,7 @@ class ASTPruner:
         print("--> Stage 2: Pruning based on column statuses...")
         # Step 1: Collect initial violated IDs and propagate them
         self.violated_ids = [id for id, status in self.column_ref_instances.items() if status['Status'] == "Violated"]
+        print(f"     - Initial violated column IDs: {self.violated_ids}")
         if not self.violated_ids:
             print("     - No violated columns found.")
             return
@@ -122,7 +191,7 @@ class ASTPruner:
         self._propagate_violations_through_aliases()
 
         # Step 2: Iteratively apply the pruning transformer until the AST is stable
-        max_iterations = 10  # Safeguard against potential infinite loops
+        max_iterations = 5  # Safeguard against potential infinite loops
         for i in range(max_iterations):
             previous_sql = self.sql_op.ast.sql(pretty=True)
             
@@ -134,7 +203,7 @@ class ASTPruner:
                 self.sql_op.ast = None
                 break
 
-            current_sql = self.sql_op.ast.sql(pretty=True)
+            # current_sql = self.sql_op.ast.sql(pretty=True)
 
             # If the AST has not changed, the pruning is complete
             if not self.sql_op.ast or self.sql_op.ast.sql() == previous_sql:
@@ -167,6 +236,7 @@ class ASTPruner:
         # nested queries would require more sophisticated scope analysis.
         tainted_aliases = set()
         for alias_node in self.sql_op.ast.find_all(exp.Alias):
+            print(f" Alias node: {alias_node}")
             source_col_id = alias_node.this.meta.get('id')
             if source_col_id in self.violated_ids:
                 tainted_aliases.add(alias_node.alias)
@@ -205,7 +275,7 @@ class ASTPruner:
                 return None
 
         # Rule 3: Clean up a WHERE clause that is now empty.
-        if isinstance(node, exp.Where) and node.this is None:
+        if isinstance(node, exp.Where) and (node.this is None):
             return None
 
         # Rule 4: Clean up a SELECT statement that has no columns left.
@@ -213,8 +283,23 @@ class ASTPruner:
             # print("     - Cascading removal of SELECT statement with no columns.")
             return None
 
+        # Rule 5: Clean up a JOIN if its ON condition is invalid.
+        if isinstance(node, exp.Join):
+            # If the ON clause was completely removed OR if it's a binary expression
+            # (like a = b) where one side has been pruned, remove the JOIN.
+            if node.on is None or (isinstance(node.on, exp.Binary) and (node.on.left is None or node.on.right is None)):
+                return None
+        
+        # Rule 5: Clean up a GROUP BY clause that has no columns left.
+        if isinstance(node, exp.Group) and not node.expressions:
+            return None
+
         # Rule 5: Other clean-up rules.
         if isinstance(node, exp.Join) and node.on is None:
+            return None
+        
+        # Rule 6 (NEW): Clean up a FROM clause if its table/join has been removed.
+        if isinstance(node, exp.From) and node.this is None:
             return None
 
         # Rule 6: cleanup empty Function node.
@@ -225,5 +310,11 @@ class ASTPruner:
         if isinstance(node, exp.Alias) and node.this is None:
             print(f"    - Cascading removal of Alias '{node.sql()}' because its expression was removed.")
             return None
+        
+        # Rule 7: Handle IN expressions if either side is removed.
+        elif isinstance(node, exp.In):
+            # If the expression being checked is gone, or the list of values is empty.
+            if node.this is None or not node.expressions:
+                return None
 
         return node

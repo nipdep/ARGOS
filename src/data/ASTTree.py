@@ -46,10 +46,11 @@ class TreeNode:
             if isinstance(alias_expr, exp.TableAlias):
                 self.alias = alias_expr.this.name
 
-        if self.name == "Literal":
-            self.value = sqlglot_node.this
+        if self.name == "Literal" or self.name == "WhereClause":
+            self.value = str(sqlglot_node.this)
         
         if self.name == "Operator":
+            self.value = str(sqlglot_node.this)
             if (type(sqlglot_node).__name__ in ["And", "Or"]):
                 self.logics = True 
             else:
@@ -94,12 +95,20 @@ class TreeNode:
             suffix += f" [refalias={self.refalias}]"
         if hasattr(self, "logics"):
             suffix += f" [logics={self.logics}]"
+        if hasattr(self, "value"):
+            suffix += f" [value={self.value}]"
         return f"<({self.id}) {self.kind} | {suffix}>"
 
     def walk(self):
         yield self
         for child in self.children:
             yield from child.walk()
+
+    def get_value(self):
+        """
+        Returns the value of the node if it exists, otherwise returns None.
+        """
+        return getattr(self, 'value', None)
 
     def print_tree(self, level=0):
         print("  " * level + repr(self))
