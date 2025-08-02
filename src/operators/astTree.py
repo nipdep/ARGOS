@@ -390,7 +390,7 @@ class ASTTreeOperator:
             n for n in stmt_node.walk() 
             if n.name in ('FromClause', 'JoinClause', 'UpdateClause', 'InsertClause', 'DeleteClause') and self.get_parent_statement(n.id) == stmt_node
         ]
-        # print(f"Found {len(from_or_join_nodes)} FROM/Join nodes in statement {stmt_node.id}.")
+        print(f"Found {len(from_or_join_nodes)} FROM/Join nodes in statement {stmt_node.id}.")
         
         table_refs = []
         for node in from_or_join_nodes:

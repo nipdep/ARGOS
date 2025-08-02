@@ -167,6 +167,32 @@ class OntologyOperator:
             print(
                 f"--> Cleanup complete. Successfully deleted {deleted_count} instances.")
 
+    def update_lookups(self, with_clause: TreeNode):
+        alias = with_clause.alias
+        self.table_entities[alias] = "t00x"
+        subquery = with_clause
+        for node in subquery.walk():
+            if node.name == "ColumnRef":
+                col_name = node.refcol
+                # table_name = node.reftable
+                if col_name:
+                    # XXX: future issue could be happen here
+                    if hasattr(node, "column_reference_id"):
+                        self.column_lookup[(alias, col_name)] = node.column_reference_id
+                        print(f"Updated column lookup: {alias}.{col_name} -> {node.column_reference_id}")
+                    else:
+                        self.column_lookup[(alias, col_name)] = "c00x"
+            # elif node.name == "TableRef":
+            #     # table_name = node.reftable
+            #     self.table_entities[alias] = node.table_reference_id
+            #     print(f"Updated table entities: {alias} -> {node.table_reference_id}")
+
+    def add_CTE_to_lookup(self):
+        # get all with clauses in query 
+        with_clauses = self.tree_op.get_with_clauses(self.tree_op.root)
+        for with_clause in with_clauses:
+            self.update_lookups(with_clause)
+
     def resolve_wildcard(self):
         """
         Finds and expands all wildcards in the query. This modifies the
@@ -180,10 +206,8 @@ class OntologyOperator:
         # print(f"--> Found {len(wildcard_nodes)} wildcard(s). Expanding...")
         for wc_node in wildcard_nodes:
             parent_node = self.tree_op.get_parent(wc_node.id)
-            parent_stmt_treenode = self.tree_op.get_parent_statement(
-                wc_node.id)
-            if not parent_stmt_treenode:
-                return
+            parent_stmt_treenode = self.tree_op.get_parent_statement(wc_node.id)
+            with_clause = self.tree_op.get_with_clauses(parent_stmt_treenode)
 
             # print(f"Wildcard node id: {wc_node.id} | Parent node: {parent_node.id} | Parent statement: {parent_stmt_treenode.id}")
             wildcard_sqlglot_node = self.tree_op.sql_op.get_node_by_id(
@@ -192,50 +216,70 @@ class OntologyOperator:
             parent_select_sqlglot_node = wildcard_sqlglot_node.find_ancestor(
                 exp.Select)
 
-            # resolve table reference 
-            # with alias 
-            if hasattr(wc_node, "alias"):
-                # Resolve table reference with alias
-                print(f"Resolving wildcard with alias: {wc_node.alias}")
-                table_alias = wc_node.alias
-                table_ref = self.tree_op.get_table_ref_by_alias(table_alias)
-                if table_ref:
-                    table_name = table_ref.reftable
-                else:
-                    print(f"[Warning] Table alias '{table_alias}' not found.")
-                    return
-            else:
-                tables_in_stmt = self.tree_op.get_tables_in_from_clause(
-                    parent_stmt_treenode)
-                # print(f" tables_in_stmt: {tables_in_stmt}")
-                table_name = tables_in_stmt[0].reftable
-                if len(tables_in_stmt) != 1:
-                    print(
-                        f"[Warning] Wildcard expansion only supported for single-table queries. Skipping.")
-                    return
-
-            table_ind = self.onto.search_one(TableName=table_name)
-            if not table_ind or not hasattr(table_ind, "hasColumn"):
-                print(
-                    f"[Warning] Table '{table_name}' not in ontology or has no columns. Cannot expand.")
+            if not parent_stmt_treenode:
                 return
+            elif with_clause:
+                with_aliases = [cl.alias for cl in with_clause]
+                for col in self.column_lookup:
+                    # print(f"Expanding wildcard in WITH clause: {with_aliases} for column: {col[1]}")
+                    if col[0] in with_aliases:
+                        col_name = col[1]
+                        new_node_id = "n" + str(uuid.uuid4())[:6]
+                        # print(f"Column name : {col_name} | New node ID: {new_node_id}, Table name: {table_name}")
+                        new_col_node = self.tree_op.create_column_node(
+                            parent_sqlglot_node=parent_select_sqlglot_node,
+                            parent_node=parent_node,
+                            node_id=new_node_id,
+                            refcol=col_name,
+                            reftable=col[0]
+                        )
 
-            # go through all columns of the table and create ColumnRef nodes
-            for col in table_ind.hasColumn:
-                # print(f"Expanding wildcard for column: {col.ColumnName[0]} in table: {table_name}")
-                col_name = col.ColumnName[0]
-                new_node_id = "n" + str(uuid.uuid4())[:6]
-                # print(f"Column name : {col_name} | New node ID: {new_node_id}, Table name: {table_name}")
-                new_col_node = self.tree_op.create_column_node(
-                    parent_sqlglot_node=parent_select_sqlglot_node,
-                    parent_node=parent_node,
-                    node_id=new_node_id,
-                    refcol=col_name,
-                    reftable=table_name
-                )
+                self.tree_op.remove_node_by_id(wc_node.id)
+            else:
+                # resolve table reference 
+                # with alias 
+                if hasattr(wc_node, "alias"):
+                    # Resolve table reference with alias
+                    print(f"Resolving wildcard with alias: {wc_node.alias}")
+                    table_alias = wc_node.alias
+                    table_ref = self.tree_op.get_table_ref_by_alias(table_alias)
+                    if table_ref:
+                        table_name = table_ref.reftable
+                    else:
+                        print(f"[Warning] Table alias '{table_alias}' not found.")
+                        return
+                else:
+                    tables_in_stmt = self.tree_op.get_tables_in_from_clause(
+                        parent_stmt_treenode)
+                    # print(f" tables_in_stmt: {tables_in_stmt}")
+                    table_name = tables_in_stmt[0].reftable
+                    if len(tables_in_stmt) != 1:
+                        print(
+                            f"[Warning] Wildcard expansion only supported for single-table queries. Skipping.")
+                        return
 
-            # Remove the wildcard node from the parent statement
-            self.tree_op.remove_node_by_id(wc_node.id)
+                table_ind = self.onto.search_one(TableName=table_name)
+                if not table_ind or not hasattr(table_ind, "hasColumn"):
+                    print(
+                        f"[Warning] Table '{table_name}' not in ontology or has no columns. Cannot expand.")
+                    return
+
+                # go through all columns of the table and create ColumnRef nodes
+                for col in table_ind.hasColumn:
+                    # print(f"Expanding wildcard for column: {col.ColumnName[0]} in table: {table_name}")
+                    col_name = col.ColumnName[0]
+                    new_node_id = "n" + str(uuid.uuid4())[:6]
+                    # print(f"Column name : {col_name} | New node ID: {new_node_id}, Table name: {table_name}")
+                    new_col_node = self.tree_op.create_column_node(
+                        parent_sqlglot_node=parent_select_sqlglot_node,
+                        parent_node=parent_node,
+                        node_id=new_node_id,
+                        refcol=col_name,
+                        reftable=table_name
+                    )
+
+                # Remove the wildcard node from the parent statement
+                self.tree_op.remove_node_by_id(wc_node.id)
 
     def resolve_references(self, node: 'TreeNode', parent_context={}) -> dict:
         """
@@ -249,17 +293,24 @@ class OntologyOperator:
 
         with_clauses_in_scope = self.tree_op.get_with_clauses(node)
         for with_clause in with_clauses_in_scope:
-            print(f"Resolving WITH clause: {with_clause.id}")
-            with_alias = with_clause.alias
+            # update directly table_entities and column_lookup dictionaries with the with clause values 
+            print(f"Resolving WITH clause: {with_clause}")
+            # break
+            self.resolve_references(with_clause)
+            # update lookups with the with clause values
+            self.update_lookups(with_clause)
 
-            exposed_schema = self.resolve_references(
-                with_clause, in_context_sources)
-            in_context_sources.update(exposed_schema)
-            in_context_sources[with_alias] = {"type": "Synthetic"}
+            # print(f"Resolving WITH clause: {with_clause.id}")
+            # with_alias = with_clause.alias
+
+            # exposed_schema = self.resolve_references(
+            #     with_clause, in_context_sources)
+            # in_context_sources.update(exposed_schema)
+            # in_context_sources[with_alias] = {"type": "Synthetic"}
 
             # in_context_sources[with_clause.alias] = { "type": "with_clause", "schema": exposed_schema }
             # parent = self.tree_op.get_parent(with_clause.id)
-            print(f" exposed_schema: {exposed_schema} | parent: {with_alias}")
+            # print(f" exposed_schema: {exposed_schema} | parent: {with_alias}")
             # if parent and parent.name == "Alias":
                 # alias = parent.alias
             # for sq_id, sq_context in exposed_schema.items():
@@ -287,7 +338,7 @@ class OntologyOperator:
                     output_schema[alias] = {
                         "type": "base_table", "name": table_name}
 
-        # print(f"Initial in-context sources: {in_context_sources}")
+        print(f"Initial in-context sources: {in_context_sources}")
 
         # first we need to resolve custom table created from WITH clauses
         
@@ -392,7 +443,7 @@ class OntologyOperator:
         col_name = col_node.refcol
         table_alias_in_query = col_node.reftable
 
-        # print(f"Resolving column '{col_name}' in context of table alias '{table_alias_in_query}' | context_sources: {context_sources}")
+        print(f"Resolving column '{col_name}' in context of table alias '{table_alias_in_query}' | context_sources: {context_sources}")
         column_id = None
         table_id = None
         candidate_sources = []
@@ -477,7 +528,7 @@ class OntologyOperator:
     def _column_exists_in_source(self, column_name: str, source_info: dict) -> bool:
         """Checks if a column exists in a given data source (table or subquery)."""
         # print(f"Checking if column '{column_name}' exists in source: {source_info}")
-        if source_info['type'] == 'base_table' or source_info['type'] == 'with':
+        if source_info['type'] == 'base_table':
             table_name = source_info['name']
             # This is where you would query your ontology.
             # For example, check if `column_name` is a data property of the
@@ -506,7 +557,7 @@ class OntologyOperator:
             # If the child is a subquery, we yield it but do not walk its children.
             # This is because the main `resolve_references` function has already processed
             # it in the first walk.
-            if child.name == 'Subquery':
+            if child.name == 'Subquery' or child.name == 'WithClause':
                 yield child
             else:
                 # If the child is not a subquery, recurse into its subtree.
@@ -520,6 +571,7 @@ class OntologyOperator:
         self.column_ref_instances = []
         self.tree_op = tree_operator
         with self.onto:
+            self.add_CTE_to_lookup()
             self.resolve_wildcard()
             print(self.tree_op.sql_op.ast)
             self.resolve_references(self.tree_op.root)
