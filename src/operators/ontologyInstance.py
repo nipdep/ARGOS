@@ -185,13 +185,6 @@ class OntologyOperator:
             if not parent_stmt_treenode:
                 return
 
-            tables_in_stmt = self.tree_op.get_tables_in_from_clause(
-                parent_stmt_treenode)
-            if len(tables_in_stmt) != 1:
-                print(
-                    f"[Warning] Wildcard expansion only supported for single-table queries. Skipping.")
-                return
-
             # print(f"Wildcard node id: {wc_node.id} | Parent node: {parent_node.id} | Parent statement: {parent_stmt_treenode.id}")
             wildcard_sqlglot_node = self.tree_op.sql_op.get_node_by_id(
                 wc_node.id)
@@ -199,8 +192,27 @@ class OntologyOperator:
             parent_select_sqlglot_node = wildcard_sqlglot_node.find_ancestor(
                 exp.Select)
 
-            # print(f" tables_in_stmt: {tables_in_stmt}")
-            table_name = tables_in_stmt[0].reftable
+            # resolve table reference 
+            # with alias 
+            if hasattr(wc_node, "alias"):
+                # Resolve table reference with alias
+                print(f"Resolving wildcard with alias: {wc_node.alias}")
+                table_alias = wc_node.alias
+                table_ref = self.tree_op.get_table_ref_by_alias(table_alias)
+                if table_ref:
+                    table_name = table_ref.reftable
+                else:
+                    print(f"[Warning] Table alias '{table_alias}' not found.")
+                    return
+            else:
+                tables_in_stmt = self.tree_op.get_tables_in_from_clause(
+                    parent_stmt_treenode)
+                # print(f" tables_in_stmt: {tables_in_stmt}")
+                table_name = tables_in_stmt[0].reftable
+                if len(tables_in_stmt) != 1:
+                    print(
+                        f"[Warning] Wildcard expansion only supported for single-table queries. Skipping.")
+                    return
 
             table_ind = self.onto.search_one(TableName=table_name)
             if not table_ind or not hasattr(table_ind, "hasColumn"):
@@ -253,7 +265,7 @@ class OntologyOperator:
             # for sq_id, sq_context in exposed_schema.items():
                 # context_sources[with_alias] = { "type": "base_table", "id": sq_id, "name": sq_context['name'] }
                 # extended_context[with_clause.id] = {"alias": with_alias, "schema": exposed_schema}
-        print(f" context_sources after WITH clauses: subquery_context : {extended_context} | in_context_sources: {in_context_sources}")
+        # print(f" context_sources after WITH clauses: subquery_context : {extended_context} | in_context_sources: {in_context_sources}")
 
 
         from_clause_tables = self.tree_op.get_tables_in_from_clause(node)
@@ -275,7 +287,7 @@ class OntologyOperator:
                     output_schema[alias] = {
                         "type": "base_table", "name": table_name}
 
-        print(f"Initial in-context sources: {in_context_sources}")
+        # print(f"Initial in-context sources: {in_context_sources}")
 
         # first we need to resolve custom table created from WITH clauses
         
@@ -305,7 +317,7 @@ class OntologyOperator:
         #     in_context_sources[alias] = {
         #         "type": "subquery", "id": sq_id, "schema": sq_context['schema']}
             
-        print(f" full context : {in_context_sources}")
+        # print(f" full context : {in_context_sources}")
         # print(f"Resolved {len(in_context_sources)} in-context sources for node {node.id} | context : {in_context_sources}.")
         # --- Second Walk: UPDATED to use new resolver methods ---
         # print(f"Resolving references in node {node.id} | in_context_sources: {in_context_sources}")
@@ -345,7 +357,7 @@ class OntologyOperator:
         """Helper to resolve a single table reference node to its database entity ID."""
         alias = getattr(table_node, 'refalias', table_node.reftable)
         table_id = None
-        print(f"Resolving table '{table_node}' | context_sources: {context_sources}")
+        # print(f"Resolving table '{table_node}' | context_sources: {context_sources}")
         if alias in context_sources:
             source_info = context_sources[alias]
             table_node.resolved_info = source_info
@@ -380,7 +392,7 @@ class OntologyOperator:
         col_name = col_node.refcol
         table_alias_in_query = col_node.reftable
 
-        print(f"Resolving column '{col_name}' in context of table alias '{table_alias_in_query}' | context_sources: {context_sources}")
+        # print(f"Resolving column '{col_name}' in context of table alias '{table_alias_in_query}' | context_sources: {context_sources}")
         column_id = None
         table_id = None
         candidate_sources = []

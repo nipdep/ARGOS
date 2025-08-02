@@ -191,7 +191,7 @@ class ASTPruner:
         self._propagate_violations_through_aliases()
 
         # Step 2: Iteratively apply the pruning transformer until the AST is stable
-        max_iterations = 5  # Safeguard against potential infinite loops
+        max_iterations = 10  # Safeguard against potential infinite loops
         for i in range(max_iterations):
             previous_sql = self.sql_op.ast.sql(pretty=True)
             
@@ -312,7 +312,7 @@ class ASTPruner:
             return None
         
         # Rule 7: Handle IN expressions if either side is removed.
-        elif isinstance(node, exp.In):
+        elif isinstance(node, exp.In) and node.this is None:
             # If the expression being checked is gone, or the list of values is empty.
             if node.this is None or not node.expressions:
                 return None

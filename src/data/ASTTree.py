@@ -24,11 +24,21 @@ class TreeNode:
             self.reftable = None
             # self.reference_id = None
             parts = sqlglot_node.parts
-            if len(parts) == 2:
-                self.reftable = parts[0].this
-                self.refcol = parts[1].this
-            elif len(parts) == 1:
-                self.refcol = parts[0].this
+            # print(f"parts: {parts}")
+            if any(isinstance(part, exp.Star) for part in parts):
+                # print(f"Skipping Star in ColumnRef: {sqlglot_node}")
+                self.kind = "Expression"
+                self.name = "Wildcard"
+                
+                # get non-star parts
+                non_star_parts = [part for part in parts if not isinstance(part, exp.Star)]
+                self.alias = non_star_parts[0].this if non_star_parts else None
+            else:
+                if len(parts) == 2:
+                    self.reftable = parts[0].this
+                    self.refcol = parts[1].this
+                elif len(parts) == 1:
+                    self.refcol = parts[0].this
 
         if self.name == "TableRef":
             self.reftable = sqlglot_node.name
@@ -45,6 +55,7 @@ class TreeNode:
             alias_expr = sqlglot_node.args.get("alias")
             if isinstance(alias_expr, exp.TableAlias):
                 self.alias = alias_expr.this.name
+                self.parent.alias = self.alias
 
         if self.name == "Literal" or self.name == "WhereClause":
             self.value = str(sqlglot_node.this)

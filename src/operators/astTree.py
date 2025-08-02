@@ -241,6 +241,9 @@ class ASTTreeOperator:
 
         if isinstance(sqlglot_node, exp.TableAlias) and parent_node.name == "TableRef":
             return None
+        
+        if (isinstance(sqlglot_node, exp.Star) or isinstance(sqlglot_node, exp.Identifier)) and parent_node.name == "Wildcard":
+            return None
 
         if isinstance(sqlglot_node, exp.Paren):
             # return first child of the paren expression to avoid unnecessary nesting
@@ -249,12 +252,20 @@ class ASTTreeOperator:
 
         if isinstance(sqlglot_node, exp.Select):
             current = self.build_tree(sqlglot_node, parent_node)
+        # elif isinstance(sqlglot_node, exp.CTE):
+
         else:
             current = self.create_node(sqlglot_node, parent_node)
             for _, child in sqlglot_node.args.items():
                 if isinstance(child, exp.Expression):
                     if isinstance(sqlglot_node, exp.Table) and isinstance(child, exp.Identifier):
                         continue
+                    # elif isinstance(sqlglot_node, exp.Column) and isinstance(child, exp.Star):
+                    #     print(f"Skipping Star in ColumnRef: {sqlglot_node}")
+                    #     child_node = self._build_recursive(child, parent_node)
+                    #     if child_node:
+                    #         current.add_child(child_node)
+                    #     continue
                     child_node = self._build_recursive(child, current)
                     if child_node:
                         current.add_child(child_node)
@@ -319,6 +330,17 @@ class ASTTreeOperator:
                 if node.name == "TableRef":
                     tables.append(node)
         return tables
+    
+    def get_table_ref_by_alias(self, table_alias:str):
+        """
+        Finds a TableRef node by its alias in the custom tree.
+        Returns the first matching TableRef or None if not found.
+        """
+        for node in self.walk():
+            # XXX: here filter by TableRef could be a issue in future
+            if node.name == "TableRef" and hasattr(node, "refalias") and hasattr(node, "reftable") and (node.refalias == table_alias):
+                return node
+        return None
     
     def find_immediate_subqueries(self, node: 'TreeNode') -> list['TreeNode']:
         """
