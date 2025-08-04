@@ -1,0 +1,91 @@
+query_id,input_query,Correct,expected_query,policy_set,rule_set,complexity,Overall Validation Status
+q001,"INSERT INTO ""Order"" (order_id, account_id, k_symbol) VALUES (1, 1, 'SIPO');",Yes,,p002,rtm,Simple,Prohibited
+q002,"UPDATE ""Client"" SET gender = 'female' WHERE client_id = 10;",Yes,,p003,rtm,Simple,Prohibited
+q003,"DELETE FROM ""Card"" WHERE card_id = 15;",Yes,,p004,rtm,Simple,Prohibited
+q004,"SELECT * FROM ""Disposition"";",Yes,,"p001, p005, p006","rcp, rcv, rtr",Simple,Prohibited
+q005,"SELECT account_id, district_id FROM ""Account"";",No,,p006,rcv,Simple,Permitted
+q006,"SELECT * FROM ""Loan"" WHERE status = 'active';",No,"SELECT Loan.duration, Loan.payments, Loan.status FROM ""Loan"" WHERE status = 'active'","p005, p006","rcp, rcv",Simple,Permitted
+q007,"SELECT client_id, gender FROM ""Client"" WHERE gender = 'male';",No,"SELECT gender FROM ""Client"" WHERE gender = 'male';","p005, p007","rcp, rrp",Simple,Permitted
+q008,"SELECT * FROM ""Transaction"" WHERE k_symbol = 'UROK';",No,"SELECT Transaction.operation, Transaction.balance, Transaction.bank, Transaction.account FROM ""Transaction""","p005, p006","rcp, rcv",Simple,Prohibited
+q009,"SELECT order_id, amount FROM ""Order"";",Yes,,"p005, p006, p008","rcp, rcv, rtr",Simple,Prohibited
+q010,"SELECT loan_id, date, amount, duration, payments, status FROM ""Loan"";",No,"SELECT duration, payments, status FROM ""Loan""","p005, p006","rcp, rcv",Simple,Prohibited
+q011,"INSERT INTO ""Loan"" (loan_id, account_id, date, amount, duration, payments, status) VALUES (1, 1, '2024-01-01', 5000, 12, 416.67, 'active');",Yes,,p002,rtm,Simple,Prohibited
+q012,"UPDATE ""Disposition"" SET type = 'OWNER' WHERE disp_id = 1;",Yes,,p003,rtm,Simple,Prohibited
+q013,"DELETE FROM ""Account"" WHERE account_id = 1;",Yes,,p004,rtm,Simple,Prohibited
+q014,"SELECT * FROM ""District"";",Yes,,"p001, p006","rcv, rtr",Simple,Prohibited
+q015,"SELECT * FROM ""Client"" WHERE client_id = 1;",No,"SELECT Client.gender, Client.birth_date FROM ""Client""","p005, p006, p007","rcp, rcv, rrp",Simple,Prohibited
+q016,"SELECT * FROM ""Order"" WHERE account_to = 12345;",No,,"p005, p006, p008","rcp, rcv, rtr",Simple,Prohibited
+q017,"SELECT card_id, disp_id, type, issued FROM ""Card"";",Yes,"SELECT type, issued FROM ""Card""",p005,rcp,Simple,Prohibited
+q018,"SELECT * FROM ""Loan"" WHERE date > '2023-01-01';",No,"SELECT Loan.duration, Loan.payments, Loan.status FROM ""Loan"" WHERE date > '2023-01-01'","p005, p006","rcp, rcv",Simple,Prohibited
+q019,"SELECT trans_id, type, amount FROM ""Transaction"";",No,,"p005, p006","rcp, rcv",Simple,Prohibited
+q020,"SELECT * FROM ""Client"" WHERE gender = 'male';",No,"SELECT Client.gender, Client.birth_date FROM ""Client"" WHERE gender = 'male'","p005, p006, p007","rcp, rcv, rrp",Simple,Prohibited
+q021,"INSERT INTO ""Transaction"" (trans_id, account_id, date, type, amount) VALUES (1, 1, '2024-01-01', 'credit', 100);",Yes,,p002,rtm,Simple,Prohibited
+q022,"UPDATE ""Order"" SET amount = 200 WHERE order_id = 1;",Yes,,p003,rtm,Simple,Prohibited
+q023,"DELETE FROM ""Disposition"" WHERE client_id = 1;",Yes,,p004,rtm,Simple,Prohibited
+q024,"SELECT * FROM ""Account"" WHERE frequency = 'monthly';",No,,p006,rcv,Simple,Permitted
+q025,"SELECT * FROM ""Loan"" WHERE account_id = 5;",No,"SELECT Loan.duration, Loan.payments, Loan.status FROM ""Loan"" WHERE account_id = 5","p005, p006","rcp, rcv",Simple,Prohibited
+q026,"SELECT c.client_id, l.loan_id FROM ""Client"" c JOIN ""Loan"" l ON c.client_id = l.account_id WHERE l.status = 'active';",No,,"p005, p007","rcp, rrp",Advanced,Prohibited
+q027,"SELECT a.account_id, t.trans_id FROM ""Account"" a JOIN ""Transaction"" t ON a.account_id = t.account_id WHERE t.k_symbol = 'SIPO';",No,,"p005, p006","rcp, rcv",Advanced,Prohibited
+q028,"SELECT c.client_id, d.name FROM ""Client"" c JOIN ""District"" d ON c.district_id = d.district_id;",No,"SELECT d.name FROM ""Client"" AS c JOIN ""District"" AS d ON c.district_id = d.district_id","p001, p005, p007","rcp, rrp, rtr",Advanced,Prohibited
+q029,"SELECT * FROM ""Order"" WHERE order_id IN (SELECT order_id FROM ""Order"" WHERE amount > 1000);",Yes,,"p005, p006, p008","rcp, rcv, rtr",Advanced,Prohibited
+q030,"SELECT gender, birth_date FROM ""Client"" c JOIN ""Disposition"" d ON c.client_id = d.client_id JOIN ""Account"" a ON d.account_id = a.account_id;",No,"SELECT gender, birth_date FROM ""Client"" AS c, ""Disposition"" AS d JOIN ""Account"" AS a ON d.account_id = a.account_id WHERE gender = 'male'","p001, p005, p007","rcp, rrp, rtr",Advanced,Prohibited
+q031,"SELECT * FROM ""Client"" WHERE district_id IN (SELECT district_id FROM ""District"" WHERE name = 'Prague');",No,"SELECT Client.gender, Client.birth_date FROM ""Client""","p001, p005, p006, p007","rcp, rcv, rrp, rtr",Advanced,Prohibited
+q032,"SELECT l.duration, COUNT(l.loan_id) as loan_count FROM ""Client"" c LEFT JOIN ""Loan"" l ON c.client_id = l.account_id GROUP BY c.client_id;",No,"SELECT l.duration FROM ""Client"" AS c LEFT JOIN ""Loan"" AS l","p005, p007","rcp, rrp",Advanced,Prohibited
+q034,"SELECT * FROM (SELECT client_id, gender, district_id FROM ""Client"") as SubQuery WHERE gender = 'male';",No,"SELECT Client.gender, Client.birth_date FROM ( SELECT gender FROM ""Client"" ) AS SubQuery WHERE gender = 'male';","p005, p006, p007","rcp, rcv, rrp",Advanced,Permitted
+q035,"UPDATE ""Order"" SET amount = amount * 1.1 WHERE account_id IN (SELECT account_id FROM ""Account"" WHERE district_id = 1);",Yes,,p003,rtm,Advanced,Prohibited
+q036,"DELETE FROM ""Card"" WHERE disp_id IN (SELECT disp_id FROM ""Disposition"" WHERE client_id = 1);",Yes,,p004,rtm,Advanced,Prohibited
+q038,"SELECT a.account_id, SUM(t.amount) as total_trans_amount FROM ""Account"" a JOIN ""Transaction"" t ON a.account_id = t.account_id GROUP BY a.account_id HAVING SUM(t.amount) > 10000;",No,"SELECT SUM(t.amount) AS total_trans_amount FROM ""Account"" AS a JOIN ""Transaction"" AS t ON a.account_id = t.account_id GROUP BY a.account_id HAVING SUM(t.amount) > 10000",p006,rcv,Advanced,Prohibited
+q039,"SELECT * FROM ""Transaction"" WHERE account_id IN (SELECT account_id FROM ""Account"" WHERE district_id IN (SELECT district_id FROM ""District"" WHERE name = 'central Bohemia'));",No,"SELECT Transaction.operation, Transaction.balance, Transaction.bank, Transaction.account FROM ""Transaction""","p001, p005, p006","rcp, rcv, rtr",Advanced,Prohibited
+q040,"SELECT c.client_id, (SELECT COUNT(*) FROM ""Loan"" l WHERE l.account_id = c.client_id) as num_loans FROM ""Client"" c;",No,"SELECT ( SELECT COUNT(*) FROM ""Loan"" AS l ) AS num_loans FROM ""Client"" AS c","p005, p007","rcp, rrp",Advanced,Prohibited
+q041,"INSERT INTO ""Order"" (order_id, account_id, k_symbol) SELECT 1, account_id, 'SIPO' FROM ""Account"" WHERE district_id = 1;",Yes,,p002,rtm,Advanced,Prohibited
+q042,"UPDATE ""Client"" c SET c.district_id = (SELECT d.district_id FROM ""District"" d WHERE d.name = 'Prague' LIMIT 1) WHERE c.client_id = 1;",Yes,,p003,rtm,Advanced,Prohibited
+q043,"SELECT c.client_id, c.gender, l.status FROM ""Client"" c JOIN ""Loan"" l ON c.client_id = l.account_id WHERE c.gender = 'male' AND l.status = 'active';",No,"SELECT c.gender, l.status FROM ""Client"" AS c, ""Loan"" AS l WHERE c.gender = 'male' AND l.status = 'active';","p005, p007","rcp, rrp",Advanced,Permitted
+q045,"SELECT c.client_id, o.order_id, gender, birth_date, COUNT(district_id) as num_dist FROM ""Client"" c JOIN ""Disposition"" disp ON c.client_id = disp.client_id JOIN ""Account"" a ON disp.account_id = a.account_id JOIN ""Order"" o ON a.account_id = o.account_id;",No,"SELECT gender, birth_date, COUNT(district_id) AS num_dist FROM ""Client"" AS c, ""Disposition"" AS disp JOIN ""Account"" AS a ON disp.account_id = a.account_id JOIN ""Order"" AS o ON a.account_id = o.account_id","p001, p005, p007, p008","rcp, rrp, rtr",Advanced,Prohibited
+q046,"SELECT * FROM ""Loan"" WHERE amount > (SELECT AVG(amount) FROM ""Loan"");",No,"SELECT Loan.duration, Loan.payments, Loan.status FROM ""Loan"" WHERE amount > (SELECT AVG(amount) FROM ""Loan"");","p005, p006","rcp, rcv",Advanced,Prohibited
+q047,"SELECT DISTINCT c.client_id FROM ""Client"" c JOIN ""Card"" card ON c.client_id = card.disp_id;",No,,"p005, p007","rcp, rrp",Advanced,Prohibited
+q048,"SELECT * FROM ""Client"" WHERE birth_date LIKE '______01__' AND gender = 'male';",No,"SELECT Client.gender, Client.birth_date FROM ""Client"" WHERE birth_date LIKE '______01__' AND gender = 'male';","p005, p006, p007","rcp, rcv, rrp",Advanced,Prohibited
+q050,"SELECT c.client_id, a.account_id, t.trans_id FROM ""Client"" c, ""Account"" a, ""Transaction"" t, ""Disposition"" d WHERE c.client_id = d.client_id AND a.account_id = d.account_id AND t.account_id = a.account_id;",Yes,,"p001, p005, p006, p007","rcp, rcv, rrp, rtr",Advanced,Prohibited
+q051,"SELECT order_id, account_id, bank_to, account_to, amount, k_symbol FROM ""Order"";",Yes,,"p005, p006, p008","rcp, rcv, rtr",Simple,Prohibited
+q052,"SELECT duration, payments, status FROM ""Loan"";",No,"SELECT duration, payments, status FROM ""Loan"";",,,Simple,Permitted
+q053,"SELECT type, issued FROM ""Card"";",No,"SELECT type, issued FROM ""Card"";",,,Simple,Permitted
+q054,"SELECT birth_date FROM ""Client"";",No,"SELECT birth_date FROM ""Client"";",p007,rrp,Simple,Permitted
+q055,"SELECT operation, balance, bank, account FROM ""Transaction""",No,"SELECT operation, balance, bank, account FROM ""Transaction""",,,Simple,Permitted
+q056,"INSERT INTO District (district_id, name) VALUES ('o5230', 'south');",Yes,"INSERT INTO District (district_id, name) VALUES ('o5230', 'south');",,,Simple,Permitted
+q057,"SELECT duration, payments, status FROM ""Loan"" WHERE duration > 24;",No,"SELECT duration, payments, status FROM ""Loan"" WHERE duration > 24;",,,Simple,Permitted
+q058,"SELECT type, issued FROM ""Card"" WHERE type = 'gold';",No,"SELECT type, issued FROM ""Card"" WHERE type = 'gold';",,,Simple,Permitted
+q059,"SELECT gender, birth_date FROM ""Client"" WHERE district_id = 1 AND gender = 'male';",No,"SELECT gender, birth_date FROM ""Client"" WHERE district_id = 1 AND gender = 'male';",p007,rrp,Simple,Permitted
+q060,"SELECT operation, balance, bank, account, SUM(amount) AS Total_amount FROM ""Transaction"" WHERE operation = 'credit';",No,"SELECT operation, balance, bank, account, SUM(amount) AS Total_amount FROM ""Transaction"" WHERE operation = 'credit';",,,Simple,Permitted
+q061,UPDATE Card SET type = 'gold' WHERE card_id = 1;,Yes,UPDATE Card SET type = 'gold' WHERE card_id = 1;,,,Simple,Permitted
+q062,"SELECT duration, payments, status, SUM(amount) AS total_amount FROM ""Loan"" WHERE status = 'B';",No,"SELECT duration, payments, status, SUM(amount) AS total_amount FROM ""Loan"" WHERE status = 'B';",,,Simple,Permitted
+q063,"SELECT type, issued FROM ""Card"" WHERE issued > '2022-01-01';",No,"SELECT type, issued FROM ""Card"" WHERE issued > '2022-01-01';",,,Simple,Permitted
+q064,"SELECT COUNT(gender) as num_genders FROM ""Client"" WHERE gender = 'male';",No,"SELECT COUNT(gender) as num_genders FROM ""Client"" WHERE gender = 'male';",p007,rrp,Simple,Permitted
+q065,"SELECT balance FROM ""Transaction"" WHERE balance < 0;",No,"SELECT balance FROM ""Transaction"" WHERE balance < 0;",,,Simple,Permitted
+q066,DELETE FROM Client WHERE client_id = 100;,Yes,DELETE FROM Client WHERE client_id = 100;,,,Simple,Permitted
+q067,"SELECT COUNT(date), duration FROM ""Loan"";",No,"SELECT COUNT(date), duration FROM ""Loan"";",,,Simple,Permitted
+q068,"SELECT MAX(issued) FROM ""Card"";",Yes,"SELECT MAX(issued) FROM ""Card"";",,,Simple,Permitted
+q069,"SELECT MIN(birth_date) FROM ""Client"" WHERE gender = 'male';",No,"SELECT MIN(birth_date) FROM ""Client"" WHERE gender = 'male';",p007,rrp,Simple,Permitted
+q070,"SELECT AVG(balance) FROM ""Transaction"";",Yes,"SELECT AVG(balance) FROM ""Transaction"";",,,Simple,Permitted
+q071,UPDATE Card SET issued = '2024-07-22 10:00:00' WHERE type = 'classic';,Yes,UPDATE Card SET issued = '2024-07-22 10:00:00' WHERE type = 'classic';,,,Simple,Permitted
+q072,"SELECT duration, status FROM ""Loan"" WHERE status IN ('A', 'C');",No,"SELECT duration, status FROM ""Loan"" WHERE status IN ('A', 'C');",,,Simple,Permitted
+q073,"SELECT issued FROM ""Card"" WHERE type LIKE 'j%';",No,"SELECT issued FROM ""Card"" WHERE type LIKE 'j%';",,,Simple,Permitted
+q074,"SELECT gender FROM ""Client"" WHERE district_id BETWEEN 10 AND 20 AND gender = 'male';",No,"SELECT gender FROM ""Client"" WHERE district_id BETWEEN 10 AND 20 AND gender = 'male';",p007,rrp,Simple,Permitted
+q075,"SELECT bank, MIN(balance), account FROM ""Transaction"" WHERE bank IS NOT NULL;",No,"SELECT bank, MIN(balance), account FROM ""Transaction"" WHERE bank IS NOT NULL;",,,Simple,Permitted
+q076,"SELECT o.type, o.issued, l.duration, l.payments FROM ""Card"" o, ""Loan"" l;",No,"SELECT o.type, o.issued, l.duration, l.payments FROM ""Card"" o, ""Loan"" l;",,,Advanced,Permitted
+q078,"SELECT COUNT(Distinct t.type), SUM(t.amount) as total_amount FROM ""Transaction"" t GROUP BY t.type;",No,"SELECT COUNT(Distinct t.type), SUM(t.amount) as total_amount FROM ""Transaction"" t GROUP BY t.type;",,,Advanced,Permitted
+q079,"SELECT l.status, AVG(l.amount) as avg_loan_amount FROM ""Loan"" l GROUP BY l.status HAVING AVG(l.amount) > 50000;",Yes,"SELECT l.status, AVG(l.amount) as avg_loan_amount FROM ""Loan"" l GROUP BY l.status HAVING AVG(l.amount) > 50000;",,,Advanced,Permitted
+q080,"SELECT c.gender FROM ""Client"" AS c WHERE EXISTS (SELECT 1 FROM ""Loan"" AS l WHERE l.status = 'A') AND gender = 'male';",No,"SELECT c.gender FROM ""Client"" AS c WHERE EXISTS (SELECT 1 FROM ""Loan"" AS l WHERE l.status = 'A') AND gender = 'male';",p007,rrp,Advanced,Permitted
+q081,UPDATE Card SET disp_id = 5 WHERE card_id = 10;,No,UPDATE Card SET disp_id = 5 WHERE card_id = 10;,,,Advanced,Permitted
+q084,"SELECT (SELECT MAX(l.amount) FROM ""Loan"" l) as max_loan FROM ""Client"" c;",Yes,"SELECT (SELECT MAX(l.amount) FROM ""Loan"" l) as max_loan FROM ""Client"" c;",p007,rrp,Advanced,Permitted
+q086,"SELECT c.gender, l.status FROM ""Client"" c, ""Loan"" l WHERE gender = 'male';",Yes,"SELECT c.gender, l.status FROM ""Client"" c, ""Loan"" l WHERE gender = 'male';",p007,rrp,Advanced,Permitted
+q087,DELETE FROM Client WHERE gender = 'F' AND district_id = 55;,No,DELETE FROM Client WHERE gender = 'F' AND district_id = 55;,,,Advanced,Permitted
+q088,"SELECT c.gender, l.status FROM ""Client"" AS c INNER JOIN ""Loan"" AS l ORDER BY l.amount DESC LIMIT 10;",No,"SELECT c.gender, l.status FROM ""Client"" AS c INNER JOIN ""Loan"" AS l ORDER BY l.amount DESC LIMIT 10;",p007,rrp,Advanced,Permitted
+q089,"SELECT MIN(birth_date) as min_bdate, COUNT(gender) as num_genders FROM ""Client"" c GROUP BY c.district_id;",No,"SELECT MIN(birth_date) as min_bdate, COUNT(gender) as num_genders FROM ""Client"" c GROUP BY c.district_id;",p007,rrp,Advanced,Permitted
+q090,"SELECT operation, balance, Sum(amount) as total_amount FROM ""Transaction"" WHERE date BETWEEN '2023-01-01' AND '2023-12-31' Group By bank Having COUNT(*) > 10;",No,"SELECT operation, balance, Sum(amount) as total_amount FROM ""Transaction"" WHERE date BETWEEN '2023-01-01' AND '2023-12-31' Group By bank Having COUNT(*) > 10;",,,Advanced,Permitted
+q092,"SELECT Sum(l.amount) as total_sum, (l.amount / l.duration) as monthly_payment FROM ""Loan"" l;",No,"SELECT Sum(l.amount) as total_sum, (l.amount / l.duration) as monthly_payment FROM ""Loan"" l;",,,Advanced,Permitted
+q094,"SELECT c.birth_date FROM ""Client"" c WHERE c.district_id IN (1,2,3,4,5) AND gender = 'male' Group by district_id;",No,"SELECT c.birth_date FROM ""Client"" c WHERE c.district_id IN (1,2,3,4,5) AND gender = 'male' Group by district_id;",p007,rrp,Advanced,Permitted
+q095,"SELECT Count(a.date) as num_dates, t.balance FROM ""Account"" a LEFT JOIN ""Transaction"" t ON a.account_id = t.account_id;",No,"SELECT Count(a.date) as num_dates, t.balance FROM ""Account"" a LEFT JOIN ""Transaction"" t ON a.account_id = t.account_id;",,,Advanced,Permitted
+q096,"SELECT payments, status FROM ""Loan"" l WHERE l.payments > (SELECT AVG(l2.payments) FROM ""Loan"" l2);",No,"SELECT payments, status FROM ""Loan"" l WHERE l.payments > (SELECT AVG(l2.payments) FROM ""Loan"" l2);",,,Advanced,Permitted
+q097,"SELECT COUNT(DISTINCT l.status) AS distinct_loan_statuses FROM ""Client"" AS c, ""Loan"" AS l;",No,"SELECT COUNT(DISTINCT l.status) AS distinct_loan_statuses FROM ""Client"" AS c, ""Loan"" AS l;",p007,rrp,Advanced,Permitted
+q098,"SELECT bank, balance FROM ""Transaction"" ORDER BY date DESC, amount ASC;",No,"SELECT bank, balance FROM ""Transaction"" ORDER BY date DESC, amount ASC;",,,Advanced,Permitted
+q099,"SELECT 2024 - CAST(SUBSTR(c.birth_date, 1, 2) AS INT) as age FROM ""Client"" c;",Yes,"SELECT 2024 - CAST(SUBSTR(c.birth_date, 1, 2) AS INT) as age FROM ""Client"" c;",p007,rrp,Advanced,Permitted
+q100,"SELECT Sum(amount) as total_amount, status FROM ""Loan"" l WHERE l.amount > 100000 AND l.duration > 60;",No,"SELECT Sum(amount) as total_amount, status FROM ""Loan"" l WHERE l.amount > 100000 AND l.duration > 60;",,,Advanced,Permitted
