@@ -10,7 +10,9 @@
      xmlns:swrl="http://www.w3.org/2003/11/swrl#"
      xmlns:swrla="http://swrl.stanford.edu/ontologies/3.3/swrla.owl#"
      xmlns:swrlb="http://www.w3.org/2003/11/swrlb#">
-    <owl:Ontology rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf"/>
+    <owl:Ontology rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/ARGOS">
+        <owl:versionIRI rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/ARGOS/3"/>
+    </owl:Ontology>
     
 
 
@@ -1210,6 +1212,7 @@
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Aligned">
         <rdf:type rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/SQLNodeStatus"/>
         <oppositeOf rdf:resource="http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/Violated"/>
+        <rdfs:comment>SQL node status that showing no violation of policies.</rdfs:comment>
     </owl:NamedIndividual>
     
 
