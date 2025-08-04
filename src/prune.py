@@ -110,20 +110,33 @@ class ASTPruner:
         """
         print("--> Stage 1: Pruning based on table statuses...")
         self.violated_ids = []
+        self.rowtag_ids = []
 
         for inst, attr in self.table_ref_instances.items():
             status = attr['Status']
             # Condition A.1: Violated Table -> Remove Statement
             if status == "Violated":
                 parent_clause = self.tree_op.get_parent_clause(inst)
-                # print(f" Parent clause name: {parent_clause.name} and kind: {parent_clause.kind}")
+                print(f" Parent clause name: {parent_clause.name} and kind: {parent_clause.kind} | Instance: {inst}")
                 if parent_clause.name != "JoinClause":
                     parent_stmt = self.tree_op.get_parent_statement(inst)
                     if parent_stmt:
+                        print(f">> Instance: {inst}")
+                        
+                        # curr_sql_node = self.sql_op.get_node_by_id(inst)
+                        
+                        # if parent_stmt.id[0] != "s":
+                        #     parent_sql = self.sql_op.get_node_by_id(parent_stmt.id)
+                        #     if parent_sql:
+                        #         parent_sql.remove()
+                            # parent_sql = None
                         if parent_stmt.id == self.tree_op.root.id:
+                            print(f">>> Instance: {inst}")
                             self.sql_op.ast = None
                             # print(f"    - Root statement '{parent_stmt.id[:8]}' is violated. Removing entire AST.")
                             return  # No need to continue, the entire AST is removed.
+                        else:
+                            self.violated_ids.append(parent_stmt.id)
                     # print(f"    - TableRef '{inst}' is Violated. Marking statement '{parent_stmt.id[:8]}' for removal.")
                     base_clause_type = ASTPruner.base_clause.get(parent_stmt.name, None)
                     clause_id = next((c.id for c in parent_stmt.children if c.name == base_clause_type), None)
@@ -133,36 +146,7 @@ class ASTPruner:
 
             # Condition A.2: RowTag Table -> Add WHERE condition
             elif status == "RowTag":
-                # print(f"    - TableRef '{inst}' is RowTag. Adding condition to parent statement.")
-                policy_list = self.onto_op.get_node_attribute(inst, "relatedPolicy")
-                # print(f"    - Found related policies: {policy_list}")
-                if not policy_list: continue
-                
-                # get data property 'hasCondition' from the first policy
-                policy_id = str(policy_list).strip("[]").split(".")[-1]
-                # print(f"    - Using policy ID: {policy_id}, {policy_list[0]}")
-                condition_list = self.onto_op.get_node_attribute(policy_id, "hasActionCondition")
-                # print(f"    - Found conditions: {condition_list}")
-                if not condition_list: continue
-                
-                condition_str = str(condition_list).strip("['']").strip('"')
-                # print(repr(condition_str))
-                parent_stmt = self.tree_op.get_parent_statement(inst)
-                where_cls = self.tree_op.get_where_clauses(parent_stmt)
-                # print(f" Where clause: {where_cls} | {len(where_cls)}")
-                if len(where_cls):
-                    where_cls = where_cls[0]  # Assuming we only care about the first WHERE clause
-                    where_cls_str = where_cls.get_value()
-                    # print(f"where clauses: {where_cls_str} | {condition_str} | {self.sub_condition_exists_no_parser(where_cls_str, condition_str)}")
-                    # print(f"parent statement: {parent_stmt}")
-                    if not(self.sub_condition_exists_no_parser(where_cls_str, condition_str)) and parent_stmt.name == "SelectStatement":
-                        # print(f"    - TableRef '{inst}' has RowTag. Adding condition to statement '{parent_stmt.id[:8]}': {condition_str}")
-                        parent_id = "n" + parent_stmt.id[1:]
-                        stmt_sqlglot_node = self.sql_op.get_node_by_id(parent_id)
-                        # print(f"    - SQLGlot node for statement: {stmt_sqlglot_node} | {parent_stmt.id}")
-                        if stmt_sqlglot_node:
-                            # print(f"stmt_sqlglot_node: {stmt_sqlglot_node} | {stmt_sqlglot_node.where}")
-                            stmt_sqlglot_node.where(condition_str, copy=False)
+                self.rowtag_ids.append(inst)
         try:
             # Step 3: Apply the main pruning transformer with all collected IDs
             self.sql_op.ast = self.sql_op.ast.transform(self._pruning_transformer)
@@ -173,6 +157,97 @@ class ASTPruner:
         #     print(f"[Error] Failed to apply pruning transformer: {e}")
         #     return
         # self.sql_op.ast = self.sql_op.ast.transform(self._pruning_transformer)
+        # print(f" Row Tag IDs: {self.rowtag_ids}")
+        for inst in self.rowtag_ids:
+            # print(f"    - Processing RowTag TableRef: {inst}")
+            self._add_rowtag_condition(inst)
+
+    # def _add_rowtag_condition(self, inst: str):
+    #     print(f"    - TableRef '{inst}' is RowTag. Adding condition to parent statement.")
+    #     policy_list = self.onto_op.get_node_attribute(inst, "relatedPolicy")
+    #     # print(f"    - Found related policies: {policy_list}")
+    #     if not policy_list: return
+        
+    #     # get data property 'hasCondition' from the first policy
+    #     policy_id = str(policy_list).strip("[]").split(".")[-1]
+    #     # print(f"    - Using policy ID: {policy_id}, {policy_list[0]}")
+    #     condition_list = self.onto_op.get_node_attribute(policy_id, "hasActionCondition")
+    #     print(f"    - Found conditions: {condition_list}")
+    #     if not condition_list: return
+        
+    #     condition_str = str(condition_list).strip("['']").strip('"')
+    #     # print(repr(condition_str))
+    #     parent_stmt = self.tree_op.get_parent_statement(inst)
+    #     where_cls = self.tree_op.get_where_clauses(parent_stmt)
+    #     # print(f" Where clause: {where_cls} | {len(where_cls)}")
+    #     if len(where_cls):
+    #         where_cls = where_cls[0]  # Assuming we only care about the first WHERE clause
+    #         where_cls_str = where_cls.get_value()
+    #         # print(f"where clauses: {where_cls_str} | {condition_str} | {self.sub_condition_exists_no_parser(where_cls_str, condition_str)}")
+    #         # print(f"parent statement: {parent_stmt}")
+    #         if not(self.sub_condition_exists_no_parser(where_cls_str, condition_str)) and parent_stmt.name == "SelectStatement":
+    #             # print(`f"    - TableRef '{inst}' has RowTag. Adding condition to statement '{parent_stmt.id[:8]}': {condition_str}")
+    #             parent_id = "n" + parent_stmt.id[1:]
+    #             stmt_sqlglot_node = self.sql_op.get_node_by_id(parent_id)
+    #             # print(f"    - SQLGlot node for statement: {stmt_sqlglot_node} | {parent_stmt.id}")
+    #             if stmt_sqlglot_node:
+    #                 # print(f"stmt_sqlglot_node: {stmt_sqlglot_node} | {stmt_sqlglot_node.where}")
+    #                 stmt_sqlglot_node.where(condition_str, copy=False)
+    #     else:
+    #         print(f"    - No WHERE clause found for statement '{parent_stmt.id[:8]}'. Adding new condition.")
+    #         parent_id = "n" + parent_stmt.id[1:]
+    #         stmt_sqlglot_node = self.sql_op.get_node_by_id(parent_id)
+    #         # print(f"    - SQLGlot node for statement: {stmt_sqlglot_node} | {parent_stmt.id}")
+    #         if stmt_sqlglot_node:
+    #             print("Running ")
+    #             # print(f"stmt_sqlglot_node: {stmt_sqlglot_node} | {stmt_sqlglot_node.where}")
+    #             stmt_sqlglot_node.where(condition_str, copy=False)
+
+    def _add_rowtag_condition(self, inst: str):
+        print(f"     - TableRef '{inst}' is RowTag. Adding condition to parent statement.")
+        policy_list = self.onto_op.get_node_attribute(inst, "relatedPolicy")
+        if not policy_list: return
+        
+        policy_id = str(policy_list).strip("[]").split(".")[-1]
+        condition_list = self.onto_op.get_node_attribute(policy_id, "hasActionCondition")
+        print(f"     - Found conditions: {condition_list}")
+        if not condition_list: return
+        
+        condition_str = str(condition_list).strip("['']").strip('"')
+        parent_stmt = self.tree_op.get_parent_statement(inst)
+        
+        # We need the ID of the statement we want to modify
+        parent_id = "n" + parent_stmt.id[1:]
+
+        # Define a small "transformer" function that will be applied to every node in the tree.
+        def add_where_clause(node):
+            # Check if the current node is the one we want to modify.
+            # We check the type and the ID to be safe.
+            if isinstance(node, exp.Select) and node.meta.get('id') == parent_id:
+                print(f"     - Found target statement '{parent_id[:8]}'. Applying WHERE clause.")
+                
+                # Use the immutable .where() method to create the new, modified node.
+                # This works whether a WHERE clause exists or not.
+                new_node = node.where(condition_str, copy=False)
+                
+                # Return the new node to replace the old one in the tree.
+                return new_node
+            
+            # For all other nodes, return them unchanged.
+            return node
+
+        # --- THE FIX ---
+        # Call .transform() on the main AST. It will walk the tree, apply our function,
+        # and return a completely new, correct AST.
+        # We then reassign self.sql_op.ast to this new tree.
+        where_cls = self.tree_op.get_where_clauses(parent_stmt)
+        if where_cls:
+            where_cls_str = where_cls[0].get_value()
+            print(f"     - Where clauses: {where_cls_str} | Condition: {condition_str} | Exists: {self.sub_condition_exists_no_parser(where_cls_str, condition_str)}")
+            if not(self.sub_condition_exists_no_parser(where_cls_str, condition_str)):
+                self.sql_op.ast = self.sql_op.ast.transform(add_where_clause)
+        else:
+            self.sql_op.ast = self.sql_op.ast.transform(add_where_clause)
 
     def _prune_from_column_status(self):
         """
@@ -181,7 +256,7 @@ class ASTPruner:
         """
         print("--> Stage 2: Pruning based on column statuses...")
         # Step 1: Collect initial violated IDs and propagate them
-        self.violated_ids = [id for id, status in self.column_ref_instances.items() if status['Status'] == "Violated"]
+        self.violated_ids += [id for id, status in self.column_ref_instances.items() if status['Status'] == "Violated"]
         print(f"     - Initial violated column IDs: {self.violated_ids}")
         if not self.violated_ids:
             print("     - No violated columns found.")
@@ -282,7 +357,7 @@ class ASTPruner:
         if isinstance(node, exp.Select) and not node.expressions:
             # print("     - Cascading removal of SELECT statement with no columns.")
             return None
-
+        
         # Rule 5: Clean up a JOIN if its ON condition is invalid.
         if isinstance(node, exp.Join):
             # If the ON clause was completely removed OR if it's a binary expression
@@ -311,10 +386,25 @@ class ASTPruner:
             print(f"    - Cascading removal of Alias '{node.sql()}' because its expression was removed.")
             return None
         
-        # Rule 7: Handle IN expressions if either side is removed.
-        elif isinstance(node, exp.In) and node.this is None:
-            # If the expression being checked is gone, or the list of values is empty.
-            if node.this is None or not node.expressions:
+        # # Rule 7: Handle IN expressions if either side is removed. 
+        elif isinstance(node, exp.In):
+            # Always check the left side first.
+            if node.this is None:
                 return None
+
+            # Helper function to check if an item from the right side is pruned.
+            # It's pruned if it's None OR if it's a Subquery wrapper whose content is None.
+            def is_pruned(item):
+                return item is None or (isinstance(item, exp.Subquery) and item.this is None)
+
+            # Case A: Handle the subquery stored in the internal `args['query']`.
+            if 'query' in node.args:
+                if is_pruned(node.args.get('query')):
+                    return None
+            
+            # Case B: Handle standard value lists or parsed subqueries in `.expressions`.
+            else:
+                if not node.expressions or all(is_pruned(e) for e in node.expressions):
+                    return None
 
         return node
