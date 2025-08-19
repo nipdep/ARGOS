@@ -1,9 +1,10 @@
 import uuid
 import copy
+from typing import List, Dict, Any
 from sqlglot import parse_one, exp
 from sqlglot.expressions import Expression, Identifier, Column
 
-from owlready2 import get_ontology, sync_reasoner_pellet, destroy_entity, sync_reasoner
+from owlready2 import get_ontology, sync_reasoner_pellet, destroy_entity, sync_reasoner, World
 
 from src.data.ASTTree import TreeNode
 from src.operators.astObject import SqlglotOperator
@@ -15,13 +16,19 @@ class OntologyOperator:
 
     def __init__(self, onto_path: str):
         # self.tree_op = tree_operator
-        self.onto = get_ontology(onto_path).load()
+        # load ontology as TBOX, ABOX pattern
+        self.world = World()
+        self.tbox_onto = self.world.get_ontology(onto_path).load()
+        self.onto = self.world.get_ontology(onto_path)
+        self.onto.imported_ontologies.append(self.tbox_onto)
+
         self.class_lookup = {cls.name: cls for cls in self.onto.classes()}
         self.created_instances = []
         self.table_ref_instances = []
         self.column_ref_instances = []
 
         self._create_object_mapper()
+        self._build_policy_params()
 
     def _create_object_mapper(self):
         """
@@ -120,7 +127,81 @@ class OntologyOperator:
             return str(value) if value is not None else None
         except (KeyError, AttributeError):
             return None
-        
+    
+    def get_instance_by_id(self, id: str):
+        """
+        Retrieves an ontology instance by its ID.
+        """
+        return self.onto.get(id)
+
+    def _build_policy_params(self):
+        """
+        Builds the parameters for the policy creation.
+        """
+        self.policy_params = {
+            "Aligned": self.onto.get("Aligned"),
+            "ColumnLevel": self.onto.get("ColumnLevel"),
+            "Conditional": self.onto.get("Conditional"),
+            "DeleteActionScope": self.onto.get("DeleteActionScope"),
+            "InsertActionScope": self.onto.get("InsertActionScope"),
+            "ModifyAction": self.onto.get("ModifyAction"),
+            "Permitted": self.onto.get("Permitted"),
+            "ProcessActionScope": self.onto.get("ProcessActionScope"),
+            "Prohibited": self.onto.get("Prohibited"),
+            "ReadAction": self.onto.get("ReadAction"),
+            "RowLevel": self.onto.get("RowLevel"),
+            "RowTag": self.onto.get("RowTag"),
+            "TableLevel": self.onto.get("TableLevel"),
+            "UpdateActionScope": self.onto.get("UpdateActionScope"),
+            "ViewActionScope": self.onto.get("ViewActionScope"),
+            "Violated": self.onto.get("Violated")
+        }
+
+    def create_schema(self, db_name: str, table_list: List[str], column_dict: Dict[str, Dict[str, Any]]) -> None:
+        """
+        Create the schema instance of the importing database
+        """
+        table_instance_map = {}
+        with self.onto:
+            # create database instance
+            db_instance = self.onto.Database(DatabaseName=db_name)
+
+            # create table instance related to the created database instance
+            for table_name in table_list:
+                table_instance = self.onto.Table(TableName=table_name)
+                db_instance.hasTable.append(table_instance)
+                table_instance_map[table_name] = table_instance
+
+            # create column instances related to the created table instances
+            for col_name, col_info in column_dict.items():
+                table_name = col_info['table']
+                if table_name in table_list:
+                    col_instance = self.onto.Column(ColumnName=col_name)
+                    if col_info['type'] == 'PRIMARY KEY':
+                        table_instance_map[table_name].primaryKey.append(col_instance)
+                    elif col_info['type'] == 'FOREIGN KEY':
+                        table_instance_map[table_name].foreignKey.append(col_instance)
+                    else:
+                        table_instance_map[table_name].hasColumn.append(col_instance)
+
+    def create_policy(self, agent_name: str, grant_type: str, grant_level: str, action: str, action_scope: str, resource: List[str], condition: str=None):
+        """
+        Creates a policy instance in the ontology.
+        """
+        with self.onto: 
+            policy_instance = self.onto.Policy()
+            # add object relation to this instance 
+            policy_instance.hasAgent.append(self.policy_params["Agent"])
+            policy_instance.hasGrantType.append(self.policy_params["GrantType"])
+            policy_instance.hasGrantLevel.append(self.policy_params["GrantLevel"])
+            policy_instance.hasAction.append(self.policy_params["Action"])
+            policy_instance.hasActionScope.append(self.policy_params["ActionScope"])
+            for resource in resource:
+                policy_instance.hasResource.append(self.onto.get(resource))
+                
+            if condition:
+                policy_instance.hasCondition.append(condition)
+
     def close(self):
         """
         Closes the ontology connection and cleans up resources.
