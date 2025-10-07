@@ -1,0 +1,11 @@
+[project]
+name = "obac-based-agent-systems"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "owlready2>=0.48",
+    "pandas>=2.3.1",
+    "sqlglot>=27.7.0",
+]
