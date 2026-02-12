@@ -7,16 +7,10 @@ from typing import Dict, Iterable, List, Optional, Set
 
 import pandas as pd
 
-
-def _normalize_name(value: str) -> str:
-    if value is None:
-        return ""
-    text = str(value).strip()
-    if not text:
-        return ""
-    if text[0] in {'"', "'", "`", "["} and text[-1] in {'"', "'", "`", "]"}:
-        text = text[1:-1]
-    return text.strip().lower()
+try:
+    from experiment.utils import normalize_name
+except ModuleNotFoundError:
+    from utils import normalize_name
 
 
 @dataclass
@@ -125,8 +119,8 @@ class SQLiteAccessController:
 
         def _authorizer(action: int, arg1: Optional[str], arg2: Optional[str], dbname, source):
             if action == sqlite3.SQLITE_READ:
-                table_name = _normalize_name(arg1)
-                column_name = _normalize_name(arg2)
+                table_name = normalize_name(arg1)
+                column_name = normalize_name(arg2)
                 if table_name and table_name in denied_tables:
                     return sqlite3.SQLITE_DENY
                 if column_name and column_name in denied_columns:
@@ -178,7 +172,11 @@ def load_policy_set(access_control_path: str) -> AccessControlPolicySet:
         else:
             continue
 
-        normalized_values = {_normalize_name(v) for v in values if _normalize_name(v)}
+        normalized_values = set()
+        for value in values:
+            normalized = normalize_name(value)
+            if normalized:
+                normalized_values.add(normalized)
         if not normalized_values:
             continue
 

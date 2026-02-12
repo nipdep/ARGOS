@@ -1188,13 +1188,13 @@ def table_descriptions_parser(database_dir):
         table_df = pd.read_csv(file_path, encoding='latin-1')
         for _, row in table_df.iterrows():
             try:
-                if pd.notna(row[2]):
-                    col_description = re.sub(r'\s+', ' ', str(row[2]))
-                    val_description = re.sub(r'\s+', ' ', str(row[4]))
-                    if pd.notna(row[4]):
-                        db_descriptions += f"Column {row[0]}: column description -> {col_description}, value description -> {val_description}\n"
+                if pd.notna(row.iloc[2]):
+                    col_description = re.sub(r'\s+', ' ', str(row.iloc[2]))
+                    val_description = re.sub(r'\s+', ' ', str(row.iloc[4]))
+                    if pd.notna(row.iloc[4]):
+                        db_descriptions += f"Column {row.iloc[0]}: column description -> {col_description}, value description -> {val_description}\n"
                     else:
-                        db_descriptions += f"Column {row[0]}: column description -> {col_description}\n"
+                        db_descriptions += f"Column {row.iloc[0]}: column description -> {col_description}\n"
             except Exception as e:
                 print(e)
                 db_descriptions += "No column description"
