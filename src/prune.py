@@ -424,13 +424,44 @@ class ASTPruner:
         arguments are marked as True. We only prune when those required args
         are missing after prior pruning steps.
         """
+        # COUNT has optional arg_types in sqlglot, but COUNT(DISTINCT col)
+        # can degrade into COUNT(DISTINCT) after pruning and must be removed.
+        if isinstance(node, exp.Count):
+            count_arg = node.args.get("this")
+            count_expressions = node.args.get("expressions")
+            has_star = isinstance(count_arg, exp.Star) or any(
+                isinstance(e, exp.Star) for e in (count_expressions or [])
+            )
+            if has_star:
+                return False
+            if (
+                ASTPruner._is_effectively_missing_arg(count_arg)
+                and ASTPruner._is_effectively_missing_arg(count_expressions)
+            ):
+                return True
+
         arg_types = getattr(node, "arg_types", {}) or {}
         for arg_name, is_required in arg_types.items():
             if not is_required:
                 continue
             value = node.args.get(arg_name)
-            if value is None:
+            if ASTPruner._is_effectively_missing_arg(value):
                 return True
-            if isinstance(value, list) and not value:
-                return True
+        return False
+
+    @staticmethod
+    def _is_effectively_missing_arg(value) -> bool:
+        """
+        Returns True when an argument is semantically empty after pruning.
+
+        Example: COUNT(DISTINCT col) can become COUNT(DISTINCT) when `col`
+        is removed. sqlglot keeps this as a Distinct wrapper with empty
+        expressions, so a plain None-check is not enough.
+        """
+        if value is None:
+            return True
+        if isinstance(value, list):
+            return (not value) or all(ASTPruner._is_effectively_missing_arg(v) for v in value)
+        if isinstance(value, exp.Distinct):
+            return ASTPruner._is_effectively_missing_arg(value.expressions)
         return False
