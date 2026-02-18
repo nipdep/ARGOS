@@ -35,7 +35,13 @@ class ASTTreeOperator:
         "Delete": "DeleteStatement",
         "Insert": "InsertStatement",
         "Update": "UpdateStatement",
-        "Select": "SelectStatement"
+        "Select": "SelectStatement",
+        # Set operations are still read/select statements from access-control
+        # perspective; map them to SelectStatement so Statement-based rules
+        # (e.g. S32) can bind correctly.
+        "Union": "SelectStatement",
+        "Intersect": "SelectStatement",
+        "Except": "SelectStatement",
     }
     
     EXPRESSION_CATEGORIES = {
