@@ -39,6 +39,7 @@ class ArgosABoxOperator:
     2) policy ABOX construction (rdflib)
     3) query instance creation + reasoning + pruning (existing src modules)
     """
+    DEFAULT_BENCHMARK_ROLES = ("admin", "analyst", "staff", "public")
 
     def __init__(self, ontology_path: str | Path):
         self.ontology_path = Path(ontology_path)
@@ -301,7 +302,10 @@ class ArgosABoxOperator:
         table_category = classification.get("table", {}) if isinstance(classification, dict) else {}
         column_category = classification.get("column", {}) if isinstance(classification, dict) else {}
 
-        all_roles = set(access_control.get("roles", []) if isinstance(access_control.get("roles"), list) else [])
+        declared_roles = self._extract_declared_roles(access_control)
+        all_roles = set(declared_roles)
+        if not declared_roles:
+            all_roles.update(self.DEFAULT_BENCHMARK_ROLES)
         for policy in access_control.get("policies", []):
             for role in policy.get("roles", []):
                 all_roles.add(role)
@@ -437,6 +441,17 @@ class ArgosABoxOperator:
             op = op.replace("type", rendered)
             return f"{column} {op}".strip()
         return f"{column} {op} {rendered}".strip()
+
+    @staticmethod
+    def _extract_declared_roles(access_control: Dict[str, Any]) -> set[str]:
+        roles_field = access_control.get("roles")
+        if isinstance(roles_field, list):
+            return {str(r) for r in roles_field if r}
+        if isinstance(roles_field, dict):
+            return {str(r) for r in roles_field.keys() if r}
+        if isinstance(roles_field, str) and roles_field.strip():
+            return {roles_field.strip()}
+        return set()
 
     # ------------------------ Runtime / Reasoning -------------------------
     def _materialize_runtime_ontology(self) -> None:
