@@ -2,12 +2,11 @@ import os
 from typing import Dict, Optional, Sequence, Set
 
 try:
-    from experiment.din_sql_bird_imports import get_base_module, get_dbms_module
+    from experiment import din_sql_base as base_module
+    from experiment import dbms_access_control as dbms_module
 except ModuleNotFoundError:
-    from din_sql_bird_imports import get_base_module, get_dbms_module
-
-BASE_MODULE = get_base_module()
-DBMS_MODULE = get_dbms_module()
+    import din_sql_base as base_module
+    import dbms_access_control as dbms_module
 
 
 def get_role_denied_entities(
@@ -16,7 +15,7 @@ def get_role_denied_entities(
     role: str,
 ) -> Dict[str, Set[str]]:
     access_control_path = os.path.join(benchmark_root, db_id, "access_control.json")
-    policy_set = DBMS_MODULE.load_policy_set(access_control_path)
+    policy_set = dbms_module.load_policy_set(access_control_path)
     role_policy = policy_set.roles.get(role)
     if role_policy is None:
         return {"tables": set(), "columns": set()}
@@ -38,8 +37,8 @@ def build_prompt_filtered_context(
         db_id=db_id,
         role=role,
     )
-    schema = BASE_MODULE.get_database_schema(db_uri)
-    columns_descriptions = BASE_MODULE.table_descriptions_parser(database_description_dir)
+    schema = base_module.get_database_schema(db_uri)
+    columns_descriptions = base_module.table_descriptions_parser(database_description_dir)
     return {
         "db_uri": db_uri,
         "database_description_dir": database_description_dir,
@@ -122,7 +121,7 @@ def run_prompt_filtered_case(
     )
     common_hint = f"{hint}\n{restriction_hint}".strip()
 
-    result = BASE_MODULE.run_din_sql_case(
+    result = base_module.run_din_sql_case(
         chat_model=chat_model,
         question=question,
         schema=schema,
@@ -130,8 +129,8 @@ def run_prompt_filtered_case(
         columns_descriptions=columns_descriptions,
         prompt_bundle=prompt_bundle,
     )
-    result["restricted_tables"] = sorted(set(restricted_tables or []))
-    result["restricted_columns"] = sorted(set(restricted_columns or []))
-    result["prompt_restriction_hint"] = restriction_hint
-    result["common_hint"] = common_hint
+    # result["answer_metadata"]["restricted_tables"] = sorted(set(restricted_tables or []))
+    # result["answer_metadata"]["restricted_columns"] = sorted(set(restricted_columns or []))
+    # result["answer_metadata"]["prompt_restriction_hint"] = restriction_hint
+    # result["answer_metadata"]["common_hint"] = common_hint
     return result

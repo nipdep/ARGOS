@@ -231,6 +231,40 @@ def execute_with_dbms_access_control(
         return {"status": "deny", "error": str(exc), "role": role, "db_id": None}
 
 
+def run_dbms_access_control_case(
+    controller: SQLiteAccessController,
+    role: str,
+    din_sql_result: Optional[Dict[str, Optional[str]]] = None,
+    sql_query: Optional[str] = None,
+    query_key: str = "final_query",
+) -> Dict[str, Optional[str]]:
+    """
+    Single-case post-hoc DBMS access-control check.
+
+    Intended usage with DIN-SQL output:
+        din_sql_result = run_din_sql_case(...)
+        decision = run_dbms_access_control_case(controller, role, din_sql_result=din_sql_result)
+    """
+    if sql_query is None and din_sql_result is not None:
+        sql_query = din_sql_result.get(query_key)
+        if not sql_query:
+            sql_query = din_sql_result.get("initial_sql")
+    if sql_query is None:
+        sql_query = ""
+
+    decision = controller.evaluate_query(role=role, sql_query=sql_query)
+    # decision["query"] = sql_query
+    # decision["query_key"] = query_key
+    result = {
+        "final_query": "" if decision["status"] == "deny" else sql_query,
+        "answer_metadata": {
+            "query": sql_query,
+            "query_key": query_key,
+        }
+    }
+    return result
+
+
 def run_dbms_access_control_for_predictions(
     benchmark_root: str,
     db_id: str,
@@ -260,12 +294,16 @@ def run_dbms_access_control_for_predictions(
         role_raw = row.get("role", default_role)
         role = default_role if pd.isna(role_raw) else str(role_raw)
         sql_query = row.get(query_column, "")
-        decision = controller.evaluate_query(role=role, sql_query=sql_query)
+        decision = run_dbms_access_control_case(
+            controller=controller,
+            role=role,
+            sql_query=sql_query,
+            query_key=query_column,
+        )
         decision.update(
             {
                 "index": idx,
                 "question_id": row.get("question_id"),
-                "query": sql_query,
             }
         )
         results.append(decision)

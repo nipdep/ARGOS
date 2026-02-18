@@ -6,15 +6,13 @@ from typing import Dict, Optional, Set, Tuple
 import pandas as pd
 
 try:
-    from experiment.din_sql_bird_imports import get_base_module, get_dbms_module
+    from experiment import din_sql_base as base_module
+    from experiment import dbms_access_control as dbms_module
     from experiment.utils import normalize_name, quote_identifier
 except ModuleNotFoundError:
-    from din_sql_bird_imports import get_base_module, get_dbms_module
+    import din_sql_base as base_module
+    import dbms_access_control as dbms_module
     from utils import normalize_name, quote_identifier
-
-BASE_MODULE = get_base_module()
-DBMS_MODULE = get_dbms_module()
-
 
 def get_role_denied_entities(
     benchmark_root: str,
@@ -22,7 +20,7 @@ def get_role_denied_entities(
     role: str,
 ) -> Tuple[Set[str], Set[str]]:
     access_control_path = os.path.join(benchmark_root, db_id, "access_control.json")
-    policy_set = DBMS_MODULE.load_policy_set(access_control_path)
+    policy_set = dbms_module.load_policy_set(access_control_path)
     role_policy = policy_set.roles.get(role)
     if role_policy is None:
         return set(), set()
@@ -207,7 +205,7 @@ def run_view_filtered_case(
             role=role,
             sample_rows=sample_rows,
         )
-    result = BASE_MODULE.run_din_sql_case(
+    result = base_module.run_din_sql_case(
         chat_model=chat_model,
         question=question,
         schema=context["schema"],
@@ -215,6 +213,6 @@ def run_view_filtered_case(
         columns_descriptions=context["columns_descriptions"],
         prompt_bundle=prompt_bundle,
     )
-    result["denied_tables"] = sorted(context["denied_tables"])
-    result["denied_columns"] = sorted(context["denied_columns"])
+    # result["answer_metadata"]["denied_tables"] = sorted(context["denied_tables"])
+    # result["answer_metadata"]["denied_columns"] = sorted(context["denied_columns"])
     return result

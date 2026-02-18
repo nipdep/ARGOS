@@ -8,10 +8,10 @@ from typing import Any, Dict, List, Optional, Tuple
 
 LANGCHAIN_IMPORT_ERROR = None
 try:
-    from langchain.sql_database import SQLDatabase
-    from langchain.chat_models import ChatOpenAI
-    from langchain.chains import LLMChain
-    from langchain.prompts import (
+    from langchain_community.utilities import SQLDatabase
+    from langchain_openai import ChatOpenAI
+    from langchain_classic.chains import LLMChain
+    from langchain_core.prompts import (
         ChatPromptTemplate,
         SystemMessagePromptTemplate,
         HumanMessagePromptTemplate,
@@ -24,6 +24,13 @@ except ModuleNotFoundError as exc:
     ChatPromptTemplate = Any
     SystemMessagePromptTemplate = Any
     HumanMessagePromptTemplate = Any
+
+LITELLM_IMPORT_ERROR = None
+try:
+    from langchain_community.chat_models import ChatLiteLLM
+except ModuleNotFoundError as exc:
+    LITELLM_IMPORT_ERROR = exc
+    ChatLiteLLM = Any
 
 # ----------------------- #
 
@@ -1111,6 +1118,13 @@ def ensure_langchain_available():
         ) from LANGCHAIN_IMPORT_ERROR
 
 
+def ensure_litellm_available():
+    if LITELLM_IMPORT_ERROR is not None:
+        raise ModuleNotFoundError(
+            "LiteLLM support requires `langchain-community` + `litellm`."
+        ) from LITELLM_IMPORT_ERROR
+
+
 def get_database_schema(DB_URI: str) -> str:
     """Get the database schema from the database URI
 
@@ -1240,7 +1254,7 @@ def build_prompt_bundle() -> Dict[str, ChatPromptTemplate]:
 
 
 def run_din_sql_case(
-    chat_model: ChatOpenAI,
+    chat_model: Any,
     question: str,
     schema: str,
     hint: str,
@@ -1313,19 +1327,21 @@ def run_din_sql_case(
     else:
         final_query = "SELECT * FROM table"
 
-    return {
-        "schema_linking": schema_linking,
-        "classification": classification,
-        "label": label,
-        "sql_generation": sql_generation,
-        "self_correction": correction,
-        "initial_sql": sql_query,
+    return {  
         "final_query": final_query,
+        "answer_metadata": {
+            "schema_linking": schema_linking,
+            "classification": classification,
+            "label": label,
+            "sql_generation": sql_generation,
+            "self_correction": correction,
+            "initial_sql": sql_query
+        }
     }
 
 
 def generate_sql_query(
-    chat_model: ChatOpenAI,
+    chat_model: Any,
     question: str,
     schema: str,
     hint: str,
@@ -1347,7 +1363,7 @@ def generate_sql_query(
 def run_din_sql_dataframe(
     dev_df: pd.DataFrame,
     dev_db_path: str,
-    chat_model: ChatOpenAI,
+    chat_model: Any,
     start_index: int = 0,
     logs_csv_path: str = "logs.csv",
     prediction_json_path: str = "predict_dev.json",
@@ -1428,19 +1444,91 @@ def run_din_sql_dataframe(
 
 
 def load_default_chat_model(
-    model_name: str = "gpt-4-32k",
+    provider: str = "openai",
+    model_name: Optional[str] = None,
     temperature: float = 0,
     max_tokens: int = 2000,
-) -> ChatOpenAI:
+    api_base: Optional[str] = None,
+    api_key: Optional[str] = None,
+) -> Any:
+    """
+    Build a chat model using LiteLLM as provider-agnostic interface.
+
+    Supported providers:
+    - openai: default model gpt-4-32k
+    - lmstudio: default model gpt-oss-120b via OpenAI-compatible local endpoint
+    """
     ensure_langchain_available()
-    return ChatOpenAI(model=model_name, temperature=temperature, max_tokens=max_tokens)
+    provider_key = (provider or "openai").strip().lower()
+    if provider_key not in {"openai", "lmstudio"}:
+        raise ValueError(f"Unsupported provider: {provider}. Use 'openai' or 'lmstudio'.")
+
+    if model_name is None:
+        model_name = "gpt-4-32k" if provider_key == "openai" else "gpt-oss-120b"
+
+    # Preferred path: LiteLLM-backed LangChain model.
+    if LITELLM_IMPORT_ERROR is None:
+        if provider_key == "openai":
+            resolved_api_key = api_key or os.getenv("OPENAI_API_KEY")
+            if not resolved_api_key:
+                raise ValueError(
+                    "OPENAI_API_KEY is required for provider='openai'."
+                )
+            return ChatLiteLLM(
+                model=f"openai/{model_name}",
+                api_key=resolved_api_key,
+                api_base=api_base or os.getenv("OPENAI_API_BASE", None),
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+
+        resolved_api_base = api_base or os.getenv("LMSTUDIO_API_BASE", "http://127.0.0.1:1234/v1")
+        resolved_api_key = api_key or os.getenv("LMSTUDIO_API_KEY", "lm-studio")
+        return ChatLiteLLM(
+            model=f"openai/{model_name}",
+            api_base=resolved_api_base,
+            api_key=resolved_api_key,
+            temperature=temperature,
+            max_tokens=max_tokens,
+        )
+
+    # Fallback to existing ChatOpenAI adapter if LiteLLM packages are unavailable.
+    if provider_key == "openai":
+        resolved_api_key = api_key or os.getenv("OPENAI_API_KEY")
+        if not resolved_api_key:
+            raise ValueError("OPENAI_API_KEY is required for provider='openai'.")
+        return ChatOpenAI(
+            model=model_name,
+            openai_api_key=resolved_api_key,
+            openai_api_base=api_base or os.getenv("OPENAI_API_BASE", None),
+            temperature=temperature,
+            max_tokens=max_tokens,
+        )
+
+    return ChatOpenAI(
+        model=model_name,
+        openai_api_base=api_base or os.getenv("LMSTUDIO_API_BASE", "http://127.0.0.1:1234/v1"),
+        openai_api_key=api_key or os.getenv("LMSTUDIO_API_KEY", "lm-studio"),
+        temperature=temperature,
+        max_tokens=max_tokens,
+    )
 
 
 def main():
     # Keep original behavior for direct script execution.
     dev_db_path = "dev/dev_databases"
     dev_df = pd.read_json("dev/dev.json")
-    chat_model = load_default_chat_model()
+    provider = os.getenv("DIN_SQL_PROVIDER", "openai")
+    default_model = "gpt-4-32k" if provider.lower() == "openai" else "gpt-oss-120b"
+    model_name = os.getenv("DIN_SQL_MODEL", default_model)
+    chat_model = load_default_chat_model(
+        provider=provider,
+        model_name=model_name,
+        temperature=float(os.getenv("DIN_SQL_TEMPERATURE", "0")),
+        max_tokens=int(os.getenv("DIN_SQL_MAX_TOKENS", "2000")),
+        api_base=os.getenv("DIN_SQL_API_BASE") or None,
+        api_key=os.getenv("DIN_SQL_API_KEY") or None,
+    )
     run_din_sql_dataframe(
         dev_df=dev_df,
         dev_db_path=dev_db_path,
