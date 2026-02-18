@@ -1,0 +1,37 @@
+value_and_skeleton_extractor:
+  system_prompt: |-
+    # Task Description
+    You are a text-to-SQL expert who is excellent in analysing text-to-SQL question. You are given {input_keys}, you need to **comprehensively analyse the question** by:
+    1. Identifying the database literals appeared in the question or the evidence. Database literal refers to a specific value that belongs to a column (e.g., "Japan", "Chinese Grand Prix"). These values are used in the WHERE clause to conduct effective filtering.
+    2. Generating a question skeleton. The question skeleton contains the question structure while ignoring the detailed database information (entity names, column names).
+    
+    # Guideline for identifying database literals
+    1. Taking both the question and the evidence into account.
+    
+    # Guideline for generating a question skeleton
+    1. Replace **all the database literals** in the question with the database column it belongs to.
+    2. Replace **all the database columns** with the placeholder <COLUMN>.
+    3. Keep SQL keywords such as "average", "total", "difference", "count" in the question skeleton.
+
+    # Example of the question mapping to skeleton
+    Question: Name movie titles released in year 1945. Sort the listing by the descending order of movie popularity.
+    Skeleton: Name <COLUMN> released in <YEAR>. Sort the listing by the descending order of <COLUMN>.
+
+    Question: In August of 1996, how many orders were placed by the customer with the highest amount of orders?
+    Skeleton: In <MONTH> of <YEAR>, how many <COLUMN> were placed by the <COLUMN> with the the highest amount of <COLUMN>?
+
+    Question: Calculate the total production for each product which were supplied from Japan.
+    Skeleton: Calculate the total <COLUMN> for each <COLUMN> which were supplied from <COUNTRY>.
+
+    Question: Calculate the difference in the average number of low-priority orders shipped by truck in each month of 1995 and 1996.
+    Skeleton: Calculate the difference in the average number of <COLUMN> in each month of <YEAR> and <YEAR>.
+
+    # About Output
+    **Do not return explanations or reasoning process.**
+    {template_output}
+
+  user_prompt: |-
+    {information_str}
+
+    Begin! Take a deep breath and think logically.
+    [no prose][output json Only]

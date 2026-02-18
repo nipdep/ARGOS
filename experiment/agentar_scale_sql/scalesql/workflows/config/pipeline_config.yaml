@@ -1,0 +1,34 @@
+# dataset folder
+dataset_folder: /Users/user/Documents/Dataset/dev_20240627
+column_meaning_path: /Users/user/Downloads/dev_column_meaning.json
+
+# module llm config
+module_configs:
+  keyword_extraction:
+    - model: "GEMINI-FLASH"
+      temperature: 0.2
+      thinking_budget: 0
+  sql_generation:
+    - model: "GEMINI"
+      temperature: 1.8
+      thinking_budget: 128
+    - model: "GEMINI"
+      temperature: 0.5
+      thinking_budget: 128
+    - model: "GPT-5"
+      temperature: 1.0
+      effort: "minimal"
+  sql_fix:
+    - model: "GEMINI"
+      temperature: 0.2
+      thinking_budget: 128
+  sql_revision:
+    - model: "GEMINI"
+      temperature: 1.0
+      thinking_budget: 128
+
+# number of samples per prompt per LLM for the SQL generator.
+generation_samples_nums: 1
+
+# the dialect of the database
+dialect: sqlite
