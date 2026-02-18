@@ -382,6 +382,7 @@ class AccessControlRuleGenerator:
             # building access control file 
             access_control_file = {
                 "db_id": db_schema["db_id"],
+                "roles": self.ROLES,
                 "classification": {
                     "table": table_category_dict,
                     "column": merged_category_column_dict
