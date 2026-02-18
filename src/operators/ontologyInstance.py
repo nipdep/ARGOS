@@ -1,5 +1,6 @@
 import uuid
 import copy
+import os
 from typing import List, Dict, Any
 from sqlglot import parse_one, exp
 from sqlglot.expressions import Expression, Identifier, Column
@@ -14,13 +15,17 @@ from src.operators.astTree import ASTTreeOperator
 class OntologyOperator:
     """Orchestrates the resolution and instantiation of an ontology from an AST tree."""
 
-    def __init__(self, onto_path: str):
+    def __init__(self, onto_path: str, populated_path: str=None):
         # self.tree_op = tree_operator
         # load ontology as TBOX, ABOX pattern
         self.world = World()
         self.tbox_onto = self.world.get_ontology(onto_path).load()
         self.onto = self.world.get_ontology(onto_path)
         self.onto.imported_ontologies.append(self.tbox_onto)
+        if populated_path and os.path.exists(populated_path):
+            # append the populated ontology if exists
+            self.abox_onto = self.world.get_ontology(populated_path).load()
+            self.onto.imported_ontologies.append(self.abox_onto)
 
         self.class_lookup = {cls.name: cls for cls in self.onto.classes()}
         self.created_instances = []
@@ -28,7 +33,7 @@ class OntologyOperator:
         self.column_ref_instances = []
 
         self._create_object_mapper()
-        self._build_policy_params()
+        # self._build_policy_params()
 
     def _create_object_mapper(self):
         """
@@ -665,6 +670,16 @@ class OntologyOperator:
         node_class = self.class_lookup.get(node.name)
         # print(f"Instantiating node: {node.id} | Class: {node_class} | Parent: {parent_instance if parent_instance else None}")
         if not node_class:
+            # Keep traversing through unmapped wrappers (e.g. Not/Is/Null) so
+            # nested ColumnRef/TableRef nodes still get instantiated.
+            for child in node.children:
+                self._instantiate_recursive(
+                    child,
+                    agent_id,
+                    parent_instance=parent_instance,
+                    parent=parent,
+                    clause_instance=clause_instance,
+                )
             return
 
         inst = node_class(node.id)
@@ -715,12 +730,24 @@ class OntologyOperator:
     def reason_and_save(self, output_path: str, save=False):
         """Runs the reasoner and saves the final ontology."""
         print("--> Running reasoner and saving ontology...")
+        reasoner_targets = [self.onto]
+        reasoner_debug = 1 if os.getenv("OWLREADY_REASONER_DEBUG", "").strip().lower() in {"1", "true", "yes", "on"} else 0
         with self.onto:
             # sync_reasoner(infer_property_values=True)
-            sync_reasoner_pellet(infer_property_values=True)
+            # IMPORTANT: pass ontology targets explicitly; otherwise Owlready2
+            # reasons over default_world and skips this operator's custom World().
+            sync_reasoner_pellet(
+                reasoner_targets,
+                infer_property_values=True,
+                debug=reasoner_debug,
+            )
 
-        with self.onto:  # XXX: this proves that pallet reasoner run reasoning rule sequentially.
-            sync_reasoner_pellet(infer_property_values=True)
+        with self.onto:  # XXX: this proves that pellet reasoner runs SWRL rule chaining sequentially.
+            sync_reasoner_pellet(
+                reasoner_targets,
+                infer_property_values=True,
+                debug=reasoner_debug,
+            )
 
         # with self.onto: # XXX: this proves that pallet reasoner run reasoning rule sequentially.
         #     sync_reasoner_pellet(infer_property_values = True)
