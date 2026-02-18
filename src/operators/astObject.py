@@ -1,4 +1,5 @@
 import uuid
+import os
 from sqlglot import parse_one, exp
 from sqlglot.expressions import Expression
 
@@ -12,18 +13,42 @@ class SqlglotOperator:
     for easy and robust inspection and manipulation of the query structure.
     """
 
-    def __init__(self, sql: str):
+    def __init__(self, sql: str, verbose_errors: bool | None = None):
         """
         Initializes the operator by parsing the SQL and preparing the AST.
         """
+        if verbose_errors is None:
+            env_value = os.getenv("SQLGLOT_OPERATOR_VERBOSE_ERRORS", "")
+            verbose_errors = env_value.strip().lower() in {"1", "true", "yes", "y"}
+        self.verbose_errors = bool(verbose_errors)
+        self.parse_error: str = ""
         try:
-            self.ast: Expression = parse_one(sql)
-            self._decorate_ast_with_ids()
-            self._map_ids_to_nodes()
+            self.ast: Expression = self._parse_with_fallback(sql)
+            if self.ast:
+                self._decorate_ast_with_ids()
+                self._map_ids_to_nodes()
+            else:
+                self.id_to_node_map = {}
         except Exception as e:
-            print(f"Error initializing SqlglotOperator: {e}")
+            self.parse_error = str(e)
+            if self.verbose_errors:
+                print(f"Error initializing SqlglotOperator: {e}")
             self.ast = None
             self.id_to_node_map = {}
+
+    @staticmethod
+    def _parse_with_fallback(sql: str) -> Expression | None:
+        parse_errors: list[Exception] = []
+        # Prefer SQLite dialect since all benchmark DBs are sqlite.
+        for kwargs in ({"read": "sqlite"}, {}):
+            try:
+                return parse_one(sql, **kwargs)
+            except Exception as exc:
+                parse_errors.append(exc)
+                continue
+        if parse_errors:
+            raise parse_errors[-1]
+        return None
 
     def _decorate_ast_with_ids(self):
         """
