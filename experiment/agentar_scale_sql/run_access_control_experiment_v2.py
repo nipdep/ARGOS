@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from concurrent.futures import Future, ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -107,6 +108,18 @@ MODE_TO_POST_LAYER = {
     "view_filtered_dbms_access_control": "dbms",
     "view_filtered_argos_access_control": "argos",
 }
+STRATEGY_BASELINE_MODE = {
+    "base": "base",
+    "prompt_filtered": "prompt_filtered_access_control",
+    "view_filtered": "view_filtered_access_control",
+}
+TEXT2SQL_METHOD_LABEL = {
+    "base": "text2sql",
+    "prompt_filtered": "prompt_filtered_text2sql",
+    "view_filtered": "view_filtered_text2sql",
+}
+TEXT2SQL_METHOD_ORDER = ["text2sql", "prompt_filtered_text2sql", "view_filtered_text2sql"]
+AC_LAYER_ORDER = ["none", "dbms", "argos"]
 DEFAULT_PER_DB_DATASET_FILENAME = "qa.json"
 LEGACY_PER_DB_DATASET_FILENAME = "text_query_all.json"
 REQUIRED_DATASET_COLUMNS = [
@@ -134,6 +147,18 @@ def resolve_access_control_modes(requested_modes: List[str] | None) -> List[str]
             f"Allowed: {ACCESS_CONTROL_MODES}"
         )
     return [mode for mode in ACCESS_CONTROL_MODES if mode in requested_set]
+
+
+def expand_modes_with_strategy_baselines(selected_modes: List[str]) -> List[str]:
+    selected_set = {str(mode).strip() for mode in selected_modes if str(mode).strip()}
+    for mode in list(selected_set):
+        strategy = MODE_TO_GENERATION_STRATEGY.get(mode)
+        if not strategy:
+            continue
+        baseline_mode = STRATEGY_BASELINE_MODE.get(strategy)
+        if baseline_mode:
+            selected_set.add(baseline_mode)
+    return [mode for mode in ACCESS_CONTROL_MODES if mode in selected_set]
 
 
 def parse_args() -> argparse.Namespace:
@@ -359,7 +384,8 @@ class ScaleSQLAccessControlRunner:
         self.db_root = Path(args.db_root)
         self.skeleton_chroma_path = Path(args.skeleton_chroma_path)
         self.cell_chroma_path = Path(args.cell_chroma_path)
-        self.selected_modes = resolve_access_control_modes(getattr(args, "access_control_mode", []))
+        requested_modes = resolve_access_control_modes(getattr(args, "access_control_mode", []))
+        self.selected_modes = expand_modes_with_strategy_baselines(requested_modes)
         self.save_argos_db_abox = bool(getattr(args, "save_argos_db_abox", True))
         resolved_run_timestamp = (
             str(run_timestamp).strip() or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -764,79 +790,86 @@ Output SQL only."""
             )
         return self._argos_controller_cache[db_id]
 
-    def run_all_modes_for_sample(self, sample: Dict[str, Any]) -> List[Dict[str, Any]]:
-        question = sample["question"]
-        evidence = str(sample.get("evidence", "") or "")
-        db_id = sample["db_id"]
-        role = sample["role"]
-        mode_outputs: List[Dict[str, Any]] = []
-        selected_modes = set(self.selected_modes)
-        required_strategies = {
-            MODE_TO_GENERATION_STRATEGY[mode]
-            for mode in selected_modes
-            if mode in MODE_TO_GENERATION_STRATEGY
-        }
-        generation_results: Dict[str, Dict[str, Any]] = {}
-
-        if "base" in required_strategies:
+    def _generate_for_strategy(
+        self,
+        *,
+        strategy: str,
+        question: str,
+        evidence: str,
+        db_id: str,
+        role: str,
+    ) -> Dict[str, Any]:
+        if strategy == "base":
             base_ctx = self.get_base_context(db_id)
-            base_result = self.run_scalesql_generator(
+            result = self.run_scalesql_generator(
                 question=question,
                 evidence=evidence,
                 db_id=db_id,
                 schema=base_ctx["schema"],
                 columns_descriptions=base_ctx["columns_descriptions"],
             )
-            base_result["source_generation_strategy"] = "base"
-            generation_results["base"] = base_result
+            result["source_generation_strategy"] = "base"
+            return result
 
-        if "prompt_filtered" in required_strategies:
+        if strategy == "prompt_filtered":
             prompt_ctx = self.get_prompt_context(db_id, role)
             prompt_evidence = apply_prompt_filtering_to_evidence(
                 evidence=evidence,
                 restriction_hint=prompt_ctx.get("restriction_hint", ""),
             )
-            prompt_result = self.run_scalesql_generator(
+            result = self.run_scalesql_generator(
                 question=question,
                 evidence=prompt_evidence,
                 db_id=db_id,
                 schema=prompt_ctx["schema"],
                 columns_descriptions=prompt_ctx["columns_descriptions"],
             )
-            prompt_result["source_generation_strategy"] = "prompt_filtered"
-            prompt_result["restriction_hint"] = prompt_ctx.get("restriction_hint", "")
-            prompt_result["restricted_tables"] = sorted(prompt_ctx.get("restricted_tables", []))
-            prompt_result["restricted_columns"] = sorted(prompt_ctx.get("restricted_columns", []))
-            generation_results["prompt_filtered"] = prompt_result
+            result["source_generation_strategy"] = "prompt_filtered"
+            result["restriction_hint"] = prompt_ctx.get("restriction_hint", "")
+            result["restricted_tables"] = sorted(prompt_ctx.get("restricted_tables", []))
+            result["restricted_columns"] = sorted(prompt_ctx.get("restricted_columns", []))
+            return result
 
-        if "view_filtered" in required_strategies:
+        if strategy == "view_filtered":
             view_ctx = self.get_view_context(db_id, role)
-            view_result = self.run_scalesql_generator(
+            result = self.run_scalesql_generator(
                 question=question,
                 evidence=evidence,
                 db_id=db_id,
                 schema=view_ctx["schema"],
                 columns_descriptions=view_ctx["columns_descriptions"],
             )
-            view_result["source_generation_strategy"] = "view_filtered"
-            view_result["denied_tables"] = sorted(view_ctx.get("denied_tables", []))
-            view_result["denied_columns"] = sorted(view_ctx.get("denied_columns", []))
-            generation_results["view_filtered"] = view_result
+            result["source_generation_strategy"] = "view_filtered"
+            result["denied_tables"] = sorted(view_ctx.get("denied_tables", []))
+            result["denied_columns"] = sorted(view_ctx.get("denied_columns", []))
+            return result
+
+        raise ValueError(f"Unsupported generation strategy: {strategy}")
+
+    def _apply_post_layers_for_strategy(
+        self,
+        *,
+        strategy: str,
+        source_result: Dict[str, Any],
+        role: str,
+        db_id: str,
+        selected_modes: set[str],
+    ) -> List[Dict[str, Any]]:
+        outputs: List[Dict[str, Any]] = []
+        source_query = str(source_result.get("final_query", "") or "")
+        source_query_syntax_valid = self._is_query_syntax_valid(source_query)
 
         for mode in ACCESS_CONTROL_MODES:
             if mode not in selected_modes:
                 continue
+            if MODE_TO_GENERATION_STRATEGY.get(mode) != strategy:
+                continue
 
-            strategy = MODE_TO_GENERATION_STRATEGY[mode]
-            post_layer = MODE_TO_POST_LAYER[mode]
-            source_result = generation_results.get(strategy, {})
-            source_query = str(source_result.get("final_query", "") or "")
-            source_query_syntax_valid = self._is_query_syntax_valid(source_query)
-
+            post_layer = MODE_TO_POST_LAYER.get(mode, "none")
             if post_layer == "none":
                 mode_result = dict(source_result)
                 mode_result["access_control_mode"] = mode
-                mode_outputs.append(mode_result)
+                outputs.append(mode_result)
                 continue
 
             if post_layer == "dbms":
@@ -850,7 +883,7 @@ Output SQL only."""
                 mode_result.update(post_result)
                 mode_result["access_control_mode"] = mode
                 mode_result["source_query_before_dbms"] = source_query
-                mode_outputs.append(mode_result)
+                outputs.append(mode_result)
                 continue
 
             if post_layer == "argos":
@@ -886,8 +919,74 @@ Output SQL only."""
                 mode_result.update(post_result)
                 mode_result["access_control_mode"] = mode
                 mode_result["source_query_before_argos"] = source_query
-                mode_outputs.append(mode_result)
+                outputs.append(mode_result)
                 continue
+
+        return outputs
+
+    def run_all_modes_for_sample(self, sample: Dict[str, Any]) -> List[Dict[str, Any]]:
+        question = sample["question"]
+        evidence = str(sample.get("evidence", "") or "")
+        db_id = sample["db_id"]
+        role = sample["role"]
+        mode_outputs: List[Dict[str, Any]] = []
+        selected_modes = set(self.selected_modes)
+
+        strategy_order = ["base", "prompt_filtered", "view_filtered"]
+        required_strategies = [
+            strategy
+            for strategy in strategy_order
+            if any(
+                MODE_TO_GENERATION_STRATEGY.get(mode) == strategy
+                for mode in selected_modes
+            )
+        ]
+        if not required_strategies:
+            return mode_outputs
+
+        with ThreadPoolExecutor(max_workers=1, thread_name_prefix="scalesql_gen") as generation_pool:
+            current_strategy = required_strategies[0]
+            current_future: Future[Dict[str, Any]] = generation_pool.submit(
+                self._generate_for_strategy,
+                strategy=current_strategy,
+                question=question,
+                evidence=evidence,
+                db_id=db_id,
+                role=role,
+            )
+
+            for next_strategy in required_strategies[1:]:
+                current_result = current_future.result()
+                next_future: Future[Dict[str, Any]] = generation_pool.submit(
+                    self._generate_for_strategy,
+                    strategy=next_strategy,
+                    question=question,
+                    evidence=evidence,
+                    db_id=db_id,
+                    role=role,
+                )
+                mode_outputs.extend(
+                    self._apply_post_layers_for_strategy(
+                        strategy=current_strategy,
+                        source_result=current_result,
+                        role=role,
+                        db_id=db_id,
+                        selected_modes=selected_modes,
+                    )
+                )
+                current_strategy = next_strategy
+                current_future = next_future
+
+            final_result = current_future.result()
+            mode_outputs.extend(
+                self._apply_post_layers_for_strategy(
+                    strategy=current_strategy,
+                    source_result=final_result,
+                    role=role,
+                    db_id=db_id,
+                    selected_modes=selected_modes,
+                )
+            )
 
         return mode_outputs
 
@@ -939,6 +1038,10 @@ Output SQL only."""
                 "question_id": sample.get("question_id"),
                 "sample_position": int(sample_position),
                 "access_control_mode": mode_output.get("access_control_mode"),
+                "text2sql_method": mode_to_summary_axes(
+                    str(mode_output.get("access_control_mode", ""))
+                )[0],
+                "ac_mode": mode_to_summary_axes(str(mode_output.get("access_control_mode", "")))[1],
                 "question_type": normalize_question_type(sample.get("question_type")),
                 "intent_preserving_expected_query": sample.get("intent_preserving_expected_query"),
                 "privacy_preserving_expected_query": sample.get("privacy_preserving_expected_query"),
@@ -1048,6 +1151,23 @@ def _aggregate_group_metrics(group: pd.DataFrame) -> Dict[str, Any]:
     }
 
 
+def mode_to_summary_axes(mode: str) -> tuple[str, str]:
+    strategy = MODE_TO_GENERATION_STRATEGY.get(mode, "base")
+    ac_layer = MODE_TO_POST_LAYER.get(mode, "none")
+    return TEXT2SQL_METHOD_LABEL.get(strategy, strategy), ac_layer
+
+
+def _summary_sort_key(mode: str) -> tuple[int, int, str]:
+    method_label, ac_layer = mode_to_summary_axes(mode)
+    method_idx = (
+        TEXT2SQL_METHOD_ORDER.index(method_label)
+        if method_label in TEXT2SQL_METHOD_ORDER
+        else len(TEXT2SQL_METHOD_ORDER)
+    )
+    ac_idx = AC_LAYER_ORDER.index(ac_layer) if ac_layer in AC_LAYER_ORDER else len(AC_LAYER_ORDER)
+    return (method_idx, ac_idx, str(mode))
+
+
 def _build_base_relative_question_ids(base_group: pd.DataFrame) -> set[Any]:
     base_relative_question_ids: set[Any] = set()
     if base_group is None or base_group.empty:
@@ -1085,6 +1205,7 @@ def aggregate_mode_scores(contrib_df: pd.DataFrame) -> pd.DataFrame:
 
     for mode in sorted(mode_groups.keys()):
         group = mode_groups[mode]
+        method_label, ac_layer = mode_to_summary_axes(mode)
         overall_metrics = _aggregate_group_metrics(group)
         subset_group = (
             group[group["question_id"].isin(base_relative_question_ids)]
@@ -1095,6 +1216,8 @@ def aggregate_mode_scores(contrib_df: pd.DataFrame) -> pd.DataFrame:
 
         row: Dict[str, Any] = {
             "access_control_mode": mode,
+            "text2sql_method": method_label,
+            "ac_mode": ac_layer,
             **overall_metrics,
             "relative_base_correct_question_count": base_relative_question_count,
             "relative_base_intent_exact_match_question_count": base_relative_question_count,
@@ -1136,7 +1259,13 @@ def aggregate_mode_scores(contrib_df: pd.DataFrame) -> pd.DataFrame:
         }
         rows.append(row)
 
-    return pd.DataFrame(rows).sort_values("access_control_mode").reset_index(drop=True)
+    summary_df = pd.DataFrame(rows)
+    if summary_df.empty:
+        return summary_df
+    summary_df["_mode_sort"] = summary_df["access_control_mode"].apply(
+        lambda mode: _summary_sort_key(str(mode))
+    )
+    return summary_df.sort_values("_mode_sort").drop(columns=["_mode_sort"]).reset_index(drop=True)
 
 
 def build_question_type_breakdown(eval_df: pd.DataFrame) -> pd.DataFrame:
@@ -1168,6 +1297,7 @@ def build_question_type_breakdown(eval_df: pd.DataFrame) -> pd.DataFrame:
 
     rows: List[Dict[str, Any]] = []
     for (mode, question_type), group in mode_qtype_groups.items():
+        method_label, ac_layer = mode_to_summary_axes(mode)
         overall_metrics = _aggregate_group_metrics(group)
         base_relative_question_ids = base_by_qtype.get(question_type, set())
         subset_group = (
@@ -1179,6 +1309,8 @@ def build_question_type_breakdown(eval_df: pd.DataFrame) -> pd.DataFrame:
 
         row: Dict[str, Any] = {
             "access_control_mode": mode,
+            "text2sql_method": method_label,
+            "ac_mode": ac_layer,
             "question_type": question_type,
             **overall_metrics,
             # Backward-compatible aliases for existing notebooks/plots.
@@ -1234,11 +1366,14 @@ def build_question_type_breakdown(eval_df: pd.DataFrame) -> pd.DataFrame:
     breakdown_df["_question_type_sort"] = breakdown_df["question_type"].apply(
         lambda x: _question_type_sort_key(x)[0]
     )
+    breakdown_df["_mode_sort"] = breakdown_df["access_control_mode"].apply(
+        lambda mode: _summary_sort_key(str(mode))
+    )
     return (
         breakdown_df.sort_values(
-            ["_question_type_sort", "question_type", "access_control_mode"]
+            ["_question_type_sort", "question_type", "_mode_sort"]
         )
-        .drop(columns=["_question_type_sort"])
+        .drop(columns=["_question_type_sort", "_mode_sort"])
         .reset_index(drop=True)
     )
 
@@ -1349,6 +1484,8 @@ def contrib_from_eval_row(eval_row: Dict[str, Any]) -> Dict[str, Any]:
         "prompt_char_size_total": prompt_char_size_scored,
         "question_id": eval_row.get("question_id"),
         "access_control_mode": eval_row.get("access_control_mode"),
+        "text2sql_method": eval_row.get("text2sql_method", ""),
+        "ac_mode": eval_row.get("ac_mode", ""),
     }
 
 
@@ -1593,7 +1730,9 @@ def persist_run_outputs(
 
 def main() -> None:
     args = parse_args()
-    args.access_control_mode = resolve_access_control_modes(args.access_control_mode)
+    args.access_control_mode = expand_modes_with_strategy_baselines(
+        resolve_access_control_modes(args.access_control_mode)
+    )
     dataset_df, dataset_source, dataset_files = load_experiment_dataset(
         db_root=Path(args.db_root),
         dataset=str(args.dataset or ""),
