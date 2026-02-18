@@ -377,9 +377,15 @@ class ASTPruner:
         if isinstance(node, exp.From) and node.this is None:
             return None
 
-        # Rule 6: cleanup empty Function node.
-        if isinstance(node, exp.Func) and node.this is None:
-            print(f"    - Cascading removal of Function '{node.sql()}' because its argument was removed.")
+        # Rule 6: clean up invalid function nodes.
+        # Note: many valid function-like expressions (e.g., searched CASE)
+        # intentionally have `this is None`, so we must only remove a function
+        # when one of its required args is missing.
+        if isinstance(node, exp.Func) and self._is_invalid_function_node(node):
+            print(
+                f"    - Cascading removal of Function '{node.sql()}' "
+                "because a required argument was removed."
+            )
             return None
         
         if isinstance(node, exp.Alias) and node.this is None:
@@ -408,3 +414,23 @@ class ASTPruner:
                     return None
 
         return node
+
+    @staticmethod
+    def _is_invalid_function_node(node: exp.Func) -> bool:
+        """
+        Returns True when a function expression is structurally invalid.
+
+        sqlglot encodes each function class with `arg_types`, where required
+        arguments are marked as True. We only prune when those required args
+        are missing after prior pruning steps.
+        """
+        arg_types = getattr(node, "arg_types", {}) or {}
+        for arg_name, is_required in arg_types.items():
+            if not is_required:
+                continue
+            value = node.args.get(arg_name)
+            if value is None:
+                return True
+            if isinstance(value, list) and not value:
+                return True
+        return False
