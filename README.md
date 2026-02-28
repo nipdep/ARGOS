@@ -1,158 +1,218 @@
-# ARGOS: Ontology-Based Access Control for Agent Systems
+# ARGOS
 
-This repository contains the implementation of ARGOS (Access Realignment through Guided Ontological Structures), an advanced ontology-based access control system designed for agent systems. This implementation provides SQL query analysis, AST tree manipulation, and ontological reasoning capabilities for enforcing access control policies.
+## Privacy-Preserving and Permissive Access Realignment for LLM-Generated Database Queries
 
-## Overview
+This repository is the working research codebase for ARGOS, an ontology-backed access realignment pipeline for LLM-generated SQL. It combines three things in one place:
 
-ARGOS implements a sophisticated access control mechanism that leverages ontological knowledge to make authorization decisions for database queries. The system parses SQL queries into Abstract Syntax Trees (AST), maps them to ontological instances, and applies reasoning to determine access permissions based on predefined policies.
+- core query parsing, AST transformation, ontology instantiation, and pruning logic
+- benchmark construction and evaluation utilities for privacy- and permission-aware text-to-SQL tasks
+- experiment runners that integrate ARGOS with external text-to-SQL pipelines such as Agentar-Scale-SQL and DIN-SQL style baselines
 
-## Key Features
+The repository is organized as a research artifact rather than a polished package. The main runnable entry points are the scripts under `p3t2q_benchmark_building/` and `experiment/`; `main.py` is currently only a placeholder.
 
-- **SQL Query Analysis**: Advanced parsing and analysis of SQL queries using SQLGlot
-- **AST Tree Manipulation**: Custom tree structures for representing and manipulating query components
-- **Ontological Reasoning**: Integration with OWL ontologies for knowledge representation and reasoning
-- **Access Control Policies**: Flexible policy framework for defining access control rules
-- **Agent System Integration**: Designed specifically for multi-agent environments
+## What Is In This Repo
 
-## Project Structure
-
-```
-OBAC-based-Agent-Systems/
-├── main.py                          # Main entry point
-├── pyproject.toml                   # Project configuration and dependencies
-├── requirements.txt                 # Installation requirements
-├── README.md                        # This file
-├── uv.lock                         # Lock file for dependencies
-│
-├── src/                            # Source code
-│   ├── __init__.py
-│   ├── DBImporter.py               # Database import utilities
-│   ├── prune.py                    # Data pruning operations
-│   ├── term_evals.py               # Term evaluation functions
-│   │
-│   ├── data/                       # Data structures and models
-│   │   └── ASTTree.py              # AST tree node definitions
-│   │
-│   └── operators/                  # Core operational modules
-│       ├── astObject.py            # SQL AST object operations
-│       ├── astTree.py              # AST tree manipulation
-│       └── ontologyInstance.py     # Ontology instantiation and reasoning
-│
-├── data/                           # Datasets and experimental results
-│   ├── test_dataset_v4.csv         # Test dataset version 4
-│   └── test_dataset_result_v*.csv  # Various versioned result files
-│
-├── experiments/                    # Jupyter notebooks and experimental code
-│
-└── ontology_file/                 # Ontology definitions and instances
-    ├── ARGOS.rdf                   # Main ARGOS ontology
-    ├── ARGOSv3.rdf                 # ARGOS ontology version 3
-    ├── finance_instance.properties # Financial domain instances
-    ├── financial_instances.rdf     # Financial instances (RDF format)
-
+```text
+ARGOS/
+├── src/                           # Core ARGOS operators
+│   ├── argos_abox_operator.py     # High-level schema/policy ABOX builder + query evaluator
+│   ├── prune.py                   # AST pruning after ontology reasoning
+│   ├── operators/
+│   │   ├── astObject.py           # sqlglot wrapper and AST utilities
+│   │   ├── astTree.py             # Custom AST tree projection
+│   │   └── ontologyInstance.py    # OWLReady-backed ontology runtime
+│   └── data/ASTTree.py            # Tree node data structure
+├── data/
+│   ├── P3T2Q_benchmark/           # Benchmark versions (v0, v1, v2)
+│   │   └── v2/<db_id>/            # schema.json, access_control.json, qa.json, bird_qa.json, sqlite DB
+│   ├── ontology_file/             # ARGOS ontologies and generated ontology artifacts
+│   └── financial_benchmark/       # Earlier CSV-based benchmark assets
+├── p3t2q_benchmark_building/      # Dataset generation and evaluation scripts
+├── experiment/
+│   ├── agentar_scale_sql/         # Vendored Agentar-Scale-SQL code + ARGOS experiment runners
+│   ├── din_sql/                   # Alternative text-to-SQL baseline wrappers
+│   ├── outputs/                   # Raw run artifacts
+│   └── results/                   # Aggregated metrics and plots
+├── notebooks/                     # Exploratory analysis and paper-support notebooks
+├── build_full_qa_dataset.sh       # End-to-end dataset build pipeline for benchmark v2
+├── requirements.txt               # Core Python dependencies
+├── pyproject.toml                 # Project metadata
+└── uv.lock                        # Locked dependency snapshot
 ```
 
-## Installation
+## Core Pipeline
 
-### Prerequisites
+At a high level, the ARGOS flow is:
 
-- Python 3.13 or higher
-- pip package manager
+1. Parse generated SQL with `sqlglot`.
+2. Convert the parsed tree into a simplified internal AST representation.
+3. Materialize schema, policy, and query references as ontology individuals.
+4. Run ontology reasoning to determine which tables/columns are aligned, denied, or row-constrained.
+5. Prune or rewrite the SQL into a privacy-preserving and permission-preserving query.
 
-### Install Dependencies
+The most direct high-level interface in the current codebase is `src/argos_abox_operator.py`, which builds schema/policy ABOXes from benchmark assets and evaluates queries role-by-role.
 
-1. Clone the repository:
+## Key Directories
+
+### `src/`
+
+The `src/` tree contains the actual ARGOS logic:
+
+- `operators/astObject.py`: wraps `sqlglot`, parses SQL, assigns node IDs, and supports AST editing.
+- `operators/astTree.py`: projects the raw SQL AST into a custom tree that is easier to reason over.
+- `operators/ontologyInstance.py`: loads the ontology with Owlready2 and instantiates query references.
+- `prune.py`: removes or rewrites AST nodes after ontology reasoning.
+- `argos_abox_operator.py`: orchestrates schema ABOX creation, policy ABOX creation, reasoning, and query refinement.
+
+### `data/`
+
+The benchmark assets are already checked in.
+
+- `data/P3T2Q_benchmark/v2/` is the main current benchmark layout used by the newer experiment runners.
+- Each database folder (for example `financial`, `formula_1`, `superhero`) includes:
+  - `schema.json`
+  - `access_control.json`
+  - `qa.json`
+  - `bird_qa.json`
+  - `<db_id>.sqlite`
+- `data/ontology_file/` contains versioned ARGOS ontology files (`argos_v3.x.rdf`) plus generated ontology outputs.
+
+### `p3t2q_benchmark_building/`
+
+This folder contains the dataset and evaluation toolchain:
+
+- build access-control policies from benchmark schemas
+- generate QA configs for view-only, filter-only, and combined tracks
+- create QA/PQ pairs
+- naturalize question text via a model endpoint
+- evaluate model outputs against the benchmark with per-sample and aggregate metrics
+
+### `experiment/`
+
+This folder contains experimental integrations and saved outputs:
+
+- `experiment/agentar_scale_sql/` includes a vendored Agentar-Scale-SQL tree plus wrappers such as:
+  - `run_access_control_experiment.py`
+  - `run_access_control_experiment_llamacpp_batch.py`
+  - `run_access_control_experiment_v2.py`
+- `experiment/din_sql/` contains comparable baseline layers (`base`, DBMS enforcement, prompt filtering, view filtering, ARGOS).
+- `experiment/outputs/` stores raw JSON/log artifacts from runs.
+- `experiment/results/` stores summarized benchmark results and paper plots.
+
+## Setup
+
+### Python
+
+The checked-in `pyproject.toml` targets Python `>=3.13`.
+
+### Install Core Dependencies
+
 ```bash
-git clone https://github.com/nipdep/OBAC-based-Agent-Systems.git
-cd OBAC-based-Agent-Systems
-```
-
-2. Install required packages:
-```bash
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Alternatively, if you're using uv:
+Or, if you use `uv`:
+
 ```bash
 uv sync
 ```
 
-### Dependencies
+### Optional / Experiment-Specific Dependencies
 
-The project requires the following main dependencies:
-- **owlready2** (>=0.48): OWL ontology manipulation and reasoning
-- **pandas** (>=2.3.1): Data manipulation and analysis
-- **sqlglot** (>=27.7.0): SQL parsing and analysis
+The root dependency files cover the core ARGOS stack (`owlready2`, `pandas`, `sqlglot`, `langchain`, `litellm`). Some experiment paths rely on additional libraries:
 
-## Usage
+- `experiment/agentar_scale_sql/requirements.txt` for the full Agentar-Scale-SQL integration
+- `rdflib` for RDF graph serialization paths used by `src/argos_abox_operator.py`
+- `apted` for optional tree-edit-distance style evaluation in `p3t2q_benchmark_building/evaluate_qa_pipeline.py`
 
-### Basic Usage
+If you plan to use Pellet-based reasoning through Owlready2, make sure a Java runtime is available as well.
 
-```python
-from src.operators.ontologyInstance import OntologyOperator
-from src.operators.astObject import SqlglotOperator
+## Common Workflows
 
-# Initialize the ontology operator with your ontology file
-onto_op = OntologyOperator("ontology_file/ARGOS.rdf")
+### 1. Build or Refresh the Benchmark Dataset
 
-# Parse a SQL query
-sql_query = "SELECT name, salary FROM employees WHERE department = 'IT'"
-sql_op = SqlglotOperator(sql_query)
+The root helper script builds the full v2 benchmark pipeline (QA configs, QA/PQ pairs, naturalized questions, and consolidated per-database `qa.json` / `bird_qa.json` files):
 
-# Process the query through the access control system
-# (Additional implementation details in the source code)
+```bash
+./build_full_qa_dataset.sh \
+  --model "qwen/qwen3-4b-2507" \
+  --base-dir data/P3T2Q_benchmark/v2
 ```
 
-### Running Experiments
+Useful options:
 
-The `experiments/` directory contains Jupyter notebooks demonstrating various aspects of the system:
+- `--db <db_id>` to limit the run to one or more databases
+- `--no-bootstrap` to skip copying base assets from `v1`
+- `--skip-access-control` to reuse existing `access_control.json`
+- `--skip-consolidation` to skip rewriting `qa.json` / `bird_qa.json`
 
-1. **Abstract Data Operation Flow**: Main workflow and processing pipeline
-2. **AST Analysis**: Analysis of Abstract Syntax Trees
-3. **Ontology Testing**: Ontological reasoning and policy evaluation
-4. **SQL Query Analysis**: Query parsing and manipulation
+### 2. Run Agentar-Scale-SQL With ARGOS
 
-## Datasets
+The main experiment runner evaluates multiple access-control modes and writes raw and aggregate outputs to `experiment/outputs/`.
 
-The `data/` directory contains various datasets used for testing and evaluation:
+Example:
 
-- **Sample Datasets**: `sample_data.csv`, `sample_data_mini.csv`
-- **Test Datasets**: Various versions (`test_dataset_v2.csv` through `test_dataset_v4.csv`)
-- **Results**: Experimental results from different runs and configurations
-- **Versioned Results**: Multiple result files tracking different experimental configurations
-
-## Architecture
-
-### Core Components
-
-1. **SqlglotOperator**: Handles SQL parsing and AST manipulation
-2. **ASTTreeOperator**: Manages custom tree structures for query representation
-3. **OntologyOperator**: Manages ontological reasoning and instance creation
-4. **TreeNode**: Represents nodes in the AST tree structure
-
-### Workflow
-
-1. SQL queries are parsed into AST representations
-2. AST nodes are mapped to ontological instances
-3. Access control policies are evaluated using ontological reasoning
-4. Authorization decisions are made based on policy evaluation results
-
-## Research Citation
-
-If you use this implementation in your research, please cite:
-
-```bibtex
-
+```bash
+python experiment/agentar_scale_sql/run_access_control_experiment.py \
+  --db financial \
+  --start-index 0 \
+  --end-index 10 \
+  --output-prefix agenta_financial_full_v1
 ```
 
-## Contributing
+To run only the ARGOS enforcement layer:
 
-Contributions are welcome! Please ensure that any contributions maintain the existing code structure and include appropriate tests.
+```bash
+python experiment/agentar_scale_sql/run_access_control_experiment.py \
+  --access-control-mode argos_access_control \
+  --db financial \
+  --start-index 450 \
+  --end-index 460 \
+  --output-prefix agenta_financial_full_v6 \
+  --save-argos-failures \
+  --save-argos-db-abox
+```
+
+There are two additional variants:
+
+- `run_access_control_experiment_llamacpp_batch.py` for llama.cpp batch inference
+- `run_access_control_experiment_v2.py` for expanded mode combinations (baseline, prompt-filtered, view-filtered, DBMS, ARGOS)
+
+Most of these scripts expect an OpenAI-compatible API endpoint (LM Studio is the local workflow implied by the current defaults).
+
+### 3. Evaluate Predictions Against the Benchmark
+
+Use the modular evaluator to score generated SQL against the benchmark:
+
+```bash
+python p3t2q_benchmark_building/evaluate_qa_pipeline.py \
+  --dataset data/P3T2Q_benchmark/v2/financial/qa.json \
+  --predictions path/to/predictions.json \
+  --db-root data/P3T2Q_benchmark/v2 \
+  --output-summary experiment/outputs/financial_eval_summary.json
+```
+
+The evaluator parses candidate SQL with the same AST utilities in `src/` and reports per-sample plus aggregate privacy/permissiveness metrics.
+
+## Notes For Reproducibility
+
+- `main.py` is not the primary entry point for this project.
+- The repository includes many checked-in outputs under `experiment/outputs/` and `experiment/results/`; treat them as saved artifacts, not source code.
+- The `notebooks/` directory contains exploratory work and figure-generation support for the paper.
+- The current repository state mixes reusable framework code, benchmark assets, and in-progress experiment logs. That is normal for this artifact.
+
+## Citation
+
+If you are using this repository as the implementation artifact for the paper, add the final publication metadata here once the paper record is finalized.
+
+Proposed title:
+
+```text
+Privacy-Preserving and Permissive Access Realignment for LLM-Generated Database Queries
+```
 
 ## License
 
-This project is part of ongoing research in ontology-based access control systems. Please contact the authors for licensing information.
-
-## Contact
-
-For questions regarding this implementation or research collaboration, please contact the project maintainers through the GitHub repository.
+This repository contains research code and a vendored third-party subtree under `experiment/agentar_scale_sql/` that includes its own `LICENSE` and `LEGAL.md`. Review those files before redistributing or packaging the project.
