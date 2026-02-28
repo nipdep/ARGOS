@@ -14,8 +14,8 @@ from src.operators.ontologyInstance import OntologyOperator
 from src.prune import ASTPruner
 
 
-APUF = Namespace("http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf/")
-APUF_HASH = Namespace("http://www.semanticweb.org/nipun_qk4hy9e/ontologies/2025/5/apuf#")
+APUF = Namespace("http://purl.org/twc/argos#")
+APUF_HASH = Namespace("http://purl.org/twc/argos#")
 
 
 @dataclass
@@ -564,8 +564,20 @@ class ArgosABoxOperator:
         agent_id = f"a{next_idx:03d}"
         self.role_to_agent_id[role_key] = agent_id
 
+        # In argos_v3.x, `onto.Agent` can resolve to None even though the class
+        # exists (e.g., imported namespace binding differences). Use class lookup
+        # first, then a fallback scan by class name.
+        agent_cls = self.onto_operator.class_lookup.get("Agent")
+        if agent_cls is None:
+            agent_cls = next(
+                (cls for cls in self.onto_operator.onto.classes() if getattr(cls, "name", "") == "Agent"),
+                None,
+            )
+        if agent_cls is None:
+            raise RuntimeError("Ontology class 'Agent' is not available for runtime role instantiation.")
+
         with self.onto_operator.onto:
-            agent = self.onto_operator.onto.Agent(agent_id)
+            agent = agent_cls(agent_id)
             agent.AgentID.append(role)
         return agent_id
 
