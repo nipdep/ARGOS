@@ -111,42 +111,68 @@ class ASTPruner:
         print("--> Stage 1: Pruning based on table statuses...")
         self.violated_ids = []
         self.rowtag_ids = []
+        view_denied_table_entity_ids = set()
+        process_denied_table_entity_ids = set()
+        process_denied_table_ref_ids = set()
 
         for inst, attr in self.table_ref_instances.items():
             status = attr['Status']
             # Condition A.1: Violated Table -> Remove Statement
             if status == "Violated":
                 parent_clause = self.tree_op.get_parent_clause(inst)
+                table_ref_node = self.tree_op.get_node_by_id(inst)
+                table_entity_id = getattr(table_ref_node, "table_reference_id", None) if table_ref_node else None
+                scopes = self._resolve_table_violation_scopes(inst, attr)
+
+                if parent_clause is None:
+                    continue
+
                 print(f" Parent clause name: {parent_clause.name} and kind: {parent_clause.kind} | Instance: {inst}")
-                if parent_clause.name != "JoinClause":
-                    parent_stmt = self.tree_op.get_parent_statement(inst)
-                    if parent_stmt:
-                        print(f">> Instance: {inst}")
-                        
-                        # curr_sql_node = self.sql_op.get_node_by_id(inst)
-                        
-                        # if parent_stmt.id[0] != "s":
-                        #     parent_sql = self.sql_op.get_node_by_id(parent_stmt.id)
-                        #     if parent_sql:
-                        #         parent_sql.remove()
-                            # parent_sql = None
-                        if parent_stmt.id == self.tree_op.root.id:
-                            print(f">>> Instance: {inst}")
-                            self.sql_op.ast = None
-                            # print(f"    - Root statement '{parent_stmt.id[:8]}' is violated. Removing entire AST.")
-                            return  # No need to continue, the entire AST is removed.
-                        else:
-                            self.violated_ids.append(parent_stmt.id)
-                    # print(f"    - TableRef '{inst}' is Violated. Marking statement '{parent_stmt.id[:8]}' for removal.")
+                # Scope-aware behavior:
+                # - table VIEW deny => prune only projection columns from that table
+                # - table PROCESS deny => prune non-projection/process columns from that table
+                # - unknown scope (legacy) => fallback to full table trace removal
+                if scopes:
+                    if table_entity_id:
+                        if "view" in scopes:
+                            view_denied_table_entity_ids.add(table_entity_id)
+                        if "process" in scopes:
+                            process_denied_table_entity_ids.add(table_entity_id)
+                            process_denied_table_ref_ids.add(inst)
+                    continue
+
+                parent_stmt = self.tree_op.get_parent_statement(inst)
+                if parent_stmt:
+                    print(f">> Instance: {inst}")
+                    if parent_stmt.id == self.tree_op.root.id:
+                        print(f">>> Instance: {inst}")
+                        self.sql_op.ast = None
+                        return
+                    self.violated_ids.append(parent_stmt.id)
+
                     base_clause_type = ASTPruner.base_clause.get(parent_stmt.name, None)
                     clause_id = next((c.id for c in parent_stmt.children if c.name == base_clause_type), None)
-                    # print(f"    - Base clause ID: {clause_id}")
                     if clause_id:
                         self.violated_ids.append(clause_id)
 
             # Condition A.2: RowTag Table -> Add WHERE condition
             elif status == "RowTag":
                 self.rowtag_ids.append(inst)
+
+        if view_denied_table_entity_ids:
+            self._mark_columns_for_violated_tables(
+                view_denied_table_entity_ids,
+                violation_scope="view",
+            )
+        if process_denied_table_entity_ids:
+            self._mark_columns_for_violated_tables(
+                process_denied_table_entity_ids,
+                # For table-level process violations (e.g., rtp), remove all
+                # references to the denied table in any query position.
+                violation_scope="all",
+            )
+        if process_denied_table_ref_ids:
+            self.violated_ids.extend(sorted(process_denied_table_ref_ids))
         try:
             # Step 3: Apply the main pruning transformer with all collected IDs
             self.sql_op.ast = self.sql_op.ast.transform(self._pruning_transformer)
@@ -161,6 +187,95 @@ class ASTPruner:
         for inst in self.rowtag_ids:
             # print(f"    - Processing RowTag TableRef: {inst}")
             self._add_rowtag_condition(inst)
+
+    def _mark_columns_for_violated_tables(
+        self,
+        violated_table_entity_ids: set[str],
+        violation_scope: str = "all",
+    ) -> None:
+        """
+        Collect ColumnRef node IDs that reference violated tables.
+
+        `violation_scope`:
+        - "view": remove projection references (SelectClause)
+        - "process": remove non-projection references (legacy behavior)
+        - "top_level_projection": remove only references in the root statement's SelectClause
+        - "all": remove all references
+        """
+        for column_ref_id in self.column_ref_instances.keys():
+            column_ref_node = self.tree_op.get_node_by_id(column_ref_id)
+            if not column_ref_node:
+                continue
+            table_entity_id = getattr(column_ref_node, "table_reference_id", None)
+            if table_entity_id not in violated_table_entity_ids:
+                continue
+            if not self._column_matches_violation_scope(column_ref_id, violation_scope):
+                continue
+            self.violated_ids.append(column_ref_id)
+
+    def _column_matches_violation_scope(self, column_ref_id: str, violation_scope: str) -> bool:
+        if violation_scope == "all":
+            return True
+
+        parent_clause = self.tree_op.get_parent_clause(column_ref_id)
+        clause_name = parent_clause.name if parent_clause else ""
+        is_projection = clause_name == "SelectClause"
+
+        if violation_scope == "view":
+            return is_projection
+        if violation_scope == "top_level_projection":
+            if not is_projection:
+                return False
+            parent_statement = self.tree_op.get_parent_statement(column_ref_id)
+            return bool(
+                self.tree_op.root
+                and parent_statement
+                and parent_statement.id == self.tree_op.root.id
+            )
+        if violation_scope == "process":
+            return not is_projection
+        return True
+
+    def _resolve_table_violation_scopes(self, table_ref_id: str, table_attr: dict) -> set[str]:
+        """
+        Resolve violated table scope(s) from related policies/rules.
+
+        Returns a subset of {"view", "process"}.
+        """
+        scopes: set[str] = set()
+
+        node = None
+        if hasattr(self.onto_op, "get_instance_by_id"):
+            node = self.onto_op.get_instance_by_id(table_ref_id)
+
+        if node is not None:
+            for policy_obj in getattr(node, "relatedPolicy", []) or []:
+                for action_scope in getattr(policy_obj, "hasActionScope", []) or []:
+                    scope_name = str(getattr(action_scope, "name", action_scope)).strip().lower()
+                    if "view" in scope_name:
+                        scopes.add("view")
+                    elif "process" in scope_name:
+                        scopes.add("process")
+
+        if scopes:
+            return scopes
+
+        # Fallbacks for partial metadata/exported status maps.
+        policy_name = str((table_attr or {}).get("Policy") or "").strip().lower()
+        rule_name = str((table_attr or {}).get("Rule") or "").strip().lower()
+
+        if "view" in policy_name:
+            scopes.add("view")
+        if "process" in policy_name:
+            scopes.add("process")
+
+        # Rule-name fallback (for split table-read rules).
+        if rule_name == "rtv":
+            scopes.add("view")
+        if rule_name == "rtp":
+            scopes.add("process")
+
+        return scopes
 
     # def _add_rowtag_condition(self, inst: str):
     #     print(f"    - TableRef '{inst}' is RowTag. Adding condition to parent statement.")
@@ -268,7 +383,7 @@ class ASTPruner:
         # Step 2: Iteratively apply the pruning transformer until the AST is stable
         max_iterations = 10  # Safeguard against potential infinite loops
         for i in range(max_iterations):
-            previous_sql = self.sql_op.ast.sql(pretty=True)
+            previous_sql = self.sql_op.ast.sql()
             
             # Apply the main pruning transformer
             # print(f"     - Iteration {i + 1}: Applying pruning transformer... {self.sql_op.ast}")
@@ -349,35 +464,47 @@ class ASTPruner:
             if node.left is None or node.right is None:
                 return None
 
+        # Rule 2.1: Clean up unary wrappers (e.g., NOT x) when x is removed.
+        if isinstance(node, exp.Unary) and getattr(node, "this", None) is None:
+            return None
+
+        # Rule 2.2: Clean up IS predicates if either side is removed.
+        if isinstance(node, exp.Is):
+            if node.this is None or node.expression is None:
+                return None
+
         # Rule 3: Clean up a WHERE clause that is now empty.
         if isinstance(node, exp.Where) and (node.this is None):
             return None
 
         # Rule 4: Clean up a SELECT statement that has no columns left.
-        if isinstance(node, exp.Select) and not node.expressions:
-            # print("     - Cascading removal of SELECT statement with no columns.")
-            return None
+        if isinstance(node, exp.Select):
+            # Repair source clauses after table pruning. If FROM vanished but
+            # there is an allowed join source, promote it into FROM.
+            self._repair_select_sources(node)
+            if not node.expressions:
+                # print("     - Cascading removal of SELECT statement with no columns.")
+                return None
         
         # Rule 5: Clean up a JOIN if its ON condition is invalid.
         if isinstance(node, exp.Join):
-            # If the ON clause was completely removed OR if it's a binary expression
-            # (like a = b) where one side has been pruned, remove the JOIN.
-            if node.on is None or (isinstance(node.on, exp.Binary) and (node.on.left is None or node.on.right is None)):
+            # Remove JOIN only when its table source is gone.
+            if node.this is None:
                 return None
-        
-        # Rule 5: Clean up a GROUP BY clause that has no columns left.
+            # If ON became invalid due pruned operands, downgrade to a plain join
+            # without ON (comma/cross semantics) so allowed table traces survive.
+            if isinstance(node.on, exp.Binary) and (node.on.left is None or node.on.right is None):
+                node.set("on", None)
+
+        # Rule 6: Clean up a GROUP BY clause that has no columns left.
         if isinstance(node, exp.Group) and not node.expressions:
             return None
 
-        # Rule 5: Other clean-up rules.
-        if isinstance(node, exp.Join) and node.on is None:
-            return None
-        
-        # Rule 6 (NEW): Clean up a FROM clause if its table/join has been removed.
+        # Rule 7 (NEW): Clean up a FROM clause if no source can be repaired.
         if isinstance(node, exp.From) and node.this is None:
             return None
 
-        # Rule 6: clean up invalid function nodes.
+        # Rule 8: clean up invalid function nodes.
         # Note: many valid function-like expressions (e.g., searched CASE)
         # intentionally have `this is None`, so we must only remove a function
         # when one of its required args is missing.
@@ -392,7 +519,7 @@ class ASTPruner:
             print(f"    - Cascading removal of Alias '{node.sql()}' because its expression was removed.")
             return None
         
-        # # Rule 7: Handle IN expressions if either side is removed. 
+        # Rule 9: Handle IN expressions if either side is removed. 
         elif isinstance(node, exp.In):
             # Always check the left side first.
             if node.this is None:
@@ -414,6 +541,43 @@ class ASTPruner:
                     return None
 
         return node
+
+    @staticmethod
+    def _repair_select_sources(node: exp.Select) -> None:
+        """
+        Ensure SELECT keeps a valid source after table-pruning.
+
+        If FROM source is removed but JOIN sources remain, promote the first
+        surviving JOIN source into FROM and keep the rest as JOINs.
+        """
+        joins = [j for j in (node.args.get("joins") or []) if j is not None]
+        if not joins and node.args.get("from") is not None:
+            return
+
+        from_clause = node.args.get("from")
+        from_this = getattr(from_clause, "this", None) if from_clause is not None else None
+
+        if from_this is not None:
+            return
+
+        promoted_source = None
+        remaining_joins = []
+        for join in joins:
+            join_this = getattr(join, "this", None)
+            if promoted_source is None and join_this is not None:
+                promoted_source = join_this
+                continue
+            remaining_joins.append(join)
+
+        if promoted_source is None:
+            return
+
+        if from_clause is None:
+            from_clause = exp.From(this=promoted_source)
+            node.set("from", from_clause)
+        else:
+            from_clause.set("this", promoted_source)
+        node.set("joins", remaining_joins)
 
     @staticmethod
     def _is_invalid_function_node(node: exp.Func) -> bool:
