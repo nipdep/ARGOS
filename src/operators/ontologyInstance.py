@@ -6,6 +6,7 @@ from sqlglot import parse_one, exp
 from sqlglot.expressions import Expression, Identifier, Column
 
 from owlready2 import get_ontology, sync_reasoner_pellet, destroy_entity, sync_reasoner, World
+from rdflib import URIRef, RDF
 
 from src.data.ASTTree import TreeNode
 from src.operators.astObject import SqlglotOperator
@@ -14,6 +15,8 @@ from src.operators.astTree import ASTTreeOperator
 
 class OntologyOperator:
     """Orchestrates the resolution and instantiation of an ontology from an AST tree."""
+    APUF_BASE_IRI = "http://purl.org/twc/argos#"
+    APUF_HASH_IRI = "http://purl.org/twc/argos#"
 
     def __init__(self, onto_path: str, populated_path: str=None):
         # self.tree_op = tree_operator
@@ -27,7 +30,7 @@ class OntologyOperator:
             self.abox_onto = self.world.get_ontology(populated_path).load()
             self.onto.imported_ontologies.append(self.abox_onto)
 
-        self.class_lookup = {cls.name: cls for cls in self.onto.classes()}
+        self.class_lookup = self._build_class_lookup()
         self.created_instances = []
         self.table_ref_instances = []
         self.column_ref_instances = []
@@ -35,17 +38,85 @@ class OntologyOperator:
         self._create_object_mapper()
         # self._build_policy_params()
 
+    def _build_class_lookup(self):
+        """
+        Build a class-name lookup while preferring APUF namespace classes.
+
+        In argos_v3.x ontologies, both `argos#Table` and `apuf/Table` can exist
+        with the same `.name` ("Table"). Name-only maps become non-deterministic
+        and may bind to the wrong namespace, causing ABOX individuals to look
+        missing. This resolver keeps behavior stable by preferring APUF IRIs.
+        """
+        class_lookup = {}
+        for cls in self.onto.classes():
+            name = cls.name
+            current = class_lookup.get(name)
+            if current is None:
+                class_lookup[name] = cls
+                continue
+
+            current_iri = str(getattr(current, "iri", ""))
+            new_iri = str(getattr(cls, "iri", ""))
+            current_is_apuf = current_iri.startswith(self.APUF_BASE_IRI) or current_iri.startswith(self.APUF_HASH_IRI)
+            new_is_apuf = new_iri.startswith(self.APUF_BASE_IRI) or new_iri.startswith(self.APUF_HASH_IRI)
+
+            if new_is_apuf and not current_is_apuf:
+                class_lookup[name] = cls
+
+        return class_lookup
+
     def _create_object_mapper(self):
         """
         Creates a mapping of table and column names to their corresponding
         """
-        self.table_entities = {
-            t.TableName[0]: t.name for t in self.get_individuals_by_class("Table")}
-        self.column_lookup = {(tbl.TableName[0], c.ColumnName[0]): c.name for c in self.get_individuals_by_class(
-            "Column") for tbl in c.columnOfTable}
+        rdf_graph = self.world.as_rdflib_graph()
+        table_type = URIRef(f"{self.APUF_BASE_IRI}Table")
+        column_type = URIRef(f"{self.APUF_BASE_IRI}Column")
+        table_name_pred = URIRef(f"{self.APUF_BASE_IRI}TableName")
+        column_name_pred = URIRef(f"{self.APUF_BASE_IRI}ColumnName")
+        column_of_table_pred = URIRef(f"{self.APUF_BASE_IRI}columnOfTable")
+
+        self.table_entities = {}
+        table_name_by_id = {}
+        for table_uri in rdf_graph.subjects(RDF.type, table_type):
+            table_id = self._iri_local_name(table_uri)
+            if not table_id:
+                continue
+            table_name = next(rdf_graph.objects(table_uri, table_name_pred), None)
+            if table_name is None:
+                continue
+            table_name_str = str(table_name)
+            self.table_entities[table_name_str] = table_id
+            table_name_by_id[table_id] = table_name_str
+
+        self.column_lookup = {}
+        for column_uri in rdf_graph.subjects(RDF.type, column_type):
+            column_id = self._iri_local_name(column_uri)
+            if not column_id:
+                continue
+            column_name = next(rdf_graph.objects(column_uri, column_name_pred), None)
+            if column_name is None:
+                continue
+            column_name_str = str(column_name)
+
+            for table_uri in rdf_graph.objects(column_uri, column_of_table_pred):
+                table_id = self._iri_local_name(table_uri)
+                table_name_str = table_name_by_id.get(table_id)
+                if not table_name_str:
+                    continue
+                self.column_lookup[(table_name_str, column_name_str)] = column_id
         
         print(f"table entities: {self.table_entities}")
         print(f"column lookup: {self.column_lookup}")
+
+    @staticmethod
+    def _iri_local_name(iri: Any) -> str:
+        value = str(iri)
+        if "#" in value:
+            return value.rsplit("#", 1)[-1]
+        if "/" in value:
+            return value.rsplit("/", 1)[-1]
+        return value
 
     def get_table_ref_instances(self):
         """
@@ -137,7 +208,27 @@ class OntologyOperator:
         """
         Retrieves an ontology instance by its ID.
         """
-        return self.onto.get(id)
+        if not id:
+            return None
+
+        # Owlready namespaces behave like mappings; direct index lookup is the
+        # most reliable path for individuals created with explicit IDs.
+        try:
+            inst = self.onto[id]
+            if inst is not None:
+                return inst
+        except Exception:
+            pass
+
+        # Fallback for cases where IDs appear only as IRI suffixes.
+        try:
+            return (
+                self.onto.search_one(iri=f"*#{id}")
+                or self.onto.search_one(iri=f"*/{id}")
+                or self.onto.search_one(iri=f"*{id}")
+            )
+        except Exception:
+            return None
 
     def _build_policy_params(self):
         """
